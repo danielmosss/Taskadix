@@ -99,7 +99,6 @@ export class ForcastBuienradarRegen3hComponent implements OnInit {
   public chartData: Array<{ x: string, y: number }> = []
   public forcastData?: interfaceRainForcast
   ngOnInit(): void {
-    console.log(this.data)
     this.forcastData = this.data[0]
     this.forcastData.hour.forEach(element => {
       var time = element.time.split(" ")[1]

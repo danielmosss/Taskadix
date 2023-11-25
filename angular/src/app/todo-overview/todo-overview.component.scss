@@ -1,0 +1,39 @@
+.todoRow {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5rem;
+
+  .dayTasks {
+    .day {
+      padding: 6px 12px;
+      min-width: 150px;
+      background-color: #d6d6d6;
+      margin-bottom: 1rem;
+      text-align: center;
+      border-left: 1px solid #727272;
+      border-right: 1px solid #727272;
+    }
+
+    .todo {
+      margin-bottom: 0.5rem;
+      .card {
+        max-width: 300px;
+        background-color: #d6d6d6;
+
+        p {
+          font-size: 14px;
+          margin: 0;
+        }
+
+        mat-card-header {
+          padding: 8px 12px 0;
+        }
+
+        mat-card-content {
+          padding: 4px 12px 12px 12px;
+          text-align: left;
+        }
+      }
+    }
+  }
+}

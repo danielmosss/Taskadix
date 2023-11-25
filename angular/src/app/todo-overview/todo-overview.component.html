@@ -1,1 +1,21 @@
-<p>todo-overview works!</p>
+<div class="todoRow">
+  <div *ngFor="let day of testDataArray" class="dayTasks">
+    <div class="day">
+      {{day.day}}
+    </div>
+
+    <div *ngFor="let task of day.tasks" class="todo">
+      <mat-card class="card">
+
+        <mat-card-header>
+          <mat-card-title>{{task.title}}</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+          <p>{{task.description}}</p>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+  </div>
+</div>
