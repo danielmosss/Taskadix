@@ -4,11 +4,13 @@ import (
 	"api/handlers"
 	"fmt"
 	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 )
 
 func main() {
+	godotenv.Load()
 	fmt.Println("Starting server on port 8080")
 
 	handler := mux.NewRouter()
