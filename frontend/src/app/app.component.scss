@@ -1,0 +1,32 @@
+.page {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  height: 95vh;
+  .information {
+    display: flex;
+    flex-direction: column;
+    width: 20vw;
+    gap: 1rem;
+
+    .weather {
+      outline: 0.1rem solid black;
+      padding: 1rem;
+      background-color: gray;
+    }
+
+    .agenda {
+      outline: 0.1rem solid black;
+      padding: 1rem;
+      background-color: gray;
+    }
+  }
+
+  .todo {
+    outline: 0.1rem solid black;
+    padding: 1rem;
+    background-color: gray;
+    width: 80vw;
+    overflow-y: auto;
+  }
+}
