@@ -16,6 +16,7 @@ func main() {
 	handler := mux.NewRouter()
 
 	handler.HandleFunc("/weather", handlers.GetWeather).Methods("GET")
+	handler.HandleFunc("/todotasks", handlers.GetTodoTasks).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
