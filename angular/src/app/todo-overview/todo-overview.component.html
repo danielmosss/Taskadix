@@ -1,21 +1,24 @@
 <div class="todoRow">
-  <div *ngFor="let day of testDataArray" class="dayTasks">
+  <div *ngFor="let day of testDataArray; let i = index"
+       [id]="day.day + 'List'"
+       cdkDropList
+       [cdkDropListData]="day.tasks"
+       [cdkDropListConnectedTo]="connectedLists"
+       class="dayTasks"
+       (cdkDropListDropped)="drop($event)">
     <div class="day">
       {{day.day}}
     </div>
 
-    <div *ngFor="let task of day.tasks" class="todo">
+    <div *ngFor="let task of day.tasks" cdkDrag class="todo">
       <mat-card class="card">
-
         <mat-card-header>
           <mat-card-title>{{task.title}}</mat-card-title>
         </mat-card-header>
-
         <mat-card-content>
           <p>{{task.description}}</p>
         </mat-card-content>
       </mat-card>
     </div>
-
   </div>
 </div>

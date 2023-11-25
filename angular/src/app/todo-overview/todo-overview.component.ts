@@ -17,9 +17,10 @@ export class TodoOverviewComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
-
+    this.connectedLists = this.testDataArray.map(d => `${d.day}List`);
   }
 
+  connectedLists: any[] = [];
   testDataArray = [
     {
       "day": "Zaterdag",
@@ -114,20 +115,16 @@ export class TodoOverviewComponent implements OnInit {
     }
   ]
 
-  todo = ['Get to work', 'Pick up groceries', 'Go home', 'Fall asleep'];
-
-  done = ['Get up', 'Brush teeth', 'Take a shower', 'Check e-mail', 'Walk dog'];
-
-  drop(event: any) {
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
+      // Same list - reorder
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex,
-      );
+      // Different list - transfer item
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
     }
   }
 }
