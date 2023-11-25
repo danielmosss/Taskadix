@@ -11,7 +11,7 @@ func GetWeather(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("GetWeather called")
 	res.Header().Set("Content-Type", "application/json")
 
-	weatherRes, err := http.Get("https://api.weatherapi.com/v1/current.json?key=5ce8b442e18b4b568fd135838232002&q=barneveld&aqi=no")
+	weatherRes, err := http.Get("http://api.weatherapi.com/v1/forecast.json?key=5ce8b442e18b4b568fd135838232002&q=barneveld&days=1&aqi=no&alerts=no")
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
