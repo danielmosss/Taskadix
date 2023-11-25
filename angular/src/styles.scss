@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body{
+  // background: radial-gradient(circle at bottom left, rgb(224, 0, 176),rgb(0, 0, 180));
+  background: radial-gradient(circle at bottom left, rgb(100, 6, 52),#020b1c);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}

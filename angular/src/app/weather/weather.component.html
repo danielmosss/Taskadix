@@ -1,1 +1,16 @@
-<p>weather works!</p>
+<div class="background">
+  <h1>Weer</h1>
+  <p class="withSubtitles">{{currentWeather?.condition?.text}}</p>
+  <p>Temp: {{ currentWeather?.temp_c }}°C</p>
+  <p>Wind: {{ currentWeather?.wind_kph }} km/h</p>
+  <p>Regen: {{ currentWeather?.precip_mm }} mm</p>
+
+  <div class="forcastRain" *ngIf="rainForcast">
+    <app-forcast-buienradar-regen3h place="Barneveld"
+      [data]="this.rainForcast.forecastday"></app-forcast-buienradar-regen3h>
+  </div>
+
+  <!-- <div class="buienradarMap" *ngIf="sanitizedUrl">
+    <iframe [src]="sanitizedUrl" scrolling="no" width="330" height="330" frameborder="yes"></iframe>
+  </div> -->
+</div>

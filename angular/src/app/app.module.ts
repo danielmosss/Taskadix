@@ -6,13 +6,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { WeatherComponent } from './weather/weather.component';
 import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
 import { AgendaComponent } from './agenda/agenda.component';
+import { ForcastBuienradarRegen3hComponent } from './forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     WeatherComponent,
     TodoOverviewComponent,
-    AgendaComponent
+    AgendaComponent,
+    ForcastBuienradarRegen3hComponent
   ],
   imports: [
     BrowserModule,
