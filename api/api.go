@@ -11,7 +11,7 @@ import (
 
 func main() {
 	godotenv.Load()
-	fmt.Println("Starting server on port 8080")
+	fmt.Println("Starting server on port 8000")
 
 	handler := mux.NewRouter()
 

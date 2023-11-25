@@ -21,6 +21,11 @@ func GetWeather(res http.ResponseWriter, req *http.Request) {
 	}
 	defer weatherRes.Body.Close()
 
+	if weatherRes.StatusCode != http.StatusOK {
+		http.Error(res, weatherRes.Status, weatherRes.StatusCode)
+		return
+	}
+
 	data, err := ioutil.ReadAll(weatherRes.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
