@@ -1,5 +1,5 @@
 <div class="todoRow">
-  <div *ngFor="let day of testDataArray; let i = index"
+  <div *ngFor="let day of Todolist; let i = index"
        [id]="day.day + 'List'"
        cdkDropList
        [cdkDropListData]="day.tasks"

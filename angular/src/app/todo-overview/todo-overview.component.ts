@@ -6,6 +6,18 @@ import {
   CdkDrag,
   CdkDropList,
 } from '@angular/cdk/drag-drop';
+import { DataService } from 'src/data.service';
+
+interface TodoDay {
+  day: string,
+  tasks: Array<{
+    id: number,
+    title: string,
+    description: string,
+    date: string
+  }>
+}
+
 
 @Component({
   selector: 'app-todo-overview',
@@ -13,107 +25,24 @@ import {
   styleUrls: ['./todo-overview.component.scss']
 })
 export class TodoOverviewComponent implements OnInit {
+  public connectedLists: any[] = [];
+  public Todolist: TodoDay[] = [];
 
-  constructor() { }
+  constructor(private _dateService: DataService) { }
 
   ngOnInit(): void {
-    this.connectedLists = this.testDataArray.map(d => `${d.day}List`);
+
+    this._dateService.getTodo().subscribe(data => {
+      console.log(data);
+      this.Todolist = data;
+      this.connectedLists = this.Todolist.map(d => `${d.day}List`);
+    })
   }
 
-  connectedLists: any[] = [];
-  testDataArray = [
-    {
-      "day": "Zaterdag",
-      tasks: [
-        {
-          "title": "Task 1",
-          "description": "Description 1"
-        },
-        {
-          "title": "Task 2",
-          "description": "Description 2"
-        }
-      ]
-    },
-    {
-      "day": "Zondag",
-      tasks: [
-        {
-          "title": "Task 3",
-          "description": "Description 3"
-        },
-        {
-          "title": "Task 4",
-          "description": "Description 4"
-        }
-      ]
-    },
-    {
-      "day": "Maandag",
-      tasks: [
-        {
-          "title": "Task 5",
-          "description": "Description 5"
-        },
-        {
-          "title": "Task 6",
-          "description": "Description 6"
-        }
-      ]
-    },
-    {
-      "day": "Dinsdag",
-      tasks: [
-        {
-          "title": "Task 7",
-          "description": "Description 7"
-        },
-        {
-          "title": "Task 8",
-          "description": "Description 8"
-        }
-      ]
-    },
-    {
-      "day": "Woensdag",
-      tasks: [
-        {
-          "title": "Task 9",
-          "description": "Description 9"
-        },
-        {
-          "title": "Task 10",
-          "description": "Description 10"
-        }
-      ]
-    },
-    {
-      "day": "Donderdag",
-      tasks: [
-        {
-          "title": "Task 11",
-          "description": "Description 11"
-        },
-        {
-          "title": "Task 12",
-          "description": "Description 12"
-        }
-      ]
-    },
-    {
-      "day": "Vrijdag",
-      tasks: [
-        {
-          "title": "Task 13",
-          "description": "Description 13"
-        },
-        {
-          "title": "Task 14",
-          "description": "Description 14"
-        }
-      ]
-    }
-  ]
+  getDayName(dateString: string) {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { weekday: 'long' });
+  }
 
   drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
@@ -122,9 +51,9 @@ export class TodoOverviewComponent implements OnInit {
     } else {
       // Different list - transfer item
       transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
     }
   }
 }

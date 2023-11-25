@@ -124,6 +124,16 @@ interface Weather {
   }
 }
 
+interface Todo {
+  day: string,
+  tasks: Array<{
+    id: number,
+    title: string,
+    description: string,
+    date: string
+  }>
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -135,5 +145,9 @@ export class DataService {
 
   public getWeather() {
     return this.http.get<Weather>(this._hostname + "/weather");
+  }
+
+  public getTodo() {
+    return this.http.get<Array<Todo>>(this._hostname + "/todotasks");
   }
 }
