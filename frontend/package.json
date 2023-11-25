@@ -1,0 +1,11 @@
+{
+  "name": "dashboardtodo",
+  "version": "1.0.0",
+  "description": "angular frontend for my dashboard with golang restapi",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Daniël M",
+  "license": "ISC"
+}
