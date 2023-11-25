@@ -1,14 +1,15 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private REST_API_SERVER = "http://localhost:8080";
+  private _hostname = "http://localhost:8000";
 
   constructor(private http: HttpClient) { }
 
   public getWeather() {
-    return this.http.get
+    return this.http.get(this._hostname + "/weather");
+  }
 }

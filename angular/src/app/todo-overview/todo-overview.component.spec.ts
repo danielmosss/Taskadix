@@ -6,12 +6,10 @@ describe('TodoOverviewComponent', () => {
   let component: TodoOverviewComponent;
   let fixture: ComponentFixture<TodoOverviewComponent>;
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [TodoOverviewComponent]
-    })
-    .compileComponents();
-    
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TodoOverviewComponent]
+    });
     fixture = TestBed.createComponent(TodoOverviewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
