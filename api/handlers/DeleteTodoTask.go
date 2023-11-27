@@ -8,8 +8,8 @@ import (
 	"net/http"
 )
 
-func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("PutTodoTaskInfo called")
+func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
+	fmt.Println("DeleteTodoTask called")
 
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {

@@ -8,20 +8,6 @@ import (
 	"time"
 )
 
-type TodoTask struct {
-	Id          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Date        string `json:"date"` // Assuming this is a date in YYYY-MM-DD format
-	TodoOrder   int    `json:"todoOrder"`
-}
-
-type DayTasks struct {
-	Day   string     `json:"day"`
-	Date  string     `json:"date"`
-	Tasks []TodoTask `json:"tasks"`
-}
-
 func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("GetTodoTasks called")
 
@@ -43,9 +29,9 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	}
 	defer result.Close()
 
-	tasksMap := make(map[string][]TodoTask)
+	tasksMap := make(map[string][]todoCard)
 	for result.Next() {
-		var task TodoTask
+		var task todoCard
 		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -54,15 +40,15 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 		tasksMap[task.Date] = append(tasksMap[task.Date], task)
 	}
 
-	var weekTasks []DayTasks
+	var weekTasks []DayTodos
 	for i := 0; i < 7; i++ {
 		date := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format(time.DateOnly)
 		dayName := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format("Monday")
 		dayTasks, exists := tasksMap[date]
 		if !exists {
-			dayTasks = []TodoTask{} // Empty slice
+			dayTasks = []todoCard{} // Empty slice
 		}
-		weekTasks = append(weekTasks, DayTasks{Day: dayName, Date: date, Tasks: dayTasks})
+		weekTasks = append(weekTasks, DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
 	}
 
 	tasksJSON, err := json.Marshal(weekTasks)

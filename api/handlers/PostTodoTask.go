@@ -8,12 +8,6 @@ import (
 	"net/http"
 )
 
-type newTask struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Date        string `json:"date"`
-}
-
 func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("PostTodoTask called")
 

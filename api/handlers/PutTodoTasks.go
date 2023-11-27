@@ -8,14 +8,6 @@ import (
 	"net/http"
 )
 
-type Task struct {
-	ID          int    `json:"id"`
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Date        string `json:"date"`
-	TodoOrder   int    `json:"todoOrder"`
-}
-
 func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("PutTodoTasks called")
 
@@ -25,7 +17,7 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var tasks []Task
+	var tasks []todoCard
 	if err := json.Unmarshal(body, &tasks); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -39,7 +31,7 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 
 	for _, task := range tasks {
 		query := "UPDATE todos SET title = ?, description = ?, date = ?, todoOrder = ? WHERE id = ?;"
-		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.ID)
+		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.Id)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
