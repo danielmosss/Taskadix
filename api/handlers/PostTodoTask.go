@@ -35,7 +35,6 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// call insertAtodoTask('Grocery Shopping', 'Buy groceries for the week', '2023-11-26');
 	query := "call insertAtodoTask(?, ?, ?);"
 	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date)
 	if err != nil {
