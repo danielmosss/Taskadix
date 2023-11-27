@@ -1,16 +1,28 @@
 package main
 
 import (
+	"api/functions"
 	"api/handlers"
 	"fmt"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
+	"time"
 )
 
 func main() {
 	godotenv.Load()
+
+	functions.ProcessCalanderData()
+
+	ticker := time.NewTicker(1 * time.Hour)
+	go func() {
+		for range ticker.C {
+			functions.ProcessCalanderData()
+		}
+	}()
+
 	fmt.Println("Starting server on port 8000")
 
 	handler := mux.NewRouter()
