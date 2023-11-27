@@ -19,6 +19,7 @@ func main() {
 	handler.HandleFunc("/GetTodoTasks", handlers.GetTodoTasks).Methods("GET")
 	handler.HandleFunc("/PutTodoTasks", handlers.PutTodoTasks).Methods("PUT")
 	handler.HandleFunc("/PostTodoTask", handlers.PostTodoTask).Methods("POST")
+	handler.HandleFunc("/PutTodoTaskInfo", handlers.PutTodoTaskInfo).Methods("PUT")
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
