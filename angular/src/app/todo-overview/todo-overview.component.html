@@ -11,6 +11,7 @@
     </div>
 
     <div *ngFor="let task of day.tasks" cdkDrag class="todo">
+      <div class="placeholder" *cdkDragPlaceholder></div>
       <mat-card class="card">
         <mat-card-header>
           <mat-card-title>{{task.title}}</mat-card-title>
