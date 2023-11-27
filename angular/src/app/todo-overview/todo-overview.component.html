@@ -1,3 +1,9 @@
+<div class="addTodo">
+  <button mat-button class="mat-button neg" (click)="openCardCreate()">
+    <i class="fa-solid fa-plus fa-xl"></i>
+  </button>
+</div>
+
 <div class="todoRow">
   <div *ngFor="let day of Todolist; let i = index"
        [id]="day.day + 'List'"

@@ -9,6 +9,7 @@ import {
 import { DataService } from 'src/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
+import { CreateTodoComponent } from '../popups/create-todo/create-todo.component';
 
 interface TodoDay {
   day: string,
@@ -124,6 +125,15 @@ export class TodoOverviewComponent implements OnInit {
         var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
         this.Todolist[index].tasks[todoIndex] = data;
       }
+    })
+  }
+
+  openCardCreate(){
+    var dialog = this._dialog.open(CreateTodoComponent)
+    dialog.afterClosed().subscribe((data?: todo) => {
+      if (!data) return;
+      var index = this.Todolist.findIndex(d => d.date === data.date);
+      this.Todolist[index].tasks.push(data);
     })
   }
 }

@@ -144,6 +144,12 @@ interface Todo {
   todoOrder: number
 }
 
+interface newTodoRequirements {
+  title: string,
+  description: string,
+  date?: string
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -171,5 +177,9 @@ export class DataService {
 
   public deleteTodoTask(todoCard: Todo){
     return this.http.delete<Todo>(this._hostname + "/DeleteTodoTask", {body: todoCard});
+  }
+
+  public postTodoInfo(todoCard: newTodoRequirements){
+    return this.http.post<Todo>(this._hostname + "/PostTodoTask", todoCard);
   }
 }

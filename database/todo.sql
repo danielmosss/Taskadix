@@ -21,7 +21,8 @@ CREATE PROCEDURE insertAtodoTask (IN title VARCHAR(255), IN description VARCHAR(
 BEGIN
     DECLARE todoOrder INT;
     SELECT COUNT(*) INTO todoOrder FROM todos WHERE date = insertDate;
-    INSERT INTO todos (title, description, date, todoOrder) VALUES (title, description, insertDate, todoOrder + 1);
+    INSERT INTO todos (title, description, date, todoOrder) VALUES  (title, description, insertDate, todoOrder + 1);
+    SELECT LAST_INSERT_ID() as id;
 END $$
 DELIMITER ;
 

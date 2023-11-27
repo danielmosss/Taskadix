@@ -1,0 +1,34 @@
+<div class="popup">
+  <div class="content">
+    <div class="header">
+      <mat-form-field class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput [value]="todoCard?.title" type="text" (change)="changedProperty(todoCardProperty.title ,$event)">
+      </mat-form-field>
+    </div>
+    <div class="body">
+      <mat-form-field  class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput [value]="todoCard?.description" (change)="changedProperty(todoCardProperty.description, $event)">
+        </textarea>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+    <div class="footer buttons right">
+      <button mat-button class="mat-button neg" (click)="cancel()">
+        <i class="fa-solid fa-xmark fa-xl"></i>
+      </button>
+      <button mat-button class="mat-button pos" (click)="saveCard()" [disabled]="!canSave()">
+        <i class="fa-solid fa-check fa-xl"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
