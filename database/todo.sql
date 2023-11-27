@@ -4,7 +4,6 @@ create database tododashboard;
 use tododashboard;
 
 drop table if exists todos;
-
 create table todos (
     id int not null auto_increment,
     title varchar(255) not null,
@@ -15,8 +14,6 @@ create table todos (
     primary key (id)
 );
 
--- create an stored procedure to insert a todo and automatically set the order to the count of the todos for that date + 1
--- IsCHEAgenda boolean but does not have a default value, so it will be null by default
 drop procedure if exists insertAtodoTask;
 DELIMITER $$
 CREATE PROCEDURE insertAtodoTask (IN title VARCHAR(255), IN description VARCHAR(255), IN insertDate DATE, IN isCHEAgenda BOOLEAN)
