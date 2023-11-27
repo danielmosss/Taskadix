@@ -24,9 +24,9 @@ func ProcessCalanderData() {
 
 	for _, task := range tasks {
 		fmt.Println(task)
-		//if !taskExistsInDB(task) {
-		//	insertTaskIntoDB(task)
-		//}
+		if !taskExistsInDB(task) {
+			insertTaskIntoDB(task)
+		}
 	}
 }
 
@@ -64,12 +64,58 @@ func fetchCalendarData() ([]Task, error) {
 	return tasks, nil
 }
 
-//func taskExistsInDB(task Task) bool {
-//	// Implementeer de logica om te controleren of de taak al in de DB staat
-//	// Gebruik bijvoorbeeld een SELECT-query
-//}
-//
-//func insertTaskIntoDB(task Task) {
-//	// Implementeer de logica om de taak in de DB te inserten
-//	// Gebruik de INSERT-query zoals je eerder deed
-//}
+func taskExistsInDB(task Task) bool {
+	dbConnection, err := GetDatabaseConnection()
+	if err != nil {
+		panic(err.Error())
+	}
+	defer dbConnection.Close()
+
+	query := "SELECT COUNT(*) FROM todos WHERE title = ? AND description = ? AND date = ? AND isCHEagenda = true;"
+	result, err := dbConnection.Query(query, task.Title, task.Description, task.Date)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer result.Close()
+
+	var count int
+	for result.Next() {
+		err := result.Scan(&count)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return count > 0
+}
+
+func insertTaskIntoDB(task Task) {
+	dbConnection, err := GetDatabaseConnection()
+	if err != nil {
+		panic(err.Error())
+	}
+	defer dbConnection.Close()
+
+	query := "SELECT COUNT(*) FROM todos WHERE date = ?;"
+	result, err := dbConnection.Query(query, task.Date)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer result.Close()
+
+	var todoOrder int
+	for result.Next() {
+		err := result.Scan(&todoOrder)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	todoOrder = todoOrder + 1
+
+	queryInsert := "call insertAtodoTask(?, ?, ?, true);"
+	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date)
+	if err != nil {
+		panic(err.Error())
+	}
+}
