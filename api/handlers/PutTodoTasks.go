@@ -19,8 +19,6 @@ type Task struct {
 func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("PutTodoTasks called")
 
-	// get the body of our PUT request
-	// then update the database with the updated tasks
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -51,6 +49,5 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 
 	defer dbConnection.Close()
 
-	// return the new list of tasks
 	GetTodoTasks(res, req)
 }
