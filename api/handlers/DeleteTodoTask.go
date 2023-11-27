@@ -29,8 +29,8 @@ func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "UPDATE todos SET title = ?, description = ? WHERE id = ?;"
-	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Id)
+	query := "DELETE FROM todos WHERE id = ?;"
+	result, err := dbConnection.Query(query, newTask.Id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
