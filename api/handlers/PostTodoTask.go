@@ -36,7 +36,39 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	defer result.Close()
+
+	var id int
+	for result.Next() {
+		err := result.Scan(&id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	var task todoCard
+	query = "SELECT id, title, description, date, todoOrder FROM todos WHERE id = ?;"
+	result, err = dbConnection.Query(query, id)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer result.Close()
 	defer dbConnection.Close()
 
-	GetTodoTasks(res, req)
+	for result.Next() {
+		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	taskJSON, err := json.Marshal(task)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Write(taskJSON)
 }
