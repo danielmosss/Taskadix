@@ -1,0 +1,43 @@
+<div class="popup">
+  <div class="content" *ngIf="editMode">
+    <div class="header">
+      <mat-form-field class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput [value]="todoCard.title" type="text" (change)="changedProperty(todoCardProperty.title ,$event)">
+      </mat-form-field>
+    </div>
+    <div class="body">
+      <mat-form-field  class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput [value]="todoCard.description" (change)="changedProperty(todoCardProperty.description, $event)">
+        </textarea>
+      </mat-form-field>
+    </div>
+    <div class="footer buttons right">
+      <button mat-button class="mat-button neg" (click)="editCard(true)">
+        <i class="fa-solid fa-xmark fa-xl"></i>
+      </button>
+      <button mat-button class="mat-button pos" (click)="saveCard()">
+        <i class="fa-solid fa-check fa-xl"></i>
+      </button>
+    </div>
+  </div>
+
+  <div class="content" *ngIf="!editMode">
+    <div class="header">
+      <h1>{{todoCard.title}}</h1>
+    </div>
+    <div class="body">
+      <p>{{todoCard.description}}</p>
+    </div>
+    <div class="footer buttons right">
+      <button mat-button class="mat-button pos" (click)="editCard()">
+        <i class="fa-solid fa-pencil fa-lg"></i>
+      </button>
+      <button mat-button class="mat-button pos" (click)="deleteCard(todoCard)">
+        <i class="fa-solid fa-trash-can fa-lg"></i>
+      </button>
+    </div>
+  </div>
+</div>
+

@@ -7,6 +7,8 @@ import {
   CdkDropList,
 } from '@angular/cdk/drag-drop';
 import { DataService } from 'src/data.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
 
 interface TodoDay {
   day: string,
@@ -39,7 +41,7 @@ export class TodoOverviewComponent implements OnInit {
   public updatedList: todo[] = [];
   public deletedList: todo[] = [];
 
-  constructor(private _dateService: DataService) { }
+  constructor(private _dateService: DataService, private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
@@ -103,5 +105,18 @@ export class TodoOverviewComponent implements OnInit {
     if (index !== -1) this.updatedList[index] = itemToUpdate;
     else this.updatedList.push(itemToUpdate);
     console.log(this.updatedList);
+  }
+
+  openCardInfo(todo: todo){
+    var dialog = this._dialog.open(CardpopupComponent, {
+      data: todo
+    })
+    dialog.afterClosed().subscribe((data?: todo) => {
+      if(data){
+        var index = this.Todolist.findIndex(d => d.date === data.date);
+        var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
+        this.Todolist[index].tasks[todoIndex] = data;
+      }
+    })
   }
 }

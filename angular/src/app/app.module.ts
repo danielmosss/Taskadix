@@ -11,6 +11,11 @@ import { WeatherComponent } from './weather/weather.component';
 import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
 import { AgendaComponent } from './agenda/agenda.component';
 import { ForcastBuienradarRegen3hComponent } from './forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
+import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
+
+import {MatDialogModule} from '@angular/material/dialog';
+import {MatInputModule} from '@angular/material/input';
+
 
 @NgModule({
   declarations: [
@@ -18,14 +23,17 @@ import { ForcastBuienradarRegen3hComponent } from './forcast-buienradar-regen3h/
     WeatherComponent,
     TodoOverviewComponent,
     AgendaComponent,
-    ForcastBuienradarRegen3hComponent
+    ForcastBuienradarRegen3hComponent,
+    CardpopupComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     MatCardModule,
     MatButtonModule,
-    DragDropModule
+    DragDropModule,
+    MatDialogModule,
+    MatInputModule
   ],
   providers: [],
   bootstrap: [AppComponent]

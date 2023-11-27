@@ -164,4 +164,8 @@ export class DataService {
   public putTodoList(todo: Todo[]) {
     return this.http.put<Array<DayTodo>>(this._hostname + "/PutTodoTasks", todo);
   }
+
+  public putTodoInfo(todoCard: Todo){
+    return this.http.put<Todo>(this._hostname + "/PutTodoTaskInfo", todoCard);
+  }
 }
