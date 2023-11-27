@@ -28,6 +28,7 @@ interface todo{
   description: string,
   date: string
   todoOrder: number
+  deleted?: boolean
 }
 
 @Component({
@@ -112,7 +113,13 @@ export class TodoOverviewComponent implements OnInit {
       data: todo
     })
     dialog.afterClosed().subscribe((data?: todo) => {
-      if(data){
+      if (!data) return;
+      if (data.deleted){
+        var index = this.Todolist.findIndex(d => d.date === data.date);
+        var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
+        this.Todolist[index].tasks.splice(todoIndex, 1);
+      }
+      else if(!data.deleted){
         var index = this.Todolist.findIndex(d => d.date === data.date);
         var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
         this.Todolist[index].tasks[todoIndex] = data;

@@ -168,4 +168,8 @@ export class DataService {
   public putTodoInfo(todoCard: Todo){
     return this.http.put<Todo>(this._hostname + "/PutTodoTaskInfo", todoCard);
   }
+
+  public deleteTodoTask(todoCard: Todo){
+    return this.http.delete<Todo>(this._hostname + "/DeleteTodoTask", {body: todoCard});
+  }
 }

@@ -7,7 +7,8 @@ interface todo {
   title: string,
   description: string,
   date: string
-  todoOrder: number
+  todoOrder: number,
+  deleted?: boolean
 }
 
 enum todoCardProperty {
@@ -44,7 +45,10 @@ export class CardpopupComponent implements OnInit {
   }
 
   deleteCard(todoCard: todo) {
-
+    this._dataService.deleteTodoTask(todoCard).subscribe(data => {
+      this.todoCard.deleted = true;
+      this.dialogRef.close(this.todoCard);
+    })
   }
 
   matdialogclose() {
