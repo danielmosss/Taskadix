@@ -13,6 +13,7 @@ type TodoTask struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Date        string `json:"date"` // Assuming this is a date in YYYY-MM-DD format
+	TodoOrder   int    `json:"todoOrder"`
 }
 
 type DayTasks struct {
@@ -33,7 +34,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	todayDate := functions.GetTodayDate()
 	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
 
-	query := "SELECT id, title, description, date FROM todos WHERE date >= ? AND date < ? ORDER BY date ASC"
+	query := "SELECT id, title, description, date, todoOrder FROM todos WHERE date >= ? AND date < ? ORDER BY date ASC, todoOrder ASC;"
 	result, err := dbConnection.Query(query, todayDate, endDate)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -44,7 +45,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	tasksMap := make(map[string][]TodoTask)
 	for result.Next() {
 		var task TodoTask
-		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date)
+		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

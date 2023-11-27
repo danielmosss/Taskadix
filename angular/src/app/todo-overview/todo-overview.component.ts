@@ -14,10 +14,35 @@ interface TodoDay {
     id: number,
     title: string,
     description: string,
-    date: string
+    date: string,
+    todoOrder: number
   }>
 }
 
+interface updateTodo{
+  old: {
+    id: number,
+    title: string,
+    description: string,
+    date: string
+    todoOrder: number
+  }
+  new: {
+    id: number,
+    title: string,
+    description: string,
+    date: string
+    todoOrder: number
+  }
+}
+
+interface deleteTodo{
+  id: number,
+  title: string,
+  description: string,
+  date: string
+  todoOrder: number
+}
 
 @Component({
   selector: 'app-todo-overview',
@@ -27,6 +52,8 @@ interface TodoDay {
 export class TodoOverviewComponent implements OnInit {
   public connectedLists: any[] = [];
   public Todolist: TodoDay[] = [];
+  public updatedList: updateTodo[] = [];
+  public deletedList: deleteTodo[] = [];
 
   constructor(private _dateService: DataService) { }
 
