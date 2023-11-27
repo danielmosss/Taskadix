@@ -19,24 +19,7 @@ interface TodoDay {
   }>
 }
 
-interface updateTodo{
-  old: {
-    id: number,
-    title: string,
-    description: string,
-    date: string
-    todoOrder: number
-  }
-  new: {
-    id: number,
-    title: string,
-    description: string,
-    date: string
-    todoOrder: number
-  }
-}
-
-interface deleteTodo{
+interface todo{
   id: number,
   title: string,
   description: string,
@@ -52,15 +35,13 @@ interface deleteTodo{
 export class TodoOverviewComponent implements OnInit {
   public connectedLists: any[] = [];
   public Todolist: TodoDay[] = [];
-  public updatedList: updateTodo[] = [];
-  public deletedList: deleteTodo[] = [];
+  public updatedList: todo[] = [];
+  public deletedList: todo[] = [];
 
   constructor(private _dateService: DataService) { }
 
   ngOnInit(): void {
-
     this._dateService.getTodo().subscribe(data => {
-      console.log(data);
       this.Todolist = data;
       this.connectedLists = this.Todolist.map(d => `${d.day}List`);
     })
@@ -73,14 +54,41 @@ export class TodoOverviewComponent implements OnInit {
 
   drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
-      // Same list - reorder
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+
+      const list = event.container.data;
+      list.forEach((item, index) => {
+        item.todoOrder = index + 1;
+        this.updateTodoList(item);
+      })
     } else {
-      // Different list - transfer item
+      let containerDate = event.container.data[0].date;
       transferArrayItem(event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex);
+
+      const list = event.container.data;
+      list.forEach((item, index) => {
+        item.todoOrder = index + 1;
+        item.date = containerDate;
+        this.updateTodoList(item);
+      })
+
+      const previousList = event.previousContainer.data;
+      previousList.forEach((item, index) => {
+        item.todoOrder = index + 1;
+        this.updateTodoList(item);
+      })
     }
+  }
+
+
+  updateTodoList(itemToUpdate: todo){
+    // check if item is already in updatedList
+    const index = this.updatedList.findIndex(item => item.id === itemToUpdate.id);
+    if (index !== -1) this.updatedList[index] = itemToUpdate;
+    else this.updatedList.push(itemToUpdate);
+    console.log(this.updatedList);
   }
 }
