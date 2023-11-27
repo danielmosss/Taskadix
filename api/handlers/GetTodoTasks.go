@@ -18,6 +18,7 @@ type TodoTask struct {
 
 type DayTasks struct {
 	Day   string     `json:"day"`
+	Date  string     `json:"date"`
 	Tasks []TodoTask `json:"tasks"`
 }
 
@@ -61,7 +62,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 		if !exists {
 			dayTasks = []TodoTask{} // Empty slice
 		}
-		weekTasks = append(weekTasks, DayTasks{Day: dayName, Tasks: dayTasks})
+		weekTasks = append(weekTasks, DayTasks{Day: dayName, Date: date, Tasks: dayTasks})
 	}
 
 	tasksJSON, err := json.Marshal(weekTasks)

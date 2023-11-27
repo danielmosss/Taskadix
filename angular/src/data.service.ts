@@ -124,8 +124,9 @@ interface Weather {
   }
 }
 
-interface Todo {
+interface DayTodo {
   day: string,
+  date: string,
   tasks: Array<{
     id: number,
     title: string,
@@ -133,6 +134,14 @@ interface Todo {
     date: string,
     todoOrder: number
   }>
+}
+
+interface Todo {
+  id: number,
+  title: string,
+  description: string,
+  date: string,
+  todoOrder: number
 }
 
 
@@ -145,10 +154,14 @@ export class DataService {
   constructor(private http: HttpClient) { }
 
   public getWeather() {
-    return this.http.get<Weather>(this._hostname + "/weather");
+    return this.http.get<Weather>(this._hostname + "/GetWeather");
   }
 
   public getTodo() {
-    return this.http.get<Array<Todo>>(this._hostname + "/todotasks");
+    return this.http.get<Array<DayTodo>>(this._hostname + "/GetTodoTasks");
+  }
+
+  public putTodoList(todo: Todo[]) {
+    return this.http.put<Array<DayTodo>>(this._hostname + "/PutTodoTasks", todo);
   }
 }

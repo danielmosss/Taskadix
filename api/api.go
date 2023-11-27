@@ -15,8 +15,10 @@ func main() {
 
 	handler := mux.NewRouter()
 
-	handler.HandleFunc("/weather", handlers.GetWeather).Methods("GET")
-	handler.HandleFunc("/todotasks", handlers.GetTodoTasks).Methods("GET")
+	handler.HandleFunc("/GetWeather", handlers.GetWeather).Methods("GET")
+	handler.HandleFunc("/GetTodoTasks", handlers.GetTodoTasks).Methods("GET")
+	handler.HandleFunc("/PutTodoTasks", handlers.PutTodoTasks).Methods("PUT")
+	handler.HandleFunc("/PostTodoTask", handlers.PostTodoTask).Methods("POST")
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
