@@ -1,6 +1,7 @@
 <div class="addTodo">
-  <button mat-button class="mat-button neg" (click)="openCardCreate()">
+  <button mat-button class="mat-button pos" (click)="openCardCreate()">
     <i class="fa-solid fa-plus fa-xl"></i>
+    Create todo
   </button>
 </div>
 
@@ -12,6 +13,7 @@
        [cdkDropListConnectedTo]="connectedLists"
        class="dayTasks"
        (cdkDropListDropped)="drop($event)">
+
     <div class="day">
       {{day.day}}
     </div>
