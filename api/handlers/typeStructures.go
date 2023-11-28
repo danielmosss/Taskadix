@@ -6,6 +6,7 @@ type todoCard struct {
 	Description string `json:"description"`
 	Date        string `json:"date"`
 	TodoOrder   int    `json:"todoOrder"`
+	IsCHE       bool   `json:"IsCHE"`
 }
 
 type DayTodos struct {

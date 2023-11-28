@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
 
 interface todo {
@@ -9,6 +10,7 @@ interface todo {
   date: string
   todoOrder: number,
   deleted?: boolean
+  IsCHE: boolean
 }
 
 enum todoCardProperty {
@@ -27,7 +29,7 @@ export class CardpopupComponent implements OnInit {
   public editMode: boolean = false;
   todoCardProperty = todoCardProperty;
 
-  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: todo, private _dataService: DataService) { }
+  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: todo, private _dataService: DataService, private _snackBar: MatSnackBar) { }
   ngOnInit(): void {
 
   }
@@ -68,8 +70,17 @@ export class CardpopupComponent implements OnInit {
 
   markAsIrrelevant(todoCard: todo) {
     this._dataService.markAsIrrelevant(todoCard).subscribe(data => {
-      this.todoCard.deleted = true;
-      this.dialogRef.close(this.todoCard);
+      if(data.status == "success"){
+        this.todoCard.deleted = true;
+        this.dialogRef.close(this.todoCard);
+        return;
+      }
+      this._snackBar.open("Could not mark as irrelevant", "Close", {
+        duration: 2000,
+        horizontalPosition: 'left',
+        verticalPosition: 'bottom',
+      })
+      this.dialogRef.close();
     })
   }
 }

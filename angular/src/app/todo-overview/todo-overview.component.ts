@@ -19,7 +19,8 @@ interface TodoDay {
     title: string,
     description: string,
     date: string,
-    todoOrder: number
+    todoOrder: number,
+    IsCHE: boolean,
   }>
 }
 
@@ -29,7 +30,8 @@ interface todo{
   description: string,
   date: string
   todoOrder: number
-  deleted?: boolean
+  deleted?: boolean,
+  IsCHE: boolean
 }
 
 @Component({
@@ -102,11 +104,9 @@ export class TodoOverviewComponent implements OnInit {
 
 
   async updateTodoList(itemToUpdate: todo){
-    // check if item is already in updatedList
     const index = this.updatedList.findIndex(item => item.id === itemToUpdate.id);
     if (index !== -1) this.updatedList[index] = itemToUpdate;
     else this.updatedList.push(itemToUpdate);
-    console.log(this.updatedList);
   }
 
   openCardInfo(todo: todo){

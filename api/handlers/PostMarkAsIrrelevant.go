@@ -35,6 +35,6 @@ func PostMarkAsIrrelevant(res http.ResponseWriter, req *http.Request) {
 	defer result.Close()
 	defer dbConnection.Close()
 
-	res.WriteHeader(http.StatusOK)
-	res.Write([]byte("Task marked as irrelevant"))
+	res.Header().Set("Content-Type", "application/json")
+	res.Write([]byte(`{"status": "success"}`))
 }

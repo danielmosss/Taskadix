@@ -132,7 +132,8 @@ interface DayTodo {
     title: string,
     description: string,
     date: string,
-    todoOrder: number
+    todoOrder: number,
+    IsCHE: boolean,
   }>
 }
 
@@ -184,6 +185,6 @@ export class DataService {
   }
 
   public markAsIrrelevant(todoCard: Todo){
-    return this.http.post<Todo>(this._hostname + "/PostMarkAsIrrelevant", todoCard);
+    return this.http.post<{status: string}>(this._hostname + "/PostMarkAsIrrelevant", todoCard);
   }
 }
