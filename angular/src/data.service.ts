@@ -182,4 +182,8 @@ export class DataService {
   public postTodoInfo(todoCard: newTodoRequirements){
     return this.http.post<Todo>(this._hostname + "/PostTodoTask", todoCard);
   }
+
+  public markAsIrrelevant(todoCard: Todo){
+    return this.http.post<Todo>(this._hostname + "/PostMarkAsIrrelevant", todoCard);
+  }
 }

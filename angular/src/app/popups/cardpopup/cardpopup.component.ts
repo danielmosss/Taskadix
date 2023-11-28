@@ -39,8 +39,8 @@ export class CardpopupComponent implements OnInit {
     this.editMode = !this.editMode;
   }
 
-  saveCard() {
-    this._dataService.putTodoInfo(this.todoCard)
+  async saveCard() {
+    await this._dataService.putTodoInfo(this.todoCard).toPromise()
     this.dialogRef.close(this.todoCard);
   }
 
@@ -64,5 +64,12 @@ export class CardpopupComponent implements OnInit {
         this.todoCard.description = event.target.value;
         break;
     }
+  }
+
+  markAsIrrelevant(todoCard: todo) {
+    this._dataService.markAsIrrelevant(todoCard).subscribe(data => {
+      this.todoCard.deleted = true;
+      this.dialogRef.close(this.todoCard);
+    })
   }
 }

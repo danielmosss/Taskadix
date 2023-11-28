@@ -28,3 +28,25 @@ BEGIN
     SELECT LAST_INSERT_ID() as id;
 END $$
 DELIMITER ;
+
+drop table if exists irrelevantAgendaTodos;
+create table irrelevantAgendaTodos (
+    id int not null auto_increment,
+    todoId int not null,
+    primary key (id),
+    constraint fk_todoId foreign key (todoId) references todos(id) on delete cascade,
+    constraint uq_todoId unique (todoId)
+);
+
+drop procedure if exists insertAnIrrelevantAgendaTodo;
+DELIMITER $$
+CREATE PROCEDURE insertAnIrrelevantAgendaTodo (IN todoId INT)
+BEGIN
+    DECLARE isCHEAgendaBool BOOLEAN;
+    SELECT isCHEAgenda INTO isCHEAgendaBool FROM todos WHERE id = todoId;
+    IF isCHEAgendaBool = 1 THEN
+        INSERT INTO irrelevantagendatodos (todoId) VALUES (todoId);
+        SELECT last_insert_id() as id;
+    END IF;
+END $$
+DELIMITER ;

@@ -77,14 +77,14 @@ export class CreateTodoComponent implements OnInit {
     }
   }
 
-  canSave(){
-    if(!this.todoCard) return false;
-    else if(!this.todoCard.title) return false;
-    else if(!this.todoCard.description) return false;
-    else if(!this.todoCard.date) return false;
-    else if(this.todoCard.title == "") return false;
-    else if(this.todoCard.description == "") return false;
-    else if(this.todoCard.date == "") return false;
+  canSave() {
+    if (!this.todoCard) return false;
+    else if (!this.todoCard.title) return false;
+    else if (!this.todoCard.description) return false;
+    else if (!this.todoCard.date) return false;
+    else if (this.todoCard.title == "") return false;
+    else if (this.todoCard.description == "") return false;
+    else if (this.todoCard.date == "") return false;
     else return true;
   }
 }
