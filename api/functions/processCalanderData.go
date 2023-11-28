@@ -52,10 +52,18 @@ func fetchCalendarData() ([]Task, error) {
 		start, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtStart).Value, loc)
 		end, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtEnd).Value, loc)
 
+		// title is now: Inzagemoment Design\, P 2.175 -> Needs to be Inzagemoment Design, P 2.175
+		title := event.GetProperty(ics.ComponentPropertySummary).Value
+		title = strings.Replace(title, "\\", "", -1)
+		title = strings.Split(title, ",")[0]
+
 		description := start.Format("15:04") + " - " + end.Format("15:04")
+		location := event.GetProperty(ics.ComponentPropertyLocation).Value
+		location = strings.Replace(location, "@", "", -1)
+		description = description + "\n" + location
 
 		tasks = append(tasks, Task{
-			Title:       event.GetProperty(ics.ComponentPropertySummary).Value,
+			Title:       title,
 			Description: description,
 			Date:        start.Format("2006-01-02"),
 		})

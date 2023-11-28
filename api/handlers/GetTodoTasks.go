@@ -21,7 +21,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	todayDate := functions.GetTodayDate()
 	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
 
-	query := "SELECT id, title, description, date, todoOrder FROM todos WHERE date >= ? AND date < ? ORDER BY date ASC, todoOrder ASC;"
+	query := "SELECT id, title, description, date, todoOrder FROM todos WHERE date >= ? AND date < ? AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) ORDER BY date ASC, todoOrder ASC;"
 	result, err := dbConnection.Query(query, todayDate, endDate)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
