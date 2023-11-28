@@ -29,8 +29,8 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "call insertAtodoTask(?, ?, ?);"
-	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date)
+	query := "call insertAtodoTask(?, ?, ?, ?);"
+	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date, false)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
