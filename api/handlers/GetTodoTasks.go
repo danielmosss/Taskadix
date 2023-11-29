@@ -18,7 +18,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	}
 	defer dbConnection.Close()
 
-	todayDate := functions.GetTodayDate()
+	todayDate := time.Now().Format(time.DateOnly)
 	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
 
 	query := "SELECT id, title, description, date, todoOrder, isCHEagenda FROM todos WHERE date >= ? AND date < ? AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) ORDER BY date ASC, todoOrder ASC;"

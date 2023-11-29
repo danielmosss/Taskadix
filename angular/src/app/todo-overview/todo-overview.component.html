@@ -1,8 +1,17 @@
-<div class="addTodo">
-  <button mat-button class="mat-button pos" (click)="openCardCreate()">
-    <i class="fa-solid fa-plus fa-xl"></i>
-    Create todo
-  </button>
+<div class="header">
+  <div class="addTodo">
+    <button mat-button class="mat-button pos" (click)="openCardCreate()">
+      <i class="fa-solid fa-plus fa-xl"></i>
+      Create todo
+    </button>
+  </div>
+
+  <div class="weekSelector">
+    <div *ngIf="loading" class="loader">
+      <app-loader [size]="40" [colortype]="'primary'" [height100]="true"></app-loader>
+    </div>
+    <app-weekselector (onDateSelected)="handleDateSelection($event)"></app-weekselector>
+  </div>
 </div>
 
 <div class="todoRow">

@@ -23,6 +23,10 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { LoaderComponent } from './addons/loader/loader.component';
+
 
 
 
@@ -34,7 +38,9 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     AgendaComponent,
     ForcastBuienradarRegen3hComponent,
     CardpopupComponent,
-    CreateTodoComponent
+    CreateTodoComponent,
+    WeekselectorComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -51,7 +57,8 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSnackBarModule
+    MatSnackBarModule,
+    MatProgressSpinnerModule
   ],
   providers: [],
   bootstrap: [AppComponent]

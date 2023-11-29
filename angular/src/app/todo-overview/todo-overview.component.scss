@@ -1,5 +1,21 @@
-.addTodo{
-  margin-bottom: 1rem;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  .addTodo {
+    margin-bottom: 1rem;
+  }
+
+  .weekSelector{
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+
+    .loader{
+      margin: 10px 20px 0 0;
+    }
+  }
 }
 
 .todoRow {

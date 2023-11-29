@@ -10,6 +10,8 @@ import { DataService } from 'src/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
 import { CreateTodoComponent } from '../popups/create-todo/create-todo.component';
+import { DayTodo } from '../interfaces';
+const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
 
 interface TodoDay {
   day: string,
@@ -24,7 +26,7 @@ interface TodoDay {
   }>
 }
 
-interface todo{
+interface todo {
   id: number,
   title: string,
   description: string,
@@ -45,17 +47,32 @@ export class TodoOverviewComponent implements OnInit {
   public updatedList: todo[] = [];
   public deletedList: todo[] = [];
 
+  public loading: boolean = false;
+
   constructor(private _dateService: DataService, private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
   }
 
-  getTodoTasks(){
-    this._dateService.getTodo().subscribe(data => {
+  getTodoTasks(dateRange?: { start: string, end: string }) {
+    if (dateRange) this._dateService.getTodoByDateRange(dateRange).subscribe(data => { this.handleGetTodos(data); })
+    else this._dateService.getTodo().subscribe(data => { this.handleGetTodos(data); })
+  }
+
+ async handleGetTodos(data: DayTodo[]) {
+    if (this.Todolist.length > 0) {
+      data.forEach(async (item, index) => {
+        this.Todolist[index] = item;
+        this.connectedLists[index] = `${item.day}List`;
+      })
+    } else {
       this.Todolist = data;
       this.connectedLists = this.Todolist.map(d => `${d.day}List`);
-    })
+    }
+
+    await timer(1000);
+    this.loading = false;
   }
 
   getDayName(dateString: string) {
@@ -103,24 +120,24 @@ export class TodoOverviewComponent implements OnInit {
   }
 
 
-  async updateTodoList(itemToUpdate: todo){
+  async updateTodoList(itemToUpdate: todo) {
     const index = this.updatedList.findIndex(item => item.id === itemToUpdate.id);
     if (index !== -1) this.updatedList[index] = itemToUpdate;
     else this.updatedList.push(itemToUpdate);
   }
 
-  openCardInfo(todo: todo){
+  openCardInfo(todo: todo) {
     var dialog = this._dialog.open(CardpopupComponent, {
       data: todo
     })
     dialog.afterClosed().subscribe((data?: todo) => {
       if (!data) return;
-      if (data.deleted){
+      if (data.deleted) {
         var index = this.Todolist.findIndex(d => d.date === data.date);
         var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
         this.Todolist[index].tasks.splice(todoIndex, 1);
       }
-      else if(!data.deleted){
+      else if (!data.deleted) {
         var index = this.Todolist.findIndex(d => d.date === data.date);
         var todoIndex = this.Todolist[index].tasks.findIndex(t => t.id === data.id);
         this.Todolist[index].tasks[todoIndex] = data;
@@ -128,12 +145,17 @@ export class TodoOverviewComponent implements OnInit {
     })
   }
 
-  openCardCreate(){
+  openCardCreate() {
     var dialog = this._dialog.open(CreateTodoComponent)
     dialog.afterClosed().subscribe((data?: todo) => {
       if (!data) return;
       var index = this.Todolist.findIndex(d => d.date === data.date);
       this.Todolist[index].tasks.push(data);
     })
+  }
+
+  handleDateSelection(dateRange: { start: string, end: string }) {
+    this.loading = true;
+    this.getTodoTasks(dateRange);
   }
 }

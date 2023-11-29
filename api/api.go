@@ -34,6 +34,7 @@ func main() {
 	handler.HandleFunc("/PutTodoTaskInfo", handlers.PutTodoTaskInfo).Methods("PUT")
 	handler.HandleFunc("/DeleteTodoTask", handlers.DeleteTodoTask).Methods("DELETE")
 	handler.HandleFunc("/PostMarkAsIrrelevant", handlers.PostMarkAsIrrelevant).Methods("POST")
+	handler.HandleFunc("/GetTodoTasksByDateRange", handlers.GetTodoByDateRange).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }
