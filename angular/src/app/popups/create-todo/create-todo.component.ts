@@ -5,20 +5,9 @@ import { FormControl } from '@angular/forms';
 import { DatePipe } from '@angular/common';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { Todo, newTodoRequirements } from 'src/app/interfaces';
 
-interface todo {
-  id: number,
-  title: string,
-  description: string,
-  date: string
-  todoOrder: number,
-}
 
-interface newTodoRequirements {
-  title: string,
-  description: string,
-  date?: string
-}
 
 enum todoCardProperty {
   title = "title",
@@ -71,7 +60,7 @@ export class CreateTodoComponent implements OnInit {
   saveCard() {
     if (!this.todoCard) this.cancel();
     else {
-      this._dataService.postTodoInfo(this.todoCard).subscribe((data?: todo) => {
+      this._dataService.postTodoInfo(this.todoCard).subscribe((data?: Todo) => {
         this.dialogRef.close(data);
       })
     }

@@ -1,17 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Todo } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
-
-interface todo {
-  id: number,
-  title: string,
-  description: string,
-  date: string
-  todoOrder: number,
-  deleted?: boolean
-  IsCHE: boolean
-}
 
 enum todoCardProperty {
   title = "title",
@@ -24,12 +15,12 @@ enum todoCardProperty {
   styleUrls: ['./cardpopup.component.scss']
 })
 export class CardpopupComponent implements OnInit {
-  public todoCard: todo = { ...this.data }
-  public todoCardCopy: todo = { ...this.todoCard };
+  public todoCard: Todo = { ...this.data }
+  public todoCardCopy: Todo = { ...this.todoCard };
   public editMode: boolean = false;
   todoCardProperty = todoCardProperty;
 
-  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: todo, private _dataService: DataService, private _snackBar: MatSnackBar) { }
+  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: Todo, private _dataService: DataService, private _snackBar: MatSnackBar) { }
   ngOnInit(): void {
 
   }
@@ -46,7 +37,7 @@ export class CardpopupComponent implements OnInit {
     this.dialogRef.close(this.todoCard);
   }
 
-  deleteCard(todoCard: todo) {
+  deleteCard(todoCard: Todo) {
     this._dataService.deleteTodoTask(todoCard).subscribe(data => {
       this.todoCard.deleted = true;
       this.dialogRef.close(this.todoCard);
@@ -68,7 +59,7 @@ export class CardpopupComponent implements OnInit {
     }
   }
 
-  markAsIrrelevant(todoCard: todo) {
+  markAsIrrelevant(todoCard: Todo) {
     this._dataService.markAsIrrelevant(todoCard).subscribe(data => {
       if(data.status == "success"){
         this.todoCard.deleted = true;
