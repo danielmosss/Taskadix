@@ -1,4 +1,38 @@
 # dashboardTodo
-![dashboardTodo](https://github.com/danielmosss/dashboardTodo/assets/121039995/f888d529-c88a-4f25-8fca-30bd393850b2)
 
-![download](https://github.com/danielmosss/dashboardTodo/assets/121039995/667d29f2-f34e-42d4-8b4a-37e3cb0e4a90)
+
+<p align="center">
+  <img src="angular/src/assets/dashboardTodo.png" width="350">
+</p>
+
+<h3 align="center">A dashbaord with clean overview of all your tasks for the upcomming 7 days.</h3>
+
+<div align="center">
+  <h3>
+    <a href="#-features">Features</a>
+    <span> | </span>
+    <a href="https://github.com/danielmosss/dashboardTodo/issues">Issues</a>
+  </h3>
+</div>
+
+<p align="center">
+  <img src="angular/src/assets/download.png" width="800px">
+</p>
+
+## 🚀 Features
+
+* ✅ Dashboard with clean overview.
+* ✅ View weather in instance. 
+* ✅ Overview for your week and your todos.
+* ✅ Ability to select a week to view.
+* ❌ Login (Future)
+* ❌ Public Domein (Future)
+* ❌ Get location from browser for custom weather (Future)
+
+## ⌨️ How to use?
+
+* Clone the repo
+* Install NodeJS & Golang & Mysql
+* Run the todo.sql script to create your database
+* Run angular with ng serve in the /angular/src directory
+* Run go with the goland compiler from jetbrains
