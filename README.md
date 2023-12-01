@@ -28,6 +28,10 @@
 
 ## ⌨️ How to use?
 
-There are different options for how to use Wakapi, ranging from our hosted cloud service to self-hosting it. Regardless of which option choose, you will always have to do the [client setup](#-client-setup) in addition.
+* Clone the repo
+* Install NodeJS & Golang & Mysql
+* Run the todo.sql script to create your database
+* Run angular with ng serve in the /angular/src directory
+* Run go with the goland compiler from jetbrains
 
 ### ☁️ Option 1: 
