@@ -16,7 +16,7 @@
 </div>
 
 <p align="center">
-  <img src="angular/src/assets/download.png" width="500px">
+  <img src="angular/src/assets/download.png" width="800px">
 </p>
 
 ## 🚀 Features
