@@ -27,7 +27,7 @@
 * ✅ Ability to select a week to view.
 * ❌ Login (Future)
 * ❌ Public Domein (Future)
-* ❌ Get location from browser for custom weather
+* ❌ Get location from browser for custom weather (Future)
 
 ## ⌨️ How to use?
 
