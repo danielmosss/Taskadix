@@ -5,7 +5,7 @@
   <img src="angular/src/assets/dashboardTodo.png" width="350">
 </p>
 
-<h3 align="center">A minimalist, self-hosted WakaTime-compatible backend for coding statistics.</h3>
+<h3 align="center">A dashbaord with clean overview of all your tasks for the upcomming 7 days.</h3>
 
 <div align="center">
   <h3>
