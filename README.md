@@ -22,9 +22,12 @@
 ## 🚀 Features
 
 * ✅ Dashboard with clean overview.
-* ✅ View weather in instance. (Get location from browser will be comming soon)
+* ✅ View weather in instance. 
 * ✅ Overview for your week and your todos.
 * ✅ Ability to select a week to view.
+* ❌ Login (Future)
+* ❌ Public Domein (Future)
+* ❌ Get location from browser for custom weather
 
 ## ⌨️ How to use?
 
@@ -33,5 +36,3 @@
 * Run the todo.sql script to create your database
 * Run angular with ng serve in the /angular/src directory
 * Run go with the goland compiler from jetbrains
-
-### ☁️ Option 1: 
