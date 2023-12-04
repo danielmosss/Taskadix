@@ -1,13 +1,23 @@
-<div class="page">
-  <div class="information">
-    <div class="weather">
-      <app-weather></app-weather>
+<ng-container *ngIf="isLoggedIn()">
+  <button mat-button class="mat-button pos" (click)="logout()">Logout</button>
+
+  <div class="page">
+    <div class="information">
+      <div class="weather">
+        <app-weather></app-weather>
+      </div>
+      <div class="agenda">
+        <app-agenda></app-agenda>
+      </div>
     </div>
-    <div class="agenda">
-      <app-agenda></app-agenda>
+    <div class="todo">
+      <app-todo-overview></app-todo-overview>
     </div>
   </div>
-  <div class="todo">
-    <app-todo-overview></app-todo-overview>
+</ng-container>
+
+<div class="notLoggedIn" *ngIf="!isLoggedIn()">
+  <div class="login">
+    <app-login></app-login>
   </div>
 </div>

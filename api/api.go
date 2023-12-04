@@ -27,14 +27,20 @@ func main() {
 
 	handler := mux.NewRouter()
 
-	handler.HandleFunc("/GetWeather", handlers.GetWeather).Methods("GET")
-	handler.HandleFunc("/GetTodoTasks", handlers.GetTodoTasks).Methods("GET")
-	handler.HandleFunc("/PutTodoTasks", handlers.PutTodoTasks).Methods("PUT")
-	handler.HandleFunc("/PostTodoTask", handlers.PostTodoTask).Methods("POST")
-	handler.HandleFunc("/PutTodoTaskInfo", handlers.PutTodoTaskInfo).Methods("PUT")
-	handler.HandleFunc("/DeleteTodoTask", handlers.DeleteTodoTask).Methods("DELETE")
-	handler.HandleFunc("/PostMarkAsIrrelevant", handlers.PostMarkAsIrrelevant).Methods("POST")
-	handler.HandleFunc("/GetTodoTasksByDateRange", handlers.GetTodoByDateRange).Methods("GET")
+	handler.HandleFunc("/login", handlers.Login).Methods("POST")
+
+	securedRoutes := handler.PathPrefix("/api").Subrouter()
+	securedRoutes.Use(functions.TokenVerifyMiddleware)
+
+	securedRoutes.HandleFunc("/GetWeather", handlers.GetWeather).Methods("GET")
+	securedRoutes.HandleFunc("/GetTodoTasks", handlers.GetTodoTasks).Methods("GET")
+	securedRoutes.HandleFunc("/PutTodoTasks", handlers.PutTodoTasks).Methods("PUT")
+	securedRoutes.HandleFunc("/PostTodoTask", handlers.PostTodoTask).Methods("POST")
+	securedRoutes.HandleFunc("/PutTodoTaskInfo", handlers.PutTodoTaskInfo).Methods("PUT")
+	securedRoutes.HandleFunc("/DeleteTodoTask", handlers.DeleteTodoTask).Methods("DELETE")
+	securedRoutes.HandleFunc("/PostMarkAsIrrelevant", handlers.PostMarkAsIrrelevant).Methods("POST")
+	securedRoutes.HandleFunc("/GetTodoTasksByDateRange", handlers.GetTodoByDateRange).Methods("GET")
+	securedRoutes.HandleFunc("/GetUserData", handlers.GetUserData).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8000", handler))
 }

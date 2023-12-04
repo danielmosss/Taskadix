@@ -26,6 +26,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './addons/loader/loader.component';
+import { LoginComponent } from './login/login.component';
 
 
 
@@ -40,7 +41,8 @@ import { LoaderComponent } from './addons/loader/loader.component';
     CardpopupComponent,
     CreateTodoComponent,
     WeekselectorComponent,
-    LoaderComponent
+    LoaderComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,
