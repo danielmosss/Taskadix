@@ -60,6 +60,7 @@ func fetchCalendarData() ([]Task, error) {
 		description := start.Format("15:04") + " - " + end.Format("15:04")
 		location := event.GetProperty(ics.ComponentPropertyLocation).Value
 		location = strings.Replace(location, "@", "", -1)
+		location = strings.Replace(location, "\\", "", -1)
 		description = description + "\n" + location
 
 		tasks = append(tasks, Task{

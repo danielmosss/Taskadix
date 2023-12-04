@@ -50,3 +50,14 @@ BEGIN
     END IF;
 END $$
 DELIMITER ;
+
+
+create table users (
+    id int not null auto_increment,
+    username varchar(255) not null,
+    password varchar(255) not null,
+    primary key (id),
+    constraint uq_username unique (username)
+);
+
+alter table todos add column userId int;

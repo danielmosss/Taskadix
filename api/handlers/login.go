@@ -11,7 +11,7 @@ type LoginResponse struct {
 }
 
 func Login(res http.ResponseWriter, req *http.Request) {
-	// get token from functions/CreateToken.go
+	
 	jwtToken, err := functions.CreateToken(1)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

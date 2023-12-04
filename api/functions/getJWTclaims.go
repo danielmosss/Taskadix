@@ -14,13 +14,13 @@ func GetJWTClaims(r *http.Request) (jwt.MapClaims, error) {
 	bearerToken := strings.Split(authHeader, " ")
 
 	if len(bearerToken) != 2 {
-		return nil, fmt.Errorf("Ongeldige of ontbrekende Authorization header")
+		return nil, fmt.Errorf("Invalid or missing Authorization header token")
 	}
 
 	tokenString := bearerToken[1]
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, fmt.Errorf("Onverwachte ondertekeningsmethode: %v", token.Header["alg"])
+			return nil, fmt.Errorf("Signingmethode not reconized: %v", token.Header["alg"])
 		}
 
 		// Dezelfde geheime sleutel gebruiken als tijdens het aanmaken van de token
@@ -34,6 +34,6 @@ func GetJWTClaims(r *http.Request) (jwt.MapClaims, error) {
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
 		return claims, nil
 	} else {
-		return nil, fmt.Errorf("Ongeldig token")
+		return nil, fmt.Errorf("Invalid token")
 	}
 }

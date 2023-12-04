@@ -17,7 +17,7 @@ func GetDatabaseConnection() (*sql.DB, error) {
 
 	err = db.Ping()
 	if err != nil {
-		fmt.Println(err.Error()) // You can log the error instead of just printing it
+		fmt.Println(err.Error())
 		return nil, err
 	}
 
