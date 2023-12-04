@@ -3,6 +3,7 @@ package handlers
 import (
 	"api/functions"
 	"encoding/json"
+	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
 	"net/http"
 )
@@ -35,8 +36,30 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT id FROM users WHERE username = ? AND password = ?;"
-	result, err := dbConnection.Query(query, loginRequest.Username, loginRequest.Password)
+	query := "SELECT password FROM users WHERE username = ?;"
+	resultPassword, err := dbConnection.Query(query, loginRequest.Username)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer resultPassword.Close()
+
+	var hashedPassword string
+	for resultPassword.Next() {
+		err := resultPassword.Scan(&hashedPassword)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if CheckHashedPassword(loginRequest.Password, hashedPassword) == false {
+		http.Error(res, "Wrong password", http.StatusUnauthorized)
+		return
+	}
+
+	query2 := "SELECT id FROM users WHERE username = ? AND password = ?;"
+	result, err := dbConnection.Query(query2, loginRequest.Username, hashedPassword)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -73,4 +96,9 @@ func Login(res http.ResponseWriter, req *http.Request) {
 	}
 	res.Header().Set("Content-Type", "application/json")
 	res.Write(tokenInJson)
+}
+
+func CheckHashedPassword(password, hashedPassword string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+	return err == nil
 }
