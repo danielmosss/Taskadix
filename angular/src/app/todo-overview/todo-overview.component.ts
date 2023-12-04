@@ -24,6 +24,7 @@ export class TodoOverviewComponent implements OnInit {
   public Todolist: DayTodo[] = [];
   public updatedList: Todo[] = [];
   public deletedList: Todo[] = [];
+  public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
 
@@ -33,8 +34,8 @@ export class TodoOverviewComponent implements OnInit {
     this.getTodoTasks();
   }
 
-  getTodoTasks(dateRange?: { start: string, end: string }) {
-    if (dateRange) this._dateService.getTodoByDateRange(dateRange).subscribe(data => { this.handleGetTodos(data); })
+  getTodoTasks() {
+    if (this.dateRange) this._dateService.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
     else this._dateService.getTodo().subscribe(data => { this.handleGetTodos(data); })
   }
 
@@ -91,9 +92,8 @@ export class TodoOverviewComponent implements OnInit {
     }
 
     this._dateService.putTodoList(this.updatedList).subscribe(data => {
+      this.getTodoTasks();
       this.updatedList = [];
-      this.Todolist = data;
-      this.connectedLists = this.Todolist.map(d => `${d.day}List`);
     })
   }
 
@@ -134,6 +134,7 @@ export class TodoOverviewComponent implements OnInit {
 
   handleDateSelection(dateRange: { start: string, end: string }) {
     this.loading = true;
-    this.getTodoTasks(dateRange);
+    this.dateRange = dateRange;
+    this.getTodoTasks();
   }
 }

@@ -41,5 +41,5 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 
 	defer dbConnection.Close()
 
-	GetTodoTasks(res, req)
+	res.WriteHeader(http.StatusOK)
 }
