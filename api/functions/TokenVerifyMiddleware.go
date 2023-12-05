@@ -28,6 +28,37 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 			}
 
 			if token.Valid {
+				// check is user is still in database. might be deleted
+				dbConnection, err := GetDatabaseConnection()
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+
+				query := "SELECT id FROM users WHERE id = ?;"
+				result, err := dbConnection.Query(query, token.Claims.(jwt.MapClaims)["user_id"])
+				if err != nil {
+					http.Error(w, err.Error(), http.StatusInternalServerError)
+					return
+				}
+
+				defer result.Close()
+				defer dbConnection.Close()
+
+				var id int
+				for result.Next() {
+					err := result.Scan(&id)
+					if err != nil {
+						http.Error(w, err.Error(), http.StatusInternalServerError)
+						return
+					}
+				}
+
+				if id == 0 {
+					http.Error(w, "User not found", http.StatusUnauthorized)
+					return
+				}
+
 				next.ServeHTTP(w, r)
 			} else {
 				http.Error(w, "Invalid Token", http.StatusUnauthorized)

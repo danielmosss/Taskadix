@@ -28,6 +28,7 @@ func main() {
 	handler := mux.NewRouter()
 
 	handler.HandleFunc("/login", handlers.Login).Methods("POST")
+	handler.HandleFunc("/register", handlers.Register).Methods("POST")
 
 	securedRoutes := handler.PathPrefix("/api").Subrouter()
 	securedRoutes.Use(functions.TokenVerifyMiddleware)

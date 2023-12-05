@@ -51,13 +51,15 @@ BEGIN
 END $$
 DELIMITER ;
 
-
 create table users (
     id int not null auto_increment,
     username varchar(255) not null,
     password varchar(255) not null,
+    email varchar(255) not null,
     primary key (id),
-    constraint uq_username unique (username)
+    constraint uq_username unique (username),
+    constraint uq_email unique (email),
+    constraint uq_username_email unique (username, email)
 );
 
 alter table todos add column userId int;

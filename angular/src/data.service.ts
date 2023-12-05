@@ -43,6 +43,18 @@ export class DataService {
     return this.http.post<{status: string}>(this._hostnameSecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
   }
 
+  public getUserData(){
+    return this.http.get<{username: string}>(this._hostname + "/GetUserData", { headers: this.getCustomHeaders() });
+  }
+
+  public register(username: string, password: string, email: string) {
+    this.http.post<{ jsonwebtoken: string }>(this._hostname + "/register", { username, password, email }).pipe().subscribe(
+      (res) => {
+        this._jsonwebtoken = res.jsonwebtoken;
+      }
+    );
+  }
+
   public login(username: string, password: string) {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
       (res) => {
@@ -55,9 +67,7 @@ export class DataService {
     localStorage.removeItem('jsonwebtoken');
   }
 
-  public getUserData(){
-    return this.http.get<{username: string}>(this._hostname + "/GetUserData", { headers: this.getCustomHeaders() });
-  }
+
 
   public isLoggedIn(): boolean {
     return !!this._jsonwebtoken;
