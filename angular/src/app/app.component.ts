@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -9,7 +10,7 @@ import { DataService } from 'src/data.service';
 export class AppComponent {
   title = 'dashboard';
 
-  constructor(private _dateService: DataService) { }
+  constructor(private _dateService: DataService, private _snackbar: MatSnackBar) { }
 
   isLoggedIn(): boolean {
     return this._dateService.isLoggedIn();
@@ -17,5 +18,6 @@ export class AppComponent {
 
   logout(){
     this._dateService.logout();
+    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
 }

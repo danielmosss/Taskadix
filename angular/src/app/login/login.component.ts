@@ -20,12 +20,10 @@ export class LoginComponent implements OnInit {
   }
 
   public login(): void {
-    console.log(this.username, this.password)
     this._dataService.login(this.username, this.password)
   }
 
   public register(): void {
-    console.log(this.username, this.password, this.email)
     this._dataService.register(this.username, this.password, this.email)
   }
 }

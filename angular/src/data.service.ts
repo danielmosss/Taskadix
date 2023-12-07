@@ -67,8 +67,6 @@ export class DataService {
     localStorage.removeItem('jsonwebtoken');
   }
 
-
-
   public isLoggedIn(): boolean {
     return !!this._jsonwebtoken;
   }

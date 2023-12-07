@@ -8,7 +8,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { WeatherComponent } from './weather/weather.component';
 import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
 import { AgendaComponent } from './agenda/agenda.component';
@@ -27,6 +27,7 @@ import { WeekselectorComponent } from './addons/weekselector/weekselector.compon
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './addons/loader/loader.component';
 import { LoginComponent } from './login/login.component';
+import { HttpInterceptorService } from 'src/http-interceptor.service';
 
 
 
@@ -62,7 +63,9 @@ import { LoginComponent } from './login/login.component';
     MatSnackBarModule,
     MatProgressSpinnerModule
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
