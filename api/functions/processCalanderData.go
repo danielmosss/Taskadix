@@ -22,10 +22,12 @@ func ProcessCalanderData() {
 		return
 	}
 
+	var userId int = 4 // Admin user
+
 	for _, task := range tasks {
 		fmt.Println(task)
-		if !taskExistsInDB(task) {
-			insertTaskIntoDB(task)
+		if !taskExistsInDB(task, userId) {
+			insertTaskIntoDB(task, userId)
 		}
 	}
 }
@@ -73,15 +75,15 @@ func fetchCalendarData() ([]Task, error) {
 	return tasks, nil
 }
 
-func taskExistsInDB(task Task) bool {
+func taskExistsInDB(task Task, userId int) bool {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 	defer dbConnection.Close()
 
-	query := "SELECT COUNT(*) FROM todos WHERE title = ? AND description = ? AND date = ? AND isCHEagenda = true;"
-	result, err := dbConnection.Query(query, task.Title, task.Description, task.Date)
+	query := "SELECT COUNT(*) FROM todos WHERE title = ? AND description = ? AND date = ? AND userId = ? AND isCHEagenda = true;"
+	result, err := dbConnection.Query(query, task.Title, task.Description, userId, task.Date)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -98,15 +100,15 @@ func taskExistsInDB(task Task) bool {
 	return count > 0
 }
 
-func insertTaskIntoDB(task Task) {
+func insertTaskIntoDB(task Task, userId int) {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 	defer dbConnection.Close()
 
-	query := "SELECT COUNT(*) FROM todos WHERE date = ?;"
-	result, err := dbConnection.Query(query, task.Date)
+	query := "SELECT COUNT(*) FROM todos WHERE date = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, task.Date, userId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -121,7 +123,6 @@ func insertTaskIntoDB(task Task) {
 	}
 
 	todoOrder = todoOrder + 1
-	var userId int = 4 // Admin user
 
 	queryInsert := "call insertAtodoTask(?, ?, ?, true, ?);"
 	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date, userId)
