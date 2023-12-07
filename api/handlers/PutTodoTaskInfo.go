@@ -29,8 +29,14 @@ func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "UPDATE todos SET title = ?, description = ? WHERE id = ?;"
-	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Id)
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	query := "UPDATE todos SET title = ?, description = ? WHERE id = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Id, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

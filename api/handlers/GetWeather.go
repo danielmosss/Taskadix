@@ -8,10 +8,7 @@ import (
 )
 
 func GetWeather(res http.ResponseWriter, req *http.Request) {
-	// logging
 	fmt.Println("GetWeather called")
-	res.Header().Set("Content-Type", "application/json")
-
 	var weatherapikey string = os.Getenv("weatherApiKey")
 
 	weatherRes, err := http.Get("http://api.weatherapi.com/v1/forecast.json?key=" + weatherapikey + "&q=barneveld&days=1&aqi=no&alerts=no")
@@ -32,6 +29,6 @@ func GetWeather(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// return the json data
+	res.Header().Set("Content-Type", "application/json")
 	res.Write(data)
 }

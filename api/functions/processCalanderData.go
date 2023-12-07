@@ -121,9 +121,10 @@ func insertTaskIntoDB(task Task) {
 	}
 
 	todoOrder = todoOrder + 1
+	var userId int = 4 // Admin user
 
-	queryInsert := "call insertAtodoTask(?, ?, ?, true);"
-	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date)
+	queryInsert := "call insertAtodoTask(?, ?, ?, true, ?);"
+	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date, userId)
 	if err != nil {
 		panic(err.Error())
 	}

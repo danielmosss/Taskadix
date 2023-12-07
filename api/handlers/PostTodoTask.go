@@ -29,8 +29,14 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "call insertAtodoTask(?, ?, ?, ?);"
-	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date, false)
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	query := "call insertAtodoTask(?, ?, ?, ?, ?);"
+	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date, false, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

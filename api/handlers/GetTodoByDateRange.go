@@ -33,6 +33,8 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	userId, err := functions.GetUserID(req)
+
 	dbConnection, err := functions.GetDatabaseConnection()
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -40,8 +42,13 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	}
 	defer dbConnection.Close()
 
-	query := "SELECT id, title, description, date, todoOrder, isCHEagenda FROM todos WHERE date >= ? AND date < ? AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) ORDER BY date ASC, todoOrder ASC;"
-	result, err := dbConnection.Query(query, dateRange.Start, dateRange.End)
+	query := `SELECT id, title, description, date, todoOrder, isCHEagenda 
+			  FROM todos 
+			  WHERE userId = ? 
+			    AND date >= ? AND date < ? 
+			    AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) 
+			  ORDER BY date ASC, todoOrder ASC;`
+	result, err := dbConnection.Query(query, userId, dateRange.Start, dateRange.End)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -58,17 +65,6 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 		}
 		tasksMap[task.Date] = append(tasksMap[task.Date], task)
 	}
-
-	//var weekTasks []DayTodos
-	//for i := 0; i < 7; i++ {
-	//	date := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format(time.DateOnly)
-	//	dayName := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format("Monday")
-	//	dayTasks, exists := tasksMap[date]
-	//	if !exists {
-	//		dayTasks = []todoCard{} // Empty slice
-	//	}
-	//	weekTasks = append(weekTasks, DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
-	//}
 
 	// update weekTasks to make an array of DayTodos with the date range instead of the first row of the database and the next 6 days
 	var weekTasks []DayTodos

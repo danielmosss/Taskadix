@@ -13,4 +13,11 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	fmt.Println(claims)
+
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+	fmt.Println(userId)
 }

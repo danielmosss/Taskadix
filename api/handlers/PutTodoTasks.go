@@ -29,9 +29,15 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
 	for _, task := range tasks {
-		query := "UPDATE todos SET title = ?, description = ?, date = ?, todoOrder = ? WHERE id = ?;"
-		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.Id)
+		query := "UPDATE todos SET title = ?, description = ?, date = ?, todoOrder = ? WHERE id = ? AND userId = ?;"
+		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.Id, userId)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

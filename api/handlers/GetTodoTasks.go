@@ -10,6 +10,11 @@ import (
 
 func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	fmt.Println("GetTodoTasks called")
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
 
 	dbConnection, err := functions.GetDatabaseConnection()
 	if err != nil {
@@ -21,8 +26,13 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	todayDate := time.Now().Format(time.DateOnly)
 	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
 
-	query := "SELECT id, title, description, date, todoOrder, isCHEagenda FROM todos WHERE date >= ? AND date < ? AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) ORDER BY date ASC, todoOrder ASC;"
-	result, err := dbConnection.Query(query, todayDate, endDate)
+	query := `SELECT id, title, description, date, todoOrder, isCHEagenda 
+			  FROM todos 
+			  WHERE userId = ? 
+			    AND date >= ? AND date < ? 
+			    AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) 
+			  ORDER BY date ASC, todoOrder ASC;`
+	result, err := dbConnection.Query(query, userId, todayDate, endDate)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

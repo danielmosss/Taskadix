@@ -16,7 +16,7 @@ create table todos (
 
 drop procedure if exists insertAtodoTask;
 DELIMITER $$
-CREATE PROCEDURE insertAtodoTask (IN title VARCHAR(255), IN description VARCHAR(255), IN insertDate DATE, IN isCHEAgenda BOOLEAN)
+CREATE PROCEDURE insertAtodoTask (IN title VARCHAR(255), IN description VARCHAR(255), IN insertDate DATE, IN isCHEAgenda BOOLEAN, IN user_id INT)
 BEGIN
     DECLARE todoOrder INT;
     DECLARE isCHEAgendaCheck BOOLEAN DEFAULT false;
@@ -24,7 +24,7 @@ BEGIN
         SET isCHEAgendaCheck = isCHEAgenda;
     END IF;
     SELECT COUNT(*) INTO todoOrder FROM todos WHERE date = insertDate;
-    INSERT INTO todos (title, description, date, todoOrder, isCHEAgenda) VALUES  (title, description, insertDate, todoOrder + 1, isCHEAgendaCheck);
+    INSERT INTO todos (title, description, date, todoOrder, isCHEAgenda, userId) VALUES  (title, description, insertDate, todoOrder + 1, isCHEAgendaCheck, user_id);
     SELECT LAST_INSERT_ID() as id;
 END $$
 DELIMITER ;
@@ -40,13 +40,19 @@ create table irrelevantAgendaTodos (
 
 drop procedure if exists insertAnIrrelevantAgendaTodo;
 DELIMITER $$
-CREATE PROCEDURE insertAnIrrelevantAgendaTodo (IN todoId INT)
+CREATE PROCEDURE insertAnIrrelevantAgendaTodo (IN todoId INT, IN user_id INT)
 BEGIN
     DECLARE isCHEAgendaBool BOOLEAN;
-    SELECT isCHEAgenda INTO isCHEAgendaBool FROM todos WHERE id = todoId;
-    IF isCHEAgendaBool = 1 THEN
+    DECLARE isusersTodo BOOLEAN;
+    SELECT isCHEAgenda INTO isCHEAgendaBool FROM todos WHERE id = todoId AND userId = user_id;
+    SELECT 1 INTO isusersTodo FROM todos WHERE id = todoId AND userId = user_id;
+    IF isCHEAgendaBool = 1 AND isusersTodo = 1 THEN
         INSERT INTO irrelevantagendatodos (todoId) VALUES (todoId);
         SELECT last_insert_id() as id;
+    END IF;
+
+    IF isusersTodo = 0 THEN
+        select 0 as id;
     END IF;
 END $$
 DELIMITER ;

@@ -29,8 +29,14 @@ func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "DELETE FROM todos WHERE id = ?;"
-	result, err := dbConnection.Query(query, newTask.Id)
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	query := "DELETE FROM todos WHERE id = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, newTask.Id, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

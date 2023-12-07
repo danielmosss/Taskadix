@@ -26,14 +26,34 @@ func PostMarkAsIrrelevant(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "call insertAnIrrelevantAgendaTodo(?);"
-	result, err := dbConnection.Query(query, markTask.Id)
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	query := "call insertAnIrrelevantAgendaTodo(?,?);"
+	result, err := dbConnection.Query(query, markTask.Id, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer result.Close()
 	defer dbConnection.Close()
+
+	var id int
+	for result.Next() {
+		err := result.Scan(&id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if id == 0 {
+		http.Error(res, "Unauthorized", http.StatusUnauthorized)
+		return
+	}
 
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"status": "success"}`))
