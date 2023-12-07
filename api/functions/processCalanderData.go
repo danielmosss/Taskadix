@@ -83,7 +83,7 @@ func taskExistsInDB(task Task, userId int) bool {
 	defer dbConnection.Close()
 
 	query := "SELECT COUNT(*) FROM todos WHERE title = ? AND description = ? AND date = ? AND userId = ? AND isCHEagenda = true;"
-	result, err := dbConnection.Query(query, task.Title, task.Description, userId, task.Date)
+	result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, userId)
 	if err != nil {
 		panic(err.Error())
 	}
