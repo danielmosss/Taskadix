@@ -25,7 +25,7 @@
 * ✅ View weather in instance. 
 * ✅ Overview for your week and your todos.
 * ✅ Ability to select a week to view.
-* ❌ Login (Future)
+* ✅ Login
 * ❌ Public Domein (Future)
 * ❌ Get location from browser for custom weather (Future)
 
