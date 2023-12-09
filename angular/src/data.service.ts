@@ -6,8 +6,12 @@ import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
   providedIn: 'root'
 })
 export class DataService {
-  private _hostname = "http://localhost:8000";
-  private _hostnameSecureApi = "http://localhost:8000/api";
+  // private _hostname = "http://localhost:8000";
+  // private _hostnameSecureApi = "http://localhost:8000/api";
+
+  private _hostname = "https://35b0-212-84-138-208.ngrok-free.app"
+  private _hostnameSecureApi = "https://35b0-212-84-138-208.ngrok-free.app/api";
+
 
   constructor(private http: HttpClient) { }
 
@@ -82,7 +86,8 @@ export class DataService {
   public getCustomHeaders(): HttpHeaders {
     var headers = new HttpHeaders()
       .set('Content-Type', 'application/json')
-      .set('Accept', 'application/json');
+      .set('Accept', 'application/json')
+      .set('ngrok-skip-browser-warning', '69420');
     if (this._jsonwebtoken) {
       headers = headers.set('Authorization', "Bearer " + this._jsonwebtoken);
     }

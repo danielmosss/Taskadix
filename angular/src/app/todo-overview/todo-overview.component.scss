@@ -5,6 +5,8 @@
 
   .addTodo {
     margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem
   }
 
   .weekSelector{
@@ -86,13 +88,15 @@
   }
 }
 
-@media (max-width: 700px){
+@media (max-width: 768px){
   .todoRow{
     flex-direction: column;
     gap: 1rem;
+    margin-right: 4rem;
 
     .card{
       max-width: none !important;
     }
   }
 }
+

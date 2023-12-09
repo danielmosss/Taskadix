@@ -11,6 +11,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
 import { CreateTodoComponent } from '../popups/create-todo/create-todo.component';
 import { DayTodo, Todo } from '../interfaces';
+import { MatSnackBar } from '@angular/material/snack-bar';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
 
 
@@ -28,10 +29,15 @@ export class TodoOverviewComponent implements OnInit {
 
   public loading: boolean = false;
 
-  constructor(private _dateService: DataService, private _dialog: MatDialog) { }
+  constructor(private _dateService: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
+  }
+
+  logout(){
+    this._dateService.logout();
+    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
 
   getTodoTasks() {

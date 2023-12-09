@@ -15,9 +15,4 @@ export class AppComponent {
   isLoggedIn(): boolean {
     return this._dateService.isLoggedIn();
   }
-
-  logout(){
-    this._dateService.logout();
-    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
-  }
 }

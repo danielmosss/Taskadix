@@ -5,6 +5,7 @@ import (
 	ics "github.com/arran4/golang-ical"
 	"net/http"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -22,7 +23,12 @@ func ProcessCalanderData() {
 		return
 	}
 
-	var userId int = 4 // Admin user
+	var userIdString = os.Getenv("userIdDaniel")
+	userId, err := strconv.Atoi(userIdString)
+	if err != nil {
+		// if userIdString is not a number, use default value
+		userId = 10
+	}
 
 	for _, task := range tasks {
 		fmt.Println(task)

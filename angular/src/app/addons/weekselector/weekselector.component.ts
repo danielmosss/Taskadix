@@ -49,11 +49,9 @@ export class WeekselectorComponent {
 
   constructer() {}
 
-  dateChanged(dateRange: any) {
-    dateRange.start = dateRange.start.toLocaleDateString().slice(0,10);
+  dateChanged(dateRange: {start: any, end: any}) {
+    moment.locale('en');
     dateRange.start = moment(dateRange.start, "DD-MM-YYYY").format("YYYY-MM-DD");
-
-    dateRange.end = dateRange.end.toLocaleDateString().slice(0,10);
     dateRange.end = moment(dateRange.end, "DD-MM-YYYY").format("YYYY-MM-DD");
 
     this.onDateSelected.emit(dateRange);
