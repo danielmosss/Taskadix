@@ -10,28 +10,39 @@
     flex-direction: column;
     min-width: 400px;
     gap: 1rem;
-
-    .weather {
-      padding: 1rem;
-      border: 1px solid black;
-      background-color: #2b2d31;
-      border-radius: 20px;
-    }
-
-    .agenda {
-      padding: 1rem;
-      border: 1px solid black;
-      background-color: #2b2d31;
-      border-radius: 20px;
-    }
   }
 
-  .todo {
+  .card {
     padding: 1rem;
     border: 1px solid black;
     background-color: #2b2d31;
     border-radius: 20px;
+  }
+
+  .todo {
     overflow-y: auto;
     max-height: 94vh;
   }
 }
+
+@media (max-width: 1700px) {
+  .page {
+    flex-direction: column;
+  }
+}
+
+
+@media (max-width: 768px) {
+  .information {
+    display: none !important;
+  }
+
+  .card {
+    padding: none;
+    border: none;
+    background-color: #2b2d31;
+    border-radius: none;
+
+  }
+}
+

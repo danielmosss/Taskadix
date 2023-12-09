@@ -11,7 +11,6 @@ import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { WeatherComponent } from './weather/weather.component';
 import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
-import { AgendaComponent } from './agenda/agenda.component';
 import { ForcastBuienradarRegen3hComponent } from './forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
 import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
@@ -37,7 +36,6 @@ import { HttpInterceptorService } from 'src/http-interceptor.service';
     AppComponent,
     WeatherComponent,
     TodoOverviewComponent,
-    AgendaComponent,
     ForcastBuienradarRegen3hComponent,
     CardpopupComponent,
     CreateTodoComponent,
