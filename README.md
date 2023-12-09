@@ -26,8 +26,8 @@
 * ✅ Overview for your week and your todos.
 * ✅ Ability to select a week to view.
 * ✅ Login
-* ❌ Public Domein (Future)
 * ❌ Get location from browser for custom weather (Future)
+* ❌ Nice Responsive UI - I'm very bad at making clean and responsive UI's
 
 ## ⌨️ How to use?
 
