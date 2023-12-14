@@ -6,8 +6,8 @@ import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
   providedIn: 'root'
 })
 export class DataService {
-  private _hostname = "https://45e3-137-117-175-76.ngrok.io";
-  private _hostnameSecureApi = "https://45e3-137-117-175-76.ngrok.io/api";
+  private _hostname = "https://30e2-137-117-175-76.ngrok-free.app";
+  private _hostnameSecureApi = this._hostname + "/api";
 
   constructor(private http: HttpClient) { }
 
