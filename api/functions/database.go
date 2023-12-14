@@ -3,13 +3,16 @@ package functions
 import (
 	"database/sql"
 	"fmt"
-	_ "github.com/go-sql-driver/mysql"
 	"os"
+
+	_ "github.com/go-sql-driver/mysql"
 )
 
 func GetDatabaseConnection() (*sql.DB, error) {
 	var databasePassword string = os.Getenv("databasePassword")
-	db, err := sql.Open("mysql", "root:"+databasePassword+"@tcp(localhost:3307)/tododashboard")
+	var databasePort string = os.Getenv("databasePort")
+	var databaseName string = os.Getenv("databaseName")
+	db, err := sql.Open("mysql", "root:"+databasePassword+"@tcp(localhost:"+databasePort+")/"+databaseName+"")
 	if err != nil {
 		fmt.Println(err.Error())
 		panic(err.Error())

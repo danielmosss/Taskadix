@@ -7,7 +7,7 @@ drop table if exists todos;
 create table todos (
     id int not null auto_increment,
     title varchar(255) not null,
-    description varchar(255) not null,
+    description varchar(1000) not null,
     date date not null,
     todoOrder int not null,
     isCHEagenda boolean default false,
