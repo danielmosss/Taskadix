@@ -7,7 +7,7 @@ import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
 })
 export class DataService {
   private _hostname = "http://137.117.175.76:8000";
-  private _hostnameSecureApi = "http://137.117.175.76/api";
+  private _hostnameSecureApi = "http://137.117.175.76:8000/api";
 
   constructor(private http: HttpClient) { }
 
