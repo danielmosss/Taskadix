@@ -4,11 +4,12 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
+	"net/http"
+	"time"
+
 	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"net/http"
-	"time"
 )
 
 func main() {
@@ -46,9 +47,9 @@ func main() {
 	//log.Fatal(http.ListenAndServe(":8000", handler))
 
 	corsObj := handlers2.CORS(
-		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl"}),
+		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", "https://45e3-137-117-175-76.ngrok.io"}),
 		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS"}),
-		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}),
+		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization", "Ngrok-Skip-Browser-Warning"}),
 	)
 	http.ListenAndServe(":8000", corsObj(handler))
 }
