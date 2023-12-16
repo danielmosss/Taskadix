@@ -4,16 +4,37 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
-	"net/http"
-	"time"
-
 	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"net/http"
+	"time"
 )
 
 func main() {
 	godotenv.Load()
+
+	//port := os.Getenv("PORT")
+	//if port == "8080" {
+	//	rootCertPool := x509.NewCertPool()
+	//	// file is in the current directory with name DigiCertGlobalRootCA.crt.pem
+	//	pem, err := ioutil.ReadFile("/home/site/wwwroot/DigiCertGlobalRootCA.crt.pem")
+	//	if err != nil {
+	//		log.Fatalf("Failed to read the SSL certificate file: %v", err)
+	//	}
+	//	if ok := rootCertPool.AppendCertsFromPEM(pem); !ok {
+	//		log.Fatal("Failed to append PEM.")
+	//	}
+	//
+	//	// Configure TLS
+	//	mysql.RegisterTLSConfig("custom", &tls.Config{
+	//		RootCAs: rootCertPool,
+	//	})
+	//
+	//	port = ":443"
+	//} else {
+	//	port = ":8000"
+	//}
 
 	functions.ProcessCalanderData()
 
@@ -47,9 +68,9 @@ func main() {
 	//log.Fatal(http.ListenAndServe(":8000", handler))
 
 	corsObj := handlers2.CORS(
-		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", "https://30e2-137-117-175-76.ngrok-free.app"}),
+		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl"}),
 		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS"}),
-		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization", "Ngrok-Skip-Browser-Warning"}),
+		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}),
 	)
 	http.ListenAndServe(":8000", corsObj(handler))
 }

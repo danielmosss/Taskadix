@@ -9,10 +9,8 @@ import (
 )
 
 func GetDatabaseConnection() (*sql.DB, error) {
-	var databasePassword string = os.Getenv("databasePassword")
-	var databasePort string = os.Getenv("databasePort")
-	var databaseName string = os.Getenv("databaseName")
-	db, err := sql.Open("mysql", "root:"+databasePassword+"@tcp(localhost:"+databasePort+")/"+databaseName+"")
+	var databaseConnectionString string = os.Getenv("databaseConnectionString")
+	db, err := sql.Open("mysql", databaseConnectionString)
 	if err != nil {
 		fmt.Println(err.Error())
 		panic(err.Error())
