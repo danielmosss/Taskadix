@@ -45,7 +45,7 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	query := `SELECT id, title, description, date, todoOrder, isCHEagenda 
 			  FROM todos 
 			  WHERE userId = ? 
-			    AND date >= ? AND date < ? 
+			    AND date >= ? AND date <= ? 
 			    AND id NOT IN (SELECT todoId FROM irrelevantagendatodos) 
 			  ORDER BY date ASC, todoOrder ASC;`
 	result, err := dbConnection.Query(query, userId, dateRange.Start, dateRange.End)
