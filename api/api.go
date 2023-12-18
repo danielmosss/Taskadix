@@ -4,11 +4,12 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
+	"net/http"
+	"time"
+
 	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
-	"net/http"
-	"time"
 )
 
 func main() {
