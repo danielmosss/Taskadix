@@ -69,7 +69,7 @@ func main() {
 
 	corsObj := handlers2.CORS(
 		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl"}),
-		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS"}),
+		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS", "DELETE"}),
 		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization"}),
 	)
 	http.ListenAndServe(":8000", corsObj(handler))
