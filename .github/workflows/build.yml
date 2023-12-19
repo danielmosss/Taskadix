@@ -61,16 +61,3 @@ jobs:
       with:
         name: artifacts
         path: output/
-
-    - name: Commit Output Directory
-      run: |
-        git config --local user.email "actions@github.com"
-        git config --local user.name "GitHub Actions"
-        git add output/
-        git commit -m "Update output directory"
-
-    - name: Push Changes
-      uses: ad-m/github-push-action@master
-      with:
-        github_token: ${{ secrets.GITHUB_TOKEN }}
-        branch: ${{ github.ref }}
