@@ -7,9 +7,10 @@ import { environment } from './environments/environment.local';
   providedIn: 'root'
 })
 export class DataService {
-
   private _hostname = environment.apiUrl;
   private _SecureApi = this._hostname + "/api";
+
+  public username: string;
 
   constructor(private http: HttpClient) { }
 
@@ -46,7 +47,7 @@ export class DataService {
   }
 
   public getUserData(){
-    return this.http.get<{username: string}>(this._hostname + "/GetUserData", { headers: this.getCustomHeaders() });
+    return this.http.get<{username: string}>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() });
   }
 
   public register(username: string, password: string, email: string) {
@@ -64,7 +65,6 @@ export class DataService {
       }
     );
   }
-
   public logout() {
     localStorage.removeItem('jsonwebtoken');
   }

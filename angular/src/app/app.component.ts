@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
 
@@ -7,10 +7,18 @@ import { DataService } from 'src/data.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'dashboard';
 
   constructor(private _dateService: DataService, private _snackbar: MatSnackBar) { }
+
+  ngOnInit(): void {
+    if (this._dateService.isLoggedIn()) {
+      this._dateService.getUserData().subscribe(data => {
+        this._dateService.username = data.username;
+      })
+    }
+  }
 
   isLoggedIn(): boolean {
     return this._dateService.isLoggedIn();

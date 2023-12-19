@@ -23,7 +23,8 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 			})
 
 			if error != nil {
-				http.Error(w, error.Error(), http.StatusForbidden)
+				fmt.Println(error.Error()) // For debug
+				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}
 
@@ -31,14 +32,16 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 				// check is user is still in database. might be deleted
 				dbConnection, err := GetDatabaseConnection()
 				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
+					fmt.Println(err.Error()) // For debug
+					http.Error(w, "Database Connection Error", http.StatusInternalServerError)
 					return
 				}
 
 				query := "SELECT id FROM users WHERE id = ?;"
 				result, err := dbConnection.Query(query, token.Claims.(jwt.MapClaims)["user_id"])
 				if err != nil {
-					http.Error(w, err.Error(), http.StatusInternalServerError)
+					fmt.Println(err.Error()) // For debug
+					http.Error(w, "Database Query Execution Error", http.StatusInternalServerError)
 					return
 				}
 
@@ -49,22 +52,23 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 				for result.Next() {
 					err := result.Scan(&id)
 					if err != nil {
-						http.Error(w, err.Error(), http.StatusInternalServerError)
+						fmt.Println(err.Error()) // For debug
+						http.Error(w, "Database Query Result Error", http.StatusInternalServerError)
 						return
 					}
 				}
 
 				if id == 0 {
-					http.Error(w, "User not found", http.StatusUnauthorized)
+					http.Error(w, "User not found", http.StatusForbidden)
 					return
 				}
 
 				next.ServeHTTP(w, r)
 			} else {
-				http.Error(w, "Invalid Token", http.StatusUnauthorized)
+				http.Error(w, "Invalid Token", http.StatusForbidden)
 			}
 		} else {
-			http.Error(w, "Invalid Tokenformat", http.StatusUnauthorized)
+			http.Error(w, "Invalid Token", http.StatusForbidden)
 		}
 	})
 }
