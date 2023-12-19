@@ -49,7 +49,7 @@ jobs:
 
     - name: Copy Files to Output Directory
       run: |
-        cp api/api.exe output/
+        cp api/api output/
         cp api/.env-template output/
 
 
