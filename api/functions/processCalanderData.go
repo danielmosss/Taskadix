@@ -19,15 +19,15 @@ type Task struct {
 func ProcessCalanderData() {
 	tasks, err := fetchCalendarData()
 	if err != nil {
-		// Behandel fout
+		fmt.Println(err)
 		return
 	}
 
-	var userIdString = os.Getenv("userIdDaniel")
+	var userIdString = os.Getenv("userIdWebcall")
 	userId, err := strconv.Atoi(userIdString)
 	if err != nil {
-		// if userIdString is not a number, use default value
-		userId = 10
+		fmt.Errorf("userIdWebcall is not defined or not a number")
+		return
 	}
 
 	for _, task := range tasks {

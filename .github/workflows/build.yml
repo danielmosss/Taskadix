@@ -1,0 +1,60 @@
+name: Build Workflow
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '18'
+
+    - name: Install Angular Dependencies
+      run: |
+        cd angular
+        npm install
+
+    - name: Build Angular App
+      run: |
+        cd angular
+        ng build --configuration development
+
+    - name: Set up Go
+      uses: actions/setup-go@v2
+      with:
+        go-version: '1.21.4'
+
+    - name: Build Go App
+      run: |
+        cd api
+        go build api
+
+    - name: Copy Files to Output Directory
+      run: |
+        mkdir output
+        cp angular/dist/angular/* output/
+        cp api/api.exe output/
+        cp api/.env-template output/
+
+    # Create production angular webpack build
+    - name: Build Angular Production App
+      run: |
+        cd angular
+        ng build --configuration production
+
+    - name: Copy Files to Output Directory
+      run: |
+        mkdir output
+        cp angular/dist/angular/* output/prod/
+
+    - name: Archive Artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: artifacts
+        path: output/

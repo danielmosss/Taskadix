@@ -31,8 +31,42 @@
 
 ## ⌨️ How to use?
 
-* Clone the repo
-* Install NodeJS & Golang & Mysql
-* Run the todo.sql script to create your database
-* Run angular with ng serve in the /angular/src directory
-* Run go with the goland compiler from jetbrains
+### Step 1: Clone the repo
+  
+  ```bash
+  git clone https://github.com/danielmosss/dashboardTodo.git
+  ```
+
+### Step 2: Install NodeJS(v18.17.1) & Golang(v1.12.4) & Mysql
+  
+    * [NodeJS](https://nodejs.org/en/download/)
+    * [Golang](https://golang.org/dl/)
+    * [Mysql](https://dev.mysql.com/downloads/installer/)
+
+### Step 3: Setup database
+    
+    ```bash
+    cd database
+    mysql -u root -p
+    source todo.sql
+    ```
+
+### Step 4: Start the go restapi
+
+    ```bash
+    cd output
+    ./api.exe
+    ```
+
+### Step 5: Start the angular frontend
+
+    ```bash
+    cd angular/src
+    ng serve --configuration development
+    ```
+
+### Step 6: Visit the dashboard
+
+    ```bash
+    http://localhost:4200
+    ```
