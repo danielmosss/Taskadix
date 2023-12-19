@@ -54,8 +54,8 @@
 ### Step 4: Start the go restapi
 
   ```bash
-  cd output
-  ./api.exe
+  cd api
+  go run main.go
   ```
 
 ### Step 5: Start the angular frontend
