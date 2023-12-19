@@ -45,11 +45,11 @@ jobs:
     - name: Build Go App
       run: |
         cd api
-        go build api
+        $env:GOOS="windows"; go build -o api .\main.go; $env:GOOS="linux"
 
     - name: Copy Files to Output Directory
       run: |
-        cp api/api output/
+        cp api/api.exe output/
         cp api/.env-template output/
 
 
