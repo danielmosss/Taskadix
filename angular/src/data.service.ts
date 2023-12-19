@@ -1,46 +1,48 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
+import { environment } from './environments/environment.local';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private _hostname = "https://30e2-137-117-175-76.ngrok-free.app";
-  private _hostnameSecureApi = this._hostname + "/api";
+
+  private _hostname = environment.apiUrl;
+  private _SecureApi = this._hostname + "/api";
 
   constructor(private http: HttpClient) { }
 
   public getWeather() {
-    return this.http.get<Weather>(this._hostnameSecureApi + "/GetWeather", { headers: this.getCustomHeaders() });
+    return this.http.get<Weather>(this._SecureApi + "/GetWeather", { headers: this.getCustomHeaders() });
   }
 
   public getTodo() {
-    return this.http.get<Array<DayTodo>>(this._hostnameSecureApi + "/GetTodoTasks", { headers: this.getCustomHeaders() });
+    return this.http.get<Array<DayTodo>>(this._SecureApi + "/GetTodoTasks", { headers: this.getCustomHeaders() });
   }
 
   public getTodoByDateRange(dateRange: { start: string, end: string }) {
-    return this.http.get<Array<DayTodo>>(this._hostnameSecureApi + `/GetTodoTasksByDateRange?start=${dateRange.start}&end=${dateRange.end}`, { headers: this.getCustomHeaders() });
+    return this.http.get<Array<DayTodo>>(this._SecureApi + `/GetTodoTasksByDateRange?start=${dateRange.start}&end=${dateRange.end}`, { headers: this.getCustomHeaders() });
   }
 
   public putTodoList(todo: Todo[]) {
-    return this.http.put<Array<DayTodo>>(this._hostnameSecureApi + "/PutTodoTasks", todo, { headers: this.getCustomHeaders() });
+    return this.http.put<Array<DayTodo>>(this._SecureApi + "/PutTodoTasks", todo, { headers: this.getCustomHeaders() });
   }
 
   public putTodoInfo(todoCard: Todo){
-    return this.http.put<Todo>(this._hostnameSecureApi + "/PutTodoTaskInfo", todoCard, { headers: this.getCustomHeaders() });
+    return this.http.put<Todo>(this._SecureApi + "/PutTodoTaskInfo", todoCard, { headers: this.getCustomHeaders() });
   }
 
   public deleteTodoTask(todoCard: Todo){
-    return this.http.delete<Todo>(this._hostnameSecureApi + "/DeleteTodoTask", {body: todoCard, headers: this.getCustomHeaders()});
+    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", {body: todoCard, headers: this.getCustomHeaders()});
   }
 
   public postTodoInfo(todoCard: newTodoRequirements){
-    return this.http.post<Todo>(this._hostnameSecureApi + "/PostTodoTask", todoCard, { headers: this.getCustomHeaders() });
+    return this.http.post<Todo>(this._SecureApi + "/PostTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
   public markAsIrrelevant(todoCard: Todo){
-    return this.http.post<{status: string}>(this._hostnameSecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
+    return this.http.post<{status: string}>(this._SecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
   }
 
   public getUserData(){

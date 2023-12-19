@@ -12,9 +12,16 @@ export class HttpInterceptorService implements HttpInterceptor {
   intercept(req: HttpRequest<any>, next: HttpHandler) {
     return next.handle(req).pipe(
       catchError((error: HttpErrorResponse) => {
-        let errorMessage = error.error;
-        this._snackbar.open(errorMessage, '', { duration: 3000, horizontalPosition: 'left', panelClass: 'error' });
-        return throwError(error);
+        switch (error.status) {
+          case 401:
+            var errorBody = `You entered an invalid username and password combination.`;
+            this._snackbar.open(errorBody, '', { duration: 3000, horizontalPosition: 'left'});
+            return throwError(error);
+          default:
+            var errorBody = `${error.name} (${error.statusText}) - Url: ${error.url}`
+            this._snackbar.open(errorBody, '', { duration: 3000, horizontalPosition: 'left'});
+            return throwError(error);
+        }
       })
     );
   }

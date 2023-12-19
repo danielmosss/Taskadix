@@ -69,7 +69,7 @@ func main() {
 	//log.Fatal(http.ListenAndServe(":8000", handler))
 
 	corsObj := handlers2.CORS(
-		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", "https://30e2-137-117-175-76.ngrok-free.app"}),
+		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", "https://30e2-137-117-175-76.ngrok-free.app", "http://localhost:4200"}),
 		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS", "DELETE"}),
 		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization", "Ngrok-Skip-Browser-Warning"}),
 	)
