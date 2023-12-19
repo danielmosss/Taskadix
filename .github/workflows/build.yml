@@ -28,7 +28,7 @@ jobs:
     - name: Build Angular Production App
       run: |
         cd angular
-        ng build --prod
+        ng build --configuration production
 
     - name: Copy Files to Output Directory
       run: |
