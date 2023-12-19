@@ -24,18 +24,6 @@ jobs:
         npm install
 
 
-    ## Build Angular App
-    - name: Build Angular App
-      run: |
-        cd angular
-        ng build
-
-    - name: Move Angular Build to Output Directory
-      run: |
-        mkdir -p output
-        mkdir -p output/angular
-        cp -r angular/dist/dasbboard/* output/angular/
-
     # Create production angular webpack build
     - name: Build Angular Production App
       run: |
@@ -44,8 +32,8 @@ jobs:
 
     - name: Copy Files to Output Directory
       run: |
-        mkdir -p output/prod
-        cp -r angular/dist/dasbboard/* output/prod/
+        mkdir -p output/angularProd
+        cp -r angular/dist/dashboard output/angularProd/
 
 
     ## Build Go App
