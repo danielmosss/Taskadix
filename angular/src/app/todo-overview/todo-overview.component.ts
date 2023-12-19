@@ -28,6 +28,7 @@ export class TodoOverviewComponent implements OnInit {
   public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
+  public username = this._dateService.username;
 
   constructor(private _dateService: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 

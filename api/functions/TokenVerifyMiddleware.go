@@ -11,10 +11,10 @@ import (
 func TokenVerifyMiddleware(next http.Handler) http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		authHeader := r.Header.Get("Authorization")
-		bearerToken := strings.Split(authHeader, " ")
+		bearerAuthToken := strings.Split(authHeader, " ")
 
-		if len(bearerToken) == 2 {
-			token, error := jwt.Parse(bearerToken[1], func(token *jwt.Token) (interface{}, error) {
+		if len(bearerAuthToken) == 2 {
+			token, error := jwt.Parse(bearerAuthToken[1], func(token *jwt.Token) (interface{}, error) {
 				if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 					return nil, fmt.Errorf("Something went wrong")
 				}
@@ -23,7 +23,7 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 			})
 
 			if error != nil {
-				fmt.Println(error.Error()) // For debug
+				fmt.Println(error.Error())
 				http.Error(w, "Invalid token", http.StatusForbidden)
 				return
 			}
@@ -32,7 +32,7 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 				// check is user is still in database. might be deleted
 				dbConnection, err := GetDatabaseConnection()
 				if err != nil {
-					fmt.Println(err.Error()) // For debug
+					//fmt.Println(err.Error())
 					http.Error(w, "Database Connection Error", http.StatusInternalServerError)
 					return
 				}
@@ -40,7 +40,7 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 				query := "SELECT id FROM users WHERE id = ?;"
 				result, err := dbConnection.Query(query, token.Claims.(jwt.MapClaims)["user_id"])
 				if err != nil {
-					fmt.Println(err.Error()) // For debug
+					///fmt.Println(err.Error())
 					http.Error(w, "Database Query Execution Error", http.StatusInternalServerError)
 					return
 				}
@@ -52,7 +52,7 @@ func TokenVerifyMiddleware(next http.Handler) http.Handler {
 				for result.Next() {
 					err := result.Scan(&id)
 					if err != nil {
-						fmt.Println(err.Error()) // For debug
+						//fmt.Println(err.Error())
 						http.Error(w, "Database Query Result Error", http.StatusInternalServerError)
 						return
 					}
