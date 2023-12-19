@@ -28,22 +28,24 @@ jobs:
     - name: Build Angular App
       run: |
         cd angular
-        ng build --configuration development
+        ng build
 
     - name: Move Angular Build to Output Directory
       run: |
-        mkdir output
-        cp angular/dist/dasbboard/* output/
+        mkdir -p output
+        mkdir -p output/angular
+        cp -r angular/dist/dasbboard/* output/angular/
 
     # Create production angular webpack build
     - name: Build Angular Production App
       run: |
         cd angular
-        ng build --configuration production
+        ng build --prod
 
     - name: Copy Files to Output Directory
       run: |
-        cp angular/dist/dasbboard/* output/prod/
+        mkdir -p output/prod
+        cp -r angular/dist/dasbboard/* output/prod/
 
 
     ## Build Go App
