@@ -45,7 +45,9 @@ jobs:
     - name: Build Go App
       run: |
         cd api
-        $env:GOOS="windows"; go build -o api .\main.go; $env:GOOS="linux"
+        GOOS=windows GOARCH=amd64 go build -o api.exe ./main.go
+        unset GOOS
+        unset GOARCH
 
     - name: Copy Files to Output Directory
       run: |
