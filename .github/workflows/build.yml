@@ -15,16 +15,38 @@ jobs:
       with:
         node-version: '18'
 
+    - name: Install Angular CLI
+      run: npm install -g @angular/cli
+
     - name: Install Angular Dependencies
       run: |
         cd angular
         npm install
+        
 
+    ## Build Angular App
     - name: Build Angular App
       run: |
         cd angular
         ng build --configuration development
 
+    - name: Move Angular Build to Output Directory
+      run: |
+        mkdir output
+        cp angular/dist/angular/* output/
+
+    # Create production angular webpack build
+    - name: Build Angular Production App
+      run: |
+        cd angular
+        ng build --configuration production
+
+    - name: Copy Files to Output Directory
+      run: |
+        cp angular/dist/angular/* output/prod/
+
+
+    ## Build Go App
     - name: Set up Go
       uses: actions/setup-go@v2
       with:
@@ -37,22 +59,11 @@ jobs:
 
     - name: Copy Files to Output Directory
       run: |
-        mkdir output
-        cp angular/dist/angular/* output/
         cp api/api.exe output/
         cp api/.env-template output/
 
-    # Create production angular webpack build
-    - name: Build Angular Production App
-      run: |
-        cd angular
-        ng build --configuration production
 
-    - name: Copy Files to Output Directory
-      run: |
-        mkdir output
-        cp angular/dist/angular/* output/prod/
-
+    ## Build Artifacts
     - name: Archive Artifacts
       uses: actions/upload-artifact@v2
       with:

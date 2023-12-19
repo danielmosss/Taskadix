@@ -39,34 +39,34 @@
 
 ### Step 2: Install NodeJS(v18.17.1) & Golang(v1.12.4) & Mysql
   
-    * [NodeJS](https://nodejs.org/en/download/)
-    * [Golang](https://golang.org/dl/)
-    * [Mysql](https://dev.mysql.com/downloads/installer/)
+  * [NodeJS](https://nodejs.org/en/download/)
+  * [Golang](https://golang.org/dl/)
+  * [Mysql](https://dev.mysql.com/downloads/installer/)
 
 ### Step 3: Setup database
     
-    ```bash
-    cd database
-    mysql -u root -p
-    source todo.sql
-    ```
+  ```bash
+  cd database
+  mysql -u root -p
+  source todo.sql
+  ```
 
 ### Step 4: Start the go restapi
 
-    ```bash
-    cd output
-    ./api.exe
-    ```
+  ```bash
+  cd output
+  ./api.exe
+  ```
 
 ### Step 5: Start the angular frontend
 
-    ```bash
-    cd angular/src
-    ng serve --configuration development
-    ```
+  ```bash
+  cd angular/src
+  ng serve --configuration development
+  ```
 
 ### Step 6: Visit the dashboard
 
-    ```bash
-    http://localhost:4200
-    ```
+  ```bash
+  http://localhost:4200
+  ```
