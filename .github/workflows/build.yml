@@ -62,11 +62,11 @@ jobs:
       run: |
         cp api/api.exe output/
         cp api/.env-template output/
-
+ 
     - name: Set Date and Time
       id: set_datetime
-      run: echo "DATETIME=$(date +'%H:%M-%d-%m-%Y')" >> $GITHUB_ENV
-
+      run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
+      shell: powershell
 
     ## Build Artifacts
     - name: Archive Artifacts
