@@ -70,7 +70,6 @@ jobs:
 
     ## Build Artifacts
     - name: Archive Artifacts
-      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
