@@ -27,13 +27,27 @@ jobs:
       with:
         node-version: '18'
 
-    - name: Install Angular CLI
-      run: npm install -g @angular/cli
+    # - name: Cache node modules
+    #   id: cache
+    #   uses: actions/cache@v2
+    #   with:
+    #     path: npm
+    #     key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+    #     restore-keys: |
+    #       ${{ runner.os }}-node-
 
-    - name: Install Angular Dependencies
+    # - name: Install Node Dependencies
+    #   if: steps.cache.outputs.cache-hit != 'true'
+    #   run: |
+    #     cd angular
+    #     npm install
+    #     npm install -g @angular/cli
+
+    - name: Install Dependencies
       run: |
         cd angular
         npm install
+        npm install -g @angular/cli
 
 
     # Create production angular webpack build
@@ -85,7 +99,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: release-${{ github.run_id }}
-        release_name: Release at ${{ env.DATETIME }}
+        release_name: Release at ${{ env.DATETIME }} (UTC)
         body : ${{ github.event.pull_request.title }}
         draft: false
         prerelease: false
@@ -99,5 +113,5 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: output/angularProd/dashbaord/
+        local-dir: output/angularProd/dashboard/
         dangerous-clean-slate: true
