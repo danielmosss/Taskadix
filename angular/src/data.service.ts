@@ -12,6 +12,10 @@ export class DataService {
 
   public username: string;
 
+  public getUsername() {
+    return this.username;
+  }
+
   constructor(private http: HttpClient) { }
 
   public getWeather() {
