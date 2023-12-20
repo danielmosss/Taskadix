@@ -1,6 +1,14 @@
 name: Build Workflow
 
-on: push
+## trigger on push on main branch after pull request
+on: 
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read/write
+  pull-requests: write
 
 jobs:
   build:
