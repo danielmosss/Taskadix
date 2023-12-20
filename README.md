@@ -26,8 +26,10 @@
 * ✅ Overview for your week and your todos.
 * ✅ Ability to select a week to view.
 * ✅ Login
-* ❌ Get location from browser for custom weather (Future)
+* ✅ Responsive UI - Its ugly, only made it to be able to view my webapp on mobile.
 * ❌ Nice Responsive UI - I'm very bad at making clean and responsive UI's
+* 🟧 Register - (Disabled endpoint)
+
 
 ## ⌨️ How to use?
 
@@ -66,6 +68,10 @@
   ```
 
 ### Step 6: Visit the dashboard
+
+  For this you need to use a google browser and disable web security. 
+  Here is a guide on how to do that: [Guide](https://alfilatov.com/posts/run-chrome-without-cors/)
+  This is because CORS is not enabled for localhost:4200 in the go restapi.
 
   ```bash
   http://localhost:4200
