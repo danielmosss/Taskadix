@@ -61,3 +61,16 @@ jobs:
       with:
         name: artifacts
         path: output/
+
+    ## Create a Release with the pull request as name
+    - name: Create Release after pull request
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
+        body : ${{ github.event.pull_request.title }}
+        draft: false
+        prerelease: false
