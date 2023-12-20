@@ -28,15 +28,21 @@ export class TodoOverviewComponent implements OnInit {
   public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
-  public username = this._dateService.username;
+  public username: string
 
   constructor(private _dateService: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
+    setTimeout(async () => {
+      while (!this.username) {
+        this.username = this._dateService.getUsername();
+        await timer(100);
+      }
+    })
   }
 
-  logout(){
+  logout() {
     this._dateService.logout();
     this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
@@ -46,7 +52,7 @@ export class TodoOverviewComponent implements OnInit {
     else this._dateService.getTodo().subscribe(data => { this.handleGetTodos(data); })
   }
 
- async handleGetTodos(data: DayTodo[]) {
+  async handleGetTodos(data: DayTodo[]) {
     if (this.Todolist.length > 0) {
       data.forEach(async (item, index) => {
         this.Todolist[index] = item;
