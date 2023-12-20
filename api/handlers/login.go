@@ -36,6 +36,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Query the database for the hashed password of the given username
 	query := "SELECT password FROM users WHERE username = ?;"
 	resultPassword, err := dbConnection.Query(query, loginRequest.Username)
 	if err != nil {
@@ -44,6 +45,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 	}
 	defer resultPassword.Close()
 
+	// Retrieve the hashed password from the query result
 	var hashedPassword string
 	for resultPassword.Next() {
 		err := resultPassword.Scan(&hashedPassword)
@@ -81,6 +83,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Generate a JWT token for the user
 	jwtToken, err := functions.CreateToken(id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

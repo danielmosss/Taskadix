@@ -35,6 +35,7 @@ func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Update the title or description of a task
 	query := "UPDATE todos SET title = ?, description = ? WHERE id = ? AND userId = ?;"
 	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Id, userId)
 	if err != nil {

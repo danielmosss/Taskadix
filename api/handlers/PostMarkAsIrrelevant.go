@@ -32,6 +32,7 @@ func PostMarkAsIrrelevant(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// Check if the user is authorized to mark the task as irrelevant
 	query := "call insertAnIrrelevantAgendaTodo(?,?);"
 	result, err := dbConnection.Query(query, markTask.Id, userId)
 	if err != nil {

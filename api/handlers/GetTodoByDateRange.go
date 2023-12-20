@@ -74,12 +74,11 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 	for i := 0; i < 7; i++ {
-		// add daterange.start + i is the date
 		date := startDate.AddDate(0, 0, i).Format(time.DateOnly)
 		dayName := startDate.AddDate(0, 0, i).Format("Monday")
 		dayTasks, exists := tasksMap[date]
 		if !exists {
-			dayTasks = []todoCard{} // Empty slice
+			dayTasks = []todoCard{} // If no todos for this day, set to empty slice
 		}
 		weekTasks = append(weekTasks, DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
 	}
