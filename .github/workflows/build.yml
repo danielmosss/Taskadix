@@ -1,6 +1,10 @@
 name: Build Workflow
 
-on: push
+## trigger on push on main branch after pull request
+on: 
+  push:
+    branches:
+      - main
 
 jobs:
   build:
