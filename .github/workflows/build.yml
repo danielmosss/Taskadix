@@ -22,6 +22,15 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Cache npm global packages
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/npm
+        key: ${{ runner.os }}-npm-global-${{ hashFiles('**/package.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-global-
+
     - name: Set up Node.js
       uses: actions/setup-node@v4
       with:
@@ -29,7 +38,8 @@ jobs:
         cache: 'npm'
 
     - name: Install Angular CLI
-      run: npm install -g @angular/cli
+      run: |
+        NPM_CONFIG_PREFIX=~/npm npm install -g @angular/cli
 
     - name: Install Angular Dependencies
       run: |
