@@ -28,6 +28,7 @@ jobs:
     #     node-version: '18'
 
     - name: Cache node modules
+      id: cache
       uses: actions/cache@v2
       with:
         path: node_modules
@@ -35,15 +36,18 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-node-
 
-
-    # Install Angular CLI and dependencies
-    - name: Install Angular CLI
-      run: npm install -g @angular/cli
-
-    - name: Install Angular Dependencies
+    - name: Install Node Dependencies
+      if: steps.cache.outputs.cache-hit != 'true'
       run: |
         cd angular
         npm install
+        npm install -g @angular/cli
+
+    # - name: Install Angular Dependencies
+    #   run: |
+    #     cd angular
+    #     npm install -g @angular/cli
+    #     npm install
 
 
     # Create production angular webpack build
