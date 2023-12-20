@@ -1,8 +1,12 @@
 name: Build Workflow
 
 ## trigger on push on main branch after pull request
+# also run on pull request to main branch
 on: 
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
@@ -43,10 +47,6 @@ jobs:
         mkdir -p output/angularProd
         cp -r angular/dist/dashboard output/angularProd/
 
-    - name: Set Timezone
-      run: |
-        tzutil /s "W. Europe Standard Time"
-
     ## Build Go App
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -66,6 +66,7 @@ jobs:
 
     ## Build Artifacts
     - name: Archive Artifacts
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
@@ -74,10 +75,12 @@ jobs:
     
     ## Create a Release with the pull request as name
     - name: Set Date and Time
+      if: github.ref == 'refs/heads/main'
       id: set_datetime
       run: echo "DATETIME=$(date +'%H:%M-%d-%m-%Y')" >> $GITHUB_ENV
 
     - name: Create Release after pull request
+      if: github.ref == 'refs/heads/main'
       id: create_release
       uses: actions/create-release@v1
       env:
