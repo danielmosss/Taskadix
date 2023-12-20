@@ -20,26 +20,25 @@ jobs:
 
     steps:
     - name: Checkout Repository
-      uses: actions/checkout@v4
+      uses: actions/checkout@v2
 
-    - name: Cache npm global packages
-      uses: actions/cache@v3
+    # - name: Set up Node.js
+    #   uses: actions/setup-node@v2
+    #   with:
+    #     node-version: '18'
+
+    - name: Cache node modules
+      uses: actions/cache@v2
       with:
-        path: |
-          ~/npm
-        key: ${{ runner.os }}-npm-global-${{ hashFiles('**/package.json') }}
+        path: node_modules
+        key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          ${{ runner.os }}-npm-global-
+          ${{ runner.os }}-node-
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '18'
-        cache: 'npm'
 
+    # Install Angular CLI and dependencies
     - name: Install Angular CLI
-      run: |
-        NPM_CONFIG_PREFIX=~/npm npm install -g @angular/cli
+      run: npm install -g @angular/cli
 
     - name: Install Angular Dependencies
       run: |
