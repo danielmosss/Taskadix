@@ -1,10 +1,22 @@
 name: Build Workflow
 
-on: push
+## trigger on push on main branch after pull request
+# also run on pull request to main branch
+on: 
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Repository
@@ -35,7 +47,6 @@ jobs:
         mkdir -p output/angularProd
         cp -r angular/dist/dashboard output/angularProd/
 
-
     ## Build Go App
     - name: Set up Go
       uses: actions/setup-go@v2
@@ -45,19 +56,37 @@ jobs:
     - name: Build Go App
       run: |
         cd api
-        GOOS=windows GOARCH=amd64 go build -o api.exe ./main.go
-        unset GOOS
-        unset GOARCH
+        go build api
 
     - name: Copy Files to Output Directory
       run: |
         cp api/api.exe output/
         cp api/.env-template output/
-
+ 
+    - name: Set Date and Time
+      id: set_datetime
+      run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
+      shell: powershell
 
     ## Build Artifacts
     - name: Archive Artifacts
+      if: github.ref == 'refs/heads/main'
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
         path: output/
+    
+    
+    ## Create a Release with the pull request as name
+    - name: Create Release after pull request
+      if: github.ref == 'refs/heads/main'
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: release-${{ github.run_id }}
+        release_name: Release at ${{ env.DATETIME }}
+        body : ${{ github.event.pull_request.title }}
+        draft: false
+        prerelease: false
