@@ -1,8 +1,12 @@
 name: Build Workflow
 
 ## trigger on push on main branch after pull request
+# also run on pull request to main branch
 on: 
   push:
+    branches:
+      - main
+  pull_request:
     branches:
       - main
 
