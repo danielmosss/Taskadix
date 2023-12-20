@@ -4,6 +4,7 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -67,14 +68,11 @@ func main() {
 	securedRoutes.HandleFunc("/GetTodoTasksByDateRange", handlers.GetTodoByDateRange).Methods("GET")
 	securedRoutes.HandleFunc("/GetUserData", handlers.GetUserData).Methods("GET")
 
-	//log.Fatal(http.ListenAndServe(":8000", handler))
-
 	var ngrokAddres = os.Getenv("ngrokRequest")
-
 	corsObj := handlers2.CORS(
 		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", ngrokAddres}),
 		handlers2.AllowedMethods([]string{"GET", "POST", "PUT", "OPTIONS", "DELETE"}),
 		handlers2.AllowedHeaders([]string{"Content-Type", "X-Requested-With", "Authorization", "Ngrok-Skip-Browser-Warning"}),
 	)
-	http.ListenAndServe(":8000", corsObj(handler))
+	log.Fatal(http.ListenAndServe(":8000", corsObj(handler)))
 }

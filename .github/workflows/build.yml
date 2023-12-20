@@ -92,12 +92,12 @@ jobs:
 
     # Upload the angular production build to ftp server
     - name: FTP Deploy
-      #if: github.ref == 'refs/heads/main'
+      if: github.ref == 'refs/heads/main'
       uses: SamKirkland/FTP-Deploy-Action@4.1.0
       with:
         # valid inputs are ['server', 'username', 'password', 'port', 'protocol', 'local-dir', 'server-dir', 'state-name', 'dry-run', 'dangerous-clean-slate', 'exclude', 'log-level', 'security']
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: output/angularProd/
+        local-dir: output/angularProd/dashbaord/
         dangerous-clean-slate: true
