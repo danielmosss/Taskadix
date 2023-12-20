@@ -63,6 +63,10 @@ jobs:
         cp api/api.exe output/
         cp api/.env-template output/
 
+    - name: Set Date and Time
+      id: set_datetime
+      run: echo "DATETIME=$(date +'%H:%M-%d-%m-%Y')" >> $GITHUB_ENV
+
 
     ## Build Artifacts
     - name: Archive Artifacts
@@ -74,11 +78,6 @@ jobs:
     
     
     ## Create a Release with the pull request as name
-    - name: Set Date and Time
-      if: github.ref == 'refs/heads/main'
-      id: set_datetime
-      run: echo "DATETIME=$(date +'%H:%M-%d-%m-%Y')" >> $GITHUB_ENV
-
     - name: Create Release after pull request
       if: github.ref == 'refs/heads/main'
       id: create_release
