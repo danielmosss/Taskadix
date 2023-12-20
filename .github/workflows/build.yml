@@ -26,6 +26,7 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '18'
+        cache: 'npm'
 
     - name: Install Angular CLI
       run: npm install -g @angular/cli
@@ -85,7 +86,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: release-${{ github.run_id }}
-        release_name: Release at ${{ env.DATETIME }}
+        release_name: Release at ${{ env.DATETIME }} (UTC)
         body : ${{ github.event.pull_request.title }}
         draft: false
         prerelease: false
