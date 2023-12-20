@@ -47,18 +47,6 @@ jobs:
         mkdir -p output/angularProd
         cp -r angular/dist/dashboard output/angularProd/
 
-    - name: List Time Zones
-      run: tzutil /l
-
-
-    - name: Set Timezone
-      run: |
-        tzutil /s "W. Europe Standard Time"
-
-    - name: Set Time Zone
-      run: Set-TimeZone -Id "W. Europe Standard Time"
-
-
     ## Build Go App
     - name: Set up Go
       uses: actions/setup-go@v2
