@@ -7,6 +7,7 @@ import (
 )
 
 func CreateToken(userId int) (string, error) {
+	// Create a JWT token with the user id and an expiration date of 7 days.
 	secret := os.Getenv("JWT_SECRET")
 
 	claims := jwt.MapClaims{}

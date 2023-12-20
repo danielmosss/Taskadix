@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"api/functions"
-	"fmt"
 	"net/http"
 )
 
@@ -12,7 +11,6 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		http.Error(res, err.Error(), http.StatusUnauthorized)
 		return
 	}
-	fmt.Println(userId)
 
 	dbConnection, err := functions.GetDatabaseConnection()
 	if err != nil {

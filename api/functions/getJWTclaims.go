@@ -8,7 +8,6 @@ import (
 	"strings"
 )
 
-// ExtractClaims haalt de JWT-claims uit de gegeven HTTP-request
 func GetJWTClaims(r *http.Request) (jwt.MapClaims, error) {
 	authHeader := r.Header.Get("Authorization")
 	bearerToken := strings.Split(authHeader, " ")
@@ -23,7 +22,6 @@ func GetJWTClaims(r *http.Request) (jwt.MapClaims, error) {
 			return nil, fmt.Errorf("Signingmethode not reconized: %v", token.Header["alg"])
 		}
 
-		// Dezelfde geheime sleutel gebruiken als tijdens het aanmaken van de token
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 

@@ -56,23 +56,9 @@ func fetchCalendarData() ([]Task, error) {
 
 	var tasks []Task
 	loc, error := time.LoadLocation("Europe/Amsterdam")
-	loc2, error2 := time.LoadLocation("Central European Standard Time")
-	loc3, error3 := time.LoadLocation("W. Europe Standard Time")
-
-	if error != nil && error2 != nil && error3 != nil {
-		fmt.Println(error)
-		fmt.Println(error2)
-		fmt.Println(error3)
+	if error != nil {
 		return nil, error
 	}
-
-	if loc2 != nil {
-		loc = loc2
-	}
-	if loc3 != nil {
-		loc = loc3
-	}
-	
 	for _, event := range calendar.Events() {
 		start, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtStart).Value, loc)
 		end, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtEnd).Value, loc)

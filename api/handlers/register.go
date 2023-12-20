@@ -92,6 +92,7 @@ func Register(res http.ResponseWriter, req *http.Request) {
 	res.Write(tokenInJson)
 }
 
+// Create hashed password from the string that user inputted.
 func CreateHashedPassword(password string) (string, error) {
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
 	if err != nil {
