@@ -69,8 +69,13 @@ jobs:
       with:
         name: artifacts
         path: output/
-
+    
+    
     ## Create a Release with the pull request as name
+    - name: Set Date and Time
+      id: set_datetime
+      run: echo "DATETIME=$(date +'%H:%M-%d-%m-%Y')" >> $GITHUB_ENV
+
     - name: Create Release after pull request
       id: create_release
       uses: actions/create-release@v1
@@ -78,7 +83,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: release-${{ github.run_id }}
-        release_name: release-${{ github.run_id }}
+        release_name: Release at ${{ env.DATETIME }}
         body : ${{ github.event.pull_request.title }}
         draft: false
         prerelease: false
