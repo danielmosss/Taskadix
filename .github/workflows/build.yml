@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
     - name: Checkout Repository
@@ -53,9 +53,7 @@ jobs:
     - name: Build Go App
       run: |
         cd api
-        GOOS=windows GOARCH=amd64 go build -o api.exe ./main.go
-        unset GOOS
-        unset GOARCH
+        go build api
 
     - name: Copy Files to Output Directory
       run: |

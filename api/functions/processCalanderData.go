@@ -55,7 +55,11 @@ func fetchCalendarData() ([]Task, error) {
 	}
 
 	var tasks []Task
-	loc, _ := time.LoadLocation("Europe/Amsterdam")
+	loc, error := time.LoadLocation("Europe/Amsterdam")
+	if error != nil {
+		fmt.Println("Error loading location" + error.Error())
+		return nil, error
+	}
 	for _, event := range calendar.Events() {
 		start, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtStart).Value, loc)
 		end, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtEnd).Value, loc)
