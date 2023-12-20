@@ -39,6 +39,8 @@
   git clone https://github.com/danielmosss/dashboardTodo.git
   ```
 
+  Or download the lastest release from [here](https://github.com/danielmosss/dashboardTodo/releases/latest)
+
 ### Step 2: Install NodeJS(v18.17.1) & Golang(v1.12.4) & Mysql
   
   * [NodeJS](https://nodejs.org/en/download/)
