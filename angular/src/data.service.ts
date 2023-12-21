@@ -54,6 +54,10 @@ export class DataService {
     return this.http.get<{username: string}>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() });
   }
 
+  public uploadBulkTodos(todoCards: newTodoRequirements[]){
+    return this.http.post<Todo[]>(this._SecureApi + "/UploadBulkTodo", todoCards, { headers: this.getCustomHeaders() });
+  }
+
   public register(username: string, password: string, email: string) {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/register", { username, password, email }).pipe().subscribe(
       (res) => {
@@ -71,6 +75,7 @@ export class DataService {
   }
   public logout() {
     localStorage.removeItem('jsonwebtoken');
+    this.username = '';
   }
 
   public isLoggedIn(): boolean {

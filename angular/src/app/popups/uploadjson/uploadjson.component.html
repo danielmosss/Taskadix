@@ -1,0 +1,18 @@
+<div class="popup">
+
+  <!-- Example Json -->
+  <div class="example">
+    <p>
+      The JSON file should be in the following format:
+    </p>
+    <pre>{{getJson()}}</pre>
+  </div>
+
+  <div class="footer buttons right">
+    <button mat-button class="mat-button neg" (click)="close()">
+      <i class="fa-solid fa-xmark fa-xl"></i>
+    </button>
+    <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" accept=".json" />
+    <button mat-button class="mat-button pos" (click)="fileInput.click()">Upload JSON</button>
+  </div>
+</div>
