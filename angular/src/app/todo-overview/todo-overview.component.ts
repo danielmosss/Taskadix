@@ -12,6 +12,7 @@ import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
 import { CreateTodoComponent } from '../popups/create-todo/create-todo.component';
 import { DayTodo, Todo } from '../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { UploadjsonComponent } from '../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
 
 
@@ -39,6 +40,14 @@ export class TodoOverviewComponent implements OnInit {
         this.username = this._dateService.getUsername();
         await timer(100);
       }
+    })
+  }
+
+  openJsonuploader(){
+    var dialog = this._dialog.open(UploadjsonComponent)
+    dialog.afterClosed().subscribe((data?: Todo[]) => {
+      if (!data) return;
+      this.getTodoTasks();
     })
   }
 

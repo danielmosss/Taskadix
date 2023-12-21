@@ -27,6 +27,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './addons/loader/loader.component';
 import { LoginComponent } from './login/login.component';
 import { HttpInterceptorService } from 'src/http-interceptor.service';
+import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
 
 
 
@@ -41,7 +42,8 @@ import { HttpInterceptorService } from 'src/http-interceptor.service';
     CreateTodoComponent,
     WeekselectorComponent,
     LoaderComponent,
-    LoginComponent
+    LoginComponent,
+    UploadjsonComponent
   ],
   imports: [
     BrowserModule,
