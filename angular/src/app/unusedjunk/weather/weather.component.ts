@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/data.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { interfaceLocation, interfaceRainForcast, interfaceWeather } from '../interfaces';
+import { interfaceLocation, interfaceRainForcast, interfaceWeather } from '../../interfaces';
 
 @Component({
   selector: 'app-weather',

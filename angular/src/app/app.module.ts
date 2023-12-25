@@ -9,9 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { WeatherComponent } from './weather/weather.component';
-import { TodoOverviewComponent } from './todo-overview/todo-overview.component';
-import { ForcastBuienradarRegen3hComponent } from './forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
+import { WeatherComponent } from './unusedjunkjard/weather/weather.component';
+import { TodoOverviewComponent } from './pages/todo-overview/todo-overview.component';
+import { ForcastBuienradarRegen3hComponent } from './unusedjunkjard/forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
 import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
 import { MatDialogModule } from '@angular/material/dialog';
@@ -25,7 +25,7 @@ import {MatSnackBarModule} from '@angular/material/snack-bar';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { LoaderComponent } from './addons/loader/loader.component';
-import { LoginComponent } from './login/login.component';
+import { LoginComponent } from './pages/login/login.component';
 import { HttpInterceptorService } from 'src/http-interceptor.service';
 import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
 
