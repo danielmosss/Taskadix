@@ -10,7 +10,9 @@ export class DataService {
   private _hostname = environment.apiUrl;
   private _SecureApi = this._hostname + "/api";
 
+  public validJwtToken: boolean = false;
   public username: string;
+  public userLoggedIn: boolean = false;
 
   public getUsername() {
     return this.username;
@@ -70,12 +72,15 @@ export class DataService {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
       (res) => {
         this._jsonwebtoken = res.jsonwebtoken;
+        this.validJwtToken = true;
+        this.userLoggedIn = true;
+        this.username = username;
       }
     );
   }
   public logout() {
-    localStorage.removeItem('jsonwebtoken');
     this.username = '';
+    localStorage.removeItem('jsonwebtoken');
   }
 
   public isLoggedIn(): boolean {

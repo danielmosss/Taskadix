@@ -1,4 +1,4 @@
-<ng-container *ngIf="isLoggedIn()">
+<ng-container *ngIf="isLoggedIn() && isJWTtokenValid()">
   <div class="page">
     <div class="information">
       <div class="weather card">

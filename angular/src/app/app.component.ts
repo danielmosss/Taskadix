@@ -15,6 +15,7 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     if (this._dateService.isLoggedIn()) {
       this._dateService.getUserData().subscribe(data => {
+        this._dateService.validJwtToken = true;
         this._dateService.username = data.username;
       })
     }
@@ -22,5 +23,9 @@ export class AppComponent implements OnInit {
 
   isLoggedIn(): boolean {
     return this._dateService.isLoggedIn();
+  }
+
+  isJWTtokenValid(): boolean {
+    return this._dateService.validJwtToken;
   }
 }

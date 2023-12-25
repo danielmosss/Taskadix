@@ -1,12 +1,19 @@
 <div class="header">
   <div class="addTodo">
-    <button mat-button class="mat-button info">Welcome {{username}}</button>
-    <button mat-button class="mat-button pos" (click)="logout()">Logout</button>
+    <button mat-button class="mat-button info" disabled>
+      <i class="fa-solid fa-user"></i>
+      {{username}}
+    </button>
+    <button mat-button class="mat-button pos" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+    </button>
     <button mat-button class="mat-button pos" (click)="openCardCreate()">
-      <i class="fa-solid fa-plus fa-xl"></i>
+      <i class="fa-solid fa-plus fa-lg"></i>
       Create todo
     </button>
     <button mat-button class="mat-button pos" (click)="openJsonuploader()">
+      <i class="fa-solid fa-file-arrow-up"></i>
       Upload JSON
     </button>
   </div>

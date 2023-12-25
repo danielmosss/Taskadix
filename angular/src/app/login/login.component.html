@@ -14,8 +14,8 @@
   </mat-form-field>
 
   <div class="buttons right">
-    <button mat-button class="mat-button neg" (click)="loginMode = false">Register</button>
-    <button mat-button class="mat-button pos" (click)="login()">Login</button>
+    <button mat-button class="mat-button neg" type="button" (click)="loginMode = false">Register</button>
+    <button mat-button class="mat-button pos" type="submit" (click)="login()">Login</button>
   </div>
 </form>
 
@@ -40,7 +40,7 @@
   </mat-form-field>
 
   <div class="buttons right">
-    <button mat-button class="mat-button neg" (click)="loginMode = true">Go back to login</button>
-    <button mat-button class="mat-button pos" (click)="register()">Register</button>
+    <button mat-button class="mat-button neg" type="button" (click)="loginMode = true">Go back to login</button>
+    <button mat-button class="mat-button pos" type="submit" (click)="register()">Register</button>
   </div>
 </form>
