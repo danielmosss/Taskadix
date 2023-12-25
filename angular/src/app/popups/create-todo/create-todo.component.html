@@ -13,7 +13,7 @@
         </textarea>
       </mat-form-field>
 
-      <mat-form-field>
+      <mat-form-field  class="full-width">
         <mat-label>Choose a date</mat-label>
         <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
         <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
@@ -22,10 +22,10 @@
 
     </div>
     <div class="footer buttons right">
-      <button mat-button class="mat-button neg" (click)="cancel()">
+      <button mat-button class="mat-button neg" type="button" (click)="cancel()">
         <i class="fa-solid fa-xmark fa-xl"></i>
       </button>
-      <button mat-button class="mat-button pos" (click)="saveCard()" [disabled]="!canSave()">
+      <button mat-button class="mat-button pos" type="submit" (click)="saveCard()" [disabled]="!canSave()">
         <i class="fa-solid fa-check fa-xl"></i>
       </button>
     </div>

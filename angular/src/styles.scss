@@ -1,19 +1,35 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-body{
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+body {
   // background: radial-gradient(circle at bottom left, rgb(224, 0, 176),rgb(0, 0, 180));
-  background: radial-gradient(circle at bottom left, rgb(100, 6, 52),#020b1c);
+  background: radial-gradient(circle at bottom left, rgb(100, 6, 52), #020b1c);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
 
 .popup {
+  background-color: #757575;
   position: relative;
   min-width: 450px;
   height: 100%;
@@ -34,7 +50,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   }
 }
 
-.mat-button{
+.mat-button {
   background-color: #F3F3F3;
   color: #333333;
   display: inline-flex !important;
@@ -58,6 +74,10 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     color: #ffffff !important;
     font-weight: 100;
   }
+}
 
-
+@media (max-width: 768px) {
+  .popup {
+    min-width: auto;
+  }
 }
