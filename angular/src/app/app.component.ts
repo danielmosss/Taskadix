@@ -28,5 +28,4 @@ export class AppComponent implements OnInit {
   isJWTtokenValid(): boolean {
     return this._dateService.validJwtToken;
   }
-
 }

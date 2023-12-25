@@ -12,6 +12,7 @@ export class DataService {
 
   public validJwtToken: boolean = false;
   public username: string;
+  public userLoggedIn: boolean = false;
 
   public getUsername() {
     return this.username;
@@ -71,6 +72,9 @@ export class DataService {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
       (res) => {
         this._jsonwebtoken = res.jsonwebtoken;
+        this.validJwtToken = true;
+        this.userLoggedIn = true;
+        this.username = username;
       }
     );
   }
