@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from 'src/data.service';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-import { interfaceLocation, interfaceRainForcast, interfaceWeather } from '../interfaces';
+import { interfaceLocation, interfaceRainForcast, interfaceWeather } from '../../interfaces';
 
 @Component({
   selector: 'app-weather',
@@ -22,6 +22,12 @@ export class WeatherComponent implements OnInit {
   ngOnInit(): void {
     this.sanitizedUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.buienradarUrl);
 
+    if (window.innerWidth > 768) {
+      this.getWeather()
+    }
+  }
+
+  getWeather() {
     this._dataService.getWeather().subscribe(data => {
       this.currentWeather = data.current
       this.location = data.location

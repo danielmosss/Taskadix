@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Chart, registerables } from 'chart.js';
 import { DataService } from 'src/data.service';
-import { interfaceRainForcastPerHour } from '../interfaces';
+import { interfaceRainForcastPerHour } from '../../interfaces';
 Chart.register(...registerables)
 const timer = (ms: number) => new Promise(res => setTimeout(res, ms))
 

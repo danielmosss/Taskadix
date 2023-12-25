@@ -1,5 +1,5 @@
-<div class="popup">
-  <div class="content" *ngIf="editMode">
+<div class="popup" *ngIf="editMode">
+  <div class="content">
     <div class="header">
       <mat-form-field class="full-width">
         <mat-label>Title</mat-label>
@@ -7,7 +7,7 @@
       </mat-form-field>
     </div>
     <div class="body">
-      <mat-form-field  class="full-width">
+      <mat-form-field class="full-width">
         <mat-label>Description</mat-label>
         <textarea matInput [value]="todoCard.description" (change)="changedProperty(todoCardProperty.description, $event)">
         </textarea>
@@ -22,8 +22,10 @@
       </button>
     </div>
   </div>
+</div>
 
-  <div class="content" *ngIf="!editMode">
+<div class="popup" *ngIf="!editMode">
+  <div class="content">
     <div class="header">
       <h1>{{todoCard.title}}</h1>
     </div>

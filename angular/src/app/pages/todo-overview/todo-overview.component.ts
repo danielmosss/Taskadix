@@ -8,11 +8,11 @@ import {
 } from '@angular/cdk/drag-drop';
 import { DataService } from 'src/data.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CardpopupComponent } from '../popups/cardpopup/cardpopup.component';
-import { CreateTodoComponent } from '../popups/create-todo/create-todo.component';
-import { DayTodo, Todo } from '../interfaces';
+import { CardpopupComponent } from '../../popups/cardpopup/cardpopup.component';
+import { CreateTodoComponent } from '../../popups/create-todo/create-todo.component';
+import { DayTodo, Todo } from '../../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UploadjsonComponent } from '../popups/uploadjson/uploadjson.component';
+import { UploadjsonComponent } from '../../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
 
 
@@ -54,6 +54,10 @@ export class TodoOverviewComponent implements OnInit {
   logout() {
     this._dateService.logout();
     this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
+  }
+
+  isMobile(){
+    return this._dateService.isMobile();
   }
 
   getTodoTasks() {

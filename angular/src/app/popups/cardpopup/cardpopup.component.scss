@@ -1,21 +1,11 @@
-.popup {
-  background-color: #757575;
+.header {
+  h1 {
+    margin-top: 0;
+  }
+}
 
-  .content {
-    .full-width {
-      width: 100%;
-    }
-
-    .body{
-      p{
-        white-space: pre-line;
-      }
-    }
-
-    .header {
-      h1 {
-        margin-top: 0;
-      }
-    }
+.body {
+  p {
+    white-space: pre-line;
   }
 }
