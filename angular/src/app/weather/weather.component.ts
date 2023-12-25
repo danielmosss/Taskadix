@@ -22,6 +22,12 @@ export class WeatherComponent implements OnInit {
   ngOnInit(): void {
     this.sanitizedUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(this.buienradarUrl);
 
+    if (window.innerWidth > 768) {
+      this.getWeather()
+    }
+  }
+
+  getWeather() {
     this._dataService.getWeather().subscribe(data => {
       this.currentWeather = data.current
       this.location = data.location

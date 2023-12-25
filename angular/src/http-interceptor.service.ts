@@ -22,7 +22,7 @@ export class HttpInterceptorService implements HttpInterceptor {
           this._dataService.logout();
         }
         else {
-          var errorBody = `${error.error} (${error.status} - ${error.statusText})`
+          var errorBody = `${lcErr} (${error.status} - ${error.statusText})`
           this._snackbar.open(errorBody, '', { duration: 3000, horizontalPosition: 'left' });
         }
         return throwError(error);

@@ -56,6 +56,10 @@ export class TodoOverviewComponent implements OnInit {
     this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
 
+  isMobile(){
+    return this._dateService.isMobile();
+  }
+
   getTodoTasks() {
     if (this.dateRange) this._dateService.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
     else this._dateService.getTodo().subscribe(data => { this.handleGetTodos(data); })

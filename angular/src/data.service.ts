@@ -14,6 +14,10 @@ export class DataService {
   public username: string;
   public userLoggedIn: boolean = false;
 
+  public isMobile(): boolean {
+    return window.innerWidth <= 768;
+  }
+
   public getUsername() {
     return this.username;
   }

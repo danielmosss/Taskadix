@@ -26,29 +26,31 @@
   </div>
 </div>
 
-<div class="todoRow">
-  <div *ngFor="let day of Todolist; let i = index"
-       [id]="day.day + 'List'"
-       cdkDropList
-       [cdkDropListData]="day.tasks"
-       [cdkDropListConnectedTo]="connectedLists"
-       class="dayTasks"
-       (cdkDropListDropped)="drop($event)">
+<div class="container">
+  <div class="todoRow">
+    <div *ngFor="let day of Todolist; let i = index"
+         [id]="day.day + 'List'"
+         cdkDropList
+         [cdkDropListData]="day.tasks"
+         [cdkDropListConnectedTo]="connectedLists"
+         class="dayTasks"
+         (cdkDropListDropped)="drop($event)">
 
-    <div class="day">
-      {{day.day}}
-    </div>
+      <div class="day">
+        {{day.day}}
+      </div>
 
-    <div *ngFor="let task of day.tasks" cdkDrag class="todo">
-      <div class="placeholder" *cdkDragPlaceholder></div>
-      <mat-card class="card" (click)="openCardInfo(task)">
-        <mat-card-header>
-          <mat-card-title>{{task.title}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>{{task.description}}</p>
-        </mat-card-content>
-      </mat-card>
+      <div *ngFor="let task of day.tasks" cdkDrag [cdkDragDisabled]="isMobile()" class="todo">
+        <div class="placeholder" *cdkDragPlaceholder></div>
+        <mat-card class="card" (click)="openCardInfo(task)">
+          <mat-card-header>
+            <mat-card-title>{{task.title}}</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p>{{task.description}}</p>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
   </div>
 </div>
