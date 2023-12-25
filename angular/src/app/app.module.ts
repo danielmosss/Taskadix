@@ -9,9 +9,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { WeatherComponent } from './unusedjunkjard/weather/weather.component';
+import { WeatherComponent } from './unusedjunk/weather/weather.component';
 import { TodoOverviewComponent } from './pages/todo-overview/todo-overview.component';
-import { ForcastBuienradarRegen3hComponent } from './unusedjunkjard/forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
+import { ForcastBuienradarRegen3hComponent } from './unusedjunk/forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
 import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
 import { MatDialogModule } from '@angular/material/dialog';
