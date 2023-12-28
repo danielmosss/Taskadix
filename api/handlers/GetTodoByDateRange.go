@@ -42,7 +42,7 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	}
 	defer dbConnection.Close()
 
-	query := `SELECT id, title, description, date, todoOrder, isCHEagenda 
+	query := `SELECT id, title, description, date, todoOrder, checked, isCHEagenda 
 			  FROM todos 
 			  WHERE userId = ? 
 			    AND date >= ? AND date <= ? 
@@ -58,7 +58,7 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	tasksMap := make(map[string][]todoCard)
 	for result.Next() {
 		var task todoCard
-		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.IsCHE)
+		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.Checked, &task.IsCHE)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

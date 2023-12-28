@@ -16,6 +16,16 @@
       <i class="fa-solid fa-file-arrow-up"></i>
       Upload JSON
     </button>
+    <button mat-button class="mat-button neg" (click)="showCheckedItems = !showCheckedItems">
+      <div *ngIf="showCheckedItems">
+        <i class="fa-solid fa-eye-slash"></i>
+        Hide checked items
+      </div>
+      <div *ngIf="!showCheckedItems">
+        <i class="fa-solid fa-eye"></i>
+        Show checked items
+      </div>
+    </button>
   </div>
 
   <div class="weekSelector">
@@ -37,19 +47,28 @@
          (cdkDropListDropped)="drop($event)">
 
       <div class="day">
-        {{day.day}}
+        <div class="name withsubtitle">
+          {{day.day}}
+        </div>
+
+      <p *ngIf="!showCheckedItems && getCheckItemsForDay(day) > 0" class="checkedCount">
+        {{getCheckItemsForDay(day)}} checked items.
+      </p>
       </div>
 
+
       <div *ngFor="let task of day.tasks" cdkDrag [cdkDragDisabled]="isMobile()" class="todo">
-        <div class="placeholder" *cdkDragPlaceholder></div>
-        <mat-card class="card" (click)="openCardInfo(task)">
-          <mat-card-header>
-            <mat-card-title>{{task.title}}</mat-card-title>
-          </mat-card-header>
-          <mat-card-content>
-            <p>{{task.description}}</p>
-          </mat-card-content>
-        </mat-card>
+        <ng-container *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
+          <div class="placeholder" *cdkDragPlaceholder></div>
+          <mat-card class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}">
+            <mat-card-header>
+              <mat-card-title>{{task.title}}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <p>{{task.description}}</p>
+            </mat-card-content>
+          </mat-card>
+        </ng-container>
       </div>
     </div>
   </div>

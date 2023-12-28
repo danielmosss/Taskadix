@@ -54,7 +54,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 	}
 
 	var task todoCard
-	query = "SELECT id, title, description, date, todoOrder, isCHEagenda FROM todos WHERE id = ?;"
+	query = "SELECT id, title, description, date, todoOrder, checked, isCHEagenda FROM todos WHERE id = ?;"
 	result, err = dbConnection.Query(query, id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -64,7 +64,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 	defer dbConnection.Close()
 
 	for result.Next() {
-		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.IsCHE)
+		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.Checked, &task.IsCHE)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

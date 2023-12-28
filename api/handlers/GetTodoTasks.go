@@ -26,7 +26,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	todayDate := time.Now().Format(time.DateOnly)
 	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
 
-	query := `SELECT id, title, description, date, todoOrder, isCHEagenda 
+	query := `SELECT id, title, description, date, todoOrder, checked, isCHEagenda 
 			  FROM todos 
 			  WHERE userId = ? 
 			    AND date >= ? AND date < ? 
@@ -42,7 +42,7 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	tasksMap := make(map[string][]todoCard)
 	for result.Next() {
 		var task todoCard
-		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.IsCHE)
+		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.Checked, &task.IsCHE)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

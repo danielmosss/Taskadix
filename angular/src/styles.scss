@@ -79,6 +79,14 @@ body {
   }
 }
 
+.greyedoutTodo {
+  background-color: #888888 !important;
+}
+
+.withsubtitle {
+  margin-bottom: 0;
+}
+
 @media (min-width: 768px) {
   .popup {
     min-width: 450px;
