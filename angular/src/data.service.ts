@@ -56,6 +56,10 @@ export class DataService {
     return this.http.post<{status: string}>(this._SecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
   }
 
+  public checkTodoTask(todoCard: Todo){
+    return this.http.post<{status: string}>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
+  }
+
   public getUserData(){
     return this.http.get<{username: string}>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() });
   }
