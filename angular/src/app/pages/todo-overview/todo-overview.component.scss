@@ -56,7 +56,6 @@
     background-color: #434447;
     padding: 0.5rem;
     border-radius: 5px;
-    gap: 0.5rem;
 
     .day {
       padding: 6px 12px;
@@ -81,6 +80,7 @@
 
     .todo {
       .card {
+        margin-top: 0.5rem;
         max-width: 300px;
         background-color: #d6d6d6;
         cursor: pointer;
