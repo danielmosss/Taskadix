@@ -32,8 +32,8 @@ func PostCheckTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "UPDATE todos SET checked = ? WHERE id = ? AND userId = ?;"
-	result, err := dbConnection.Query(query, markTask.Checked, markTask.Id, userId)
+	query := "UPDATE todos SET checked = true WHERE id = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, markTask.Id, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
