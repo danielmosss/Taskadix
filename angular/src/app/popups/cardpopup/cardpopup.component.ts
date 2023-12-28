@@ -74,4 +74,20 @@ export class CardpopupComponent implements OnInit {
       this.dialogRef.close();
     })
   }
+
+  checkTodo(todoCard: Todo){
+    this._dataService.checkTodoTask(todoCard).subscribe(data => {
+      if(data.status == "success"){
+        this.todoCard.checked = true;
+        this.dialogRef.close(this.todoCard);
+        return;
+      }
+      this._snackBar.open("Could not check todo", "Close", {
+        duration: 2000,
+        horizontalPosition: 'left',
+        verticalPosition: 'bottom',
+      })
+      this.dialogRef.close();
+    })
+  }
 }

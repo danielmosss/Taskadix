@@ -133,14 +133,7 @@ export interface interfaceRainForcastPerHour {
 export interface DayTodo {
   day: string,
   date: string,
-  tasks: Array<{
-    id: number,
-    title: string,
-    description: string,
-    date: string,
-    todoOrder: number,
-    IsCHE: boolean,
-  }>
+  tasks: Array<Todo>
 }
 
 export interface Todo {
@@ -150,6 +143,7 @@ export interface Todo {
   date: string,
   todoOrder: number
   IsCHE: boolean,
+  checked: boolean,
   deleted?: boolean
 }
 

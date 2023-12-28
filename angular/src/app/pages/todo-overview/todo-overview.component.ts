@@ -31,6 +31,8 @@ export class TodoOverviewComponent implements OnInit {
   public loading: boolean = false;
   public username: string
 
+  public showCheckedItems: boolean = false;
+
   constructor(private _dateService: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
@@ -162,5 +164,9 @@ export class TodoOverviewComponent implements OnInit {
     this.loading = true;
     this.dateRange = dateRange;
     this.getTodoTasks();
+  }
+
+  getCheckItemsForDay(day: DayTodo) {
+    return day.tasks.filter(t => t.checked).length
   }
 }

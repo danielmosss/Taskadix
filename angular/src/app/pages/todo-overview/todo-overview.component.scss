@@ -58,13 +58,19 @@
     border-radius: 5px;
     gap: 0.5rem;
 
-
     .day {
       padding: 6px 12px;
       min-width: 100px;
       text-align: center;
       background-color: #d6d6d6;
-      font-size: x-large;
+
+      .name{
+        font-size: x-large;
+      }
+
+      .checkedCount{
+        margin: 0;
+      }
     }
 
     .placeholder {
