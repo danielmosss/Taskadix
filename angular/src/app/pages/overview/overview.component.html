@@ -1,13 +1,17 @@
-<div class="header">
-  <div class="addTodo">
+<div class="grid">
+
+  <div class="user">
     <button mat-button class="mat-button info" disabled>
       <i class="fa-solid fa-user"></i>
       {{username}}
     </button>
-    <button mat-button class="mat-button pos" (click)="logout()">
-      <i class="fa-solid fa-right-from-bracket"></i>
+    <button mat-button class="mat-button pos">
+      <i class="fa-solid fa-right-from-bracket" (click)="logout()"></i>
       Logout
     </button>
+  </div>
+
+  <div class="actionbuttons">
     <button mat-button class="mat-button pos" (click)="openCardCreate()">
       <i class="fa-solid fa-plus fa-lg"></i>
       Create todo
@@ -28,12 +32,15 @@
     </button>
   </div>
 
-  <div class="weekSelector">
-    <div *ngIf="loading" class="loader">
-      <app-loader [size]="40" [colortype]="'primary'" [height100]="true"></app-loader>
+  <div class="datepicker">
+    <div class="weekSelector">
+      <app-weekselector (onDateSelected)="handleDateSelection($event)"></app-weekselector>
+      <div *ngIf="loading" class="loader">
+        <app-loader [size]="40" [colortype]="'primary'" [height100]="true"></app-loader>
+      </div>
     </div>
-    <app-weekselector (onDateSelected)="handleDateSelection($event)"></app-weekselector>
   </div>
+
 </div>
 
 <div class="container">

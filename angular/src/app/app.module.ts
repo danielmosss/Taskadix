@@ -1,49 +1,50 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { WeatherComponent } from './unusedjunk/weather/weather.component';
-import { TodoOverviewComponent } from './pages/todo-overview/todo-overview.component';
-import { ForcastBuienradarRegen3hComponent } from './unusedjunk/forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
-import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
+import { HttpInterceptorService } from 'src/http-interceptor.service';
 
+// Angular Materials
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatInputModule } from '@angular/material/input';
-import { CreateTodoComponent } from './popups/create-todo/create-todo.component';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
-import { LoaderComponent } from './addons/loader/loader.component';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+
+
+// Components
 import { LoginComponent } from './pages/login/login.component';
-import { HttpInterceptorService } from 'src/http-interceptor.service';
+import { OverviewComponent } from './pages/overview/overview.component';
+
+import { CreateTodoComponent } from './popups/create-todo/create-todo.component';
 import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
+import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
-
-
+import { LoaderComponent } from './addons/loader/loader.component';
+import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
+import { TabsComponent } from './addons/tabs/tabs.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    WeatherComponent,
-    TodoOverviewComponent,
-    ForcastBuienradarRegen3hComponent,
+    OverviewComponent,
     CardpopupComponent,
     CreateTodoComponent,
     WeekselectorComponent,
     LoaderComponent,
     LoginComponent,
-    UploadjsonComponent
+    UploadjsonComponent,
+    TabsComponent
   ],
   imports: [
     BrowserModule,
@@ -61,10 +62,11 @@ import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })

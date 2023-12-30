@@ -1,18 +1,11 @@
 <ng-container *ngIf="isLoggedIn() && isJWTtokenValid()">
-  <div class="page">
-    <!-- <div class="information">
-      <div class="weather card">
-        <app-weather></app-weather>
-      </div>
-    </div> -->
-    <div class="todo card">
-      <app-todo-overview></app-todo-overview>
-    </div>
+  <div class="todo">
+    <app-overview></app-overview>
   </div>
 </ng-container>
 
-<div class="notLoggedIn" *ngIf="!isLoggedIn()">
+<ng-container class="notLoggedIn" *ngIf="!isLoggedIn()">
   <div class="login">
     <app-login></app-login>
   </div>
-</div>
+</ng-container>

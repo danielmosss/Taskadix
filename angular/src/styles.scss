@@ -11,8 +11,8 @@ body {
 }
 
 body {
-  // background: radial-gradient(circle at bottom left, rgb(224, 0, 176),rgb(0, 0, 180));
-  background: radial-gradient(circle at bottom left, rgb(100, 6, 52), #020b1c);
+  //background: radial-gradient(circle at bottom left, rgb(41 186 255), #0019fca8);
+  background: #2b2d31;
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
@@ -69,13 +69,11 @@ body {
   &.neg {
     background-color: #F3F3F3;
     color: #333333;
-    font-weight: 100;
   }
 
   &.info {
     background-color: #3c082a;
     color: #ffffff !important;
-    font-weight: 100;
   }
 }
 
@@ -87,7 +85,7 @@ body {
   margin-bottom: 0;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 1000px) {
   .popup {
     min-width: 450px;
   }

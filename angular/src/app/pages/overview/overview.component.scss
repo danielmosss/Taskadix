@@ -1,48 +1,72 @@
-.header {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+.grid {
+  display: grid;
+  grid-template-areas:
+    "actionbtns actionbtns user"
+    "datepicker datepicker user";
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 3fr 5fr;
 
-  .addTodo {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
+  border-bottom: 2px solid #ffffff;
+
+  .user {
+    grid-area: user;
     display: flex;
-    gap: 1rem
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: row;
+    gap: 1rem;
   }
 
-  .weekSelector {
+  .actionbuttons {
+    grid-area: actionbtns;
     display: flex;
+    gap: 1rem;
     flex-direction: row;
-    align-items: flex-start;
+  }
 
-    .loader {
-      margin: 10px 20px 0 0;
+  .datepicker {
+    grid-area: datepicker;
+
+    .weekSelector {
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      gap: 1rem;
+
+      .loader {
+        margin: 10px 20px 0 0;
+      }
     }
   }
 }
 
-@media screen and (max-width: 768px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
 
-    .addTodo {
+@media (max-width: 1000px) {
+  .grid{
+    grid-template-areas:
+      "user"
+      "actionbtns"
+      "datepicker";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+    gap: 1rem;
+
+    .user {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: stretch;
+      align-items: unset;
+      justify-content: unset;
+    }
+
+    .actionbuttons {
       display: grid;
       justify-items: stretch;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 7px;
-      row-gap: 7px;
-      width: 100%;
+      // grid template with 3 columns, 1fr 1fr 1fr until 500px, then 1fr 1fr
+      grid-template-columns: repeat(auto-fit, minmax(191px, 1fr));
     }
   }
-}
-
-.container {
-  // make that the container is the (height - header) - 3 rem (footer)
-  // display: flex;
-  // flex-direction: column;
-  // gap: 1rem;
-  // padding: 0 1rem;
-  // overflow-x: scroll;
 }
 
 .todoRow {
@@ -113,7 +137,7 @@
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
 }
 
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .todoRow {
     flex-direction: column;
     gap: 1rem;
@@ -121,10 +145,5 @@
     .card {
       max-width: none !important;
     }
-  }
-
-  app-weekselector,
-  .weekSelector {
-    width: 100%;
   }
 }
