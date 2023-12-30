@@ -1,0 +1,25 @@
+.grid {
+  display: grid;
+  grid-template-areas:
+    "actionbtns actionbtns user"
+    "datepicker datepicker user";
+  grid-template-columns: 2fr 2fr 1fr;
+  grid-template-rows: 1fr 1fr;
+
+  .user {
+    grid-area: user;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-end;
+    flex-direction: row;
+    gap: 1rem;
+  }
+
+  .actionbuttons {
+    grid-area: actionbtns;
+  }
+
+  .datepicker {
+    grid-area: datepicker;
+  }
+}

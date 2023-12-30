@@ -14,6 +14,7 @@ import { DayTodo, Todo } from '../../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadjsonComponent } from '../../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
+import * as moment from 'moment';
 
 
 @Component({
@@ -33,16 +34,21 @@ export class OverviewComponent implements OnInit {
 
   public showCheckedItems: boolean = false;
 
-  constructor(private _dateService: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
+  constructor(private _dateservice: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
     setTimeout(async () => {
       while (!this.username) {
-        this.username = this._dateService.getUsername();
+        this.username = this._dateservice.getUsername();
         await timer(100);
       }
     })
+  }
+
+  logout() {
+    this._dateservice.logout();
+    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
 
   openJsonuploader(){
@@ -53,18 +59,13 @@ export class OverviewComponent implements OnInit {
     })
   }
 
-  logout() {
-    this._dateService.logout();
-    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
-  }
-
   isMobile(){
-    return this._dateService.isMobile();
+    return this._dateservice.isMobile();
   }
 
   getTodoTasks() {
-    if (this.dateRange) this._dateService.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
-    else this._dateService.getTodo().subscribe(data => { this.handleGetTodos(data); })
+    if (this.dateRange) this._dateservice.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
+    else this._dateservice.getTodo().subscribe(data => { this.handleGetTodos(data); })
   }
 
   async handleGetTodos(data: DayTodo[]) {
@@ -119,7 +120,7 @@ export class OverviewComponent implements OnInit {
       })
     }
 
-    this._dateService.putTodoList(this.updatedList).subscribe(data => {
+    this._dateservice.putTodoList(this.updatedList).subscribe(data => {
       this.getTodoTasks();
       this.updatedList = [];
     })

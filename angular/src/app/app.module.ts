@@ -19,6 +19,8 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
+
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
@@ -30,6 +32,7 @@ import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
 import { LoaderComponent } from './addons/loader/loader.component';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
+import { TabsComponent } from './addons/tabs/tabs.component';
 
 @NgModule({
   declarations: [
@@ -40,7 +43,8 @@ import { WeekselectorComponent } from './addons/weekselector/weekselector.compon
     WeekselectorComponent,
     LoaderComponent,
     LoginComponent,
-    UploadjsonComponent
+    UploadjsonComponent,
+    TabsComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +62,8 @@ import { WeekselectorComponent } from './addons/weekselector/weekselector.compon
     FormsModule,
     ReactiveFormsModule,
     MatSnackBarModule,
-    MatProgressSpinnerModule
+    MatProgressSpinnerModule,
+    MatTabsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }

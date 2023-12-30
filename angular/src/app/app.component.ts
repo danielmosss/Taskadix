@@ -10,22 +10,22 @@ import { DataService } from 'src/data.service';
 export class AppComponent implements OnInit {
   title = 'dashboard';
 
-  constructor(private _dateService: DataService, private _snackbar: MatSnackBar) { }
+  constructor(private _dateservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-    if (this._dateService.isLoggedIn()) {
-      this._dateService.getUserData().subscribe(data => {
-        this._dateService.validJwtToken = true;
-        this._dateService.username = data.username;
+    if (this._dateservice.isLoggedIn()) {
+      this._dateservice.getUserData().subscribe(data => {
+        this._dateservice.validJwtToken = true;
+        this._dateservice.username = data.username;
       })
     }
   }
 
   isLoggedIn(): boolean {
-    return this._dateService.isLoggedIn();
+    return this._dateservice.isLoggedIn();
   }
 
   isJWTtokenValid(): boolean {
-    return this._dateService.validJwtToken;
+    return this._dateservice.validJwtToken;
   }
 }
