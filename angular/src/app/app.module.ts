@@ -6,12 +6,9 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
-import { WeatherComponent } from './unusedjunk/weather/weather.component';
 import { TodoOverviewComponent } from './pages/todo-overview/todo-overview.component';
-import { ForcastBuienradarRegen3hComponent } from './unusedjunk/forcast-buienradar-regen3h/forcast-buienradar-regen3h.component';
 import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 
 import { MatDialogModule } from '@angular/material/dialog';
@@ -21,23 +18,18 @@ import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import {MatSnackBarModule} from '@angular/material/snack-bar';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
-import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { LoaderComponent } from './addons/loader/loader.component';
 import { LoginComponent } from './pages/login/login.component';
 import { HttpInterceptorService } from 'src/http-interceptor.service';
 import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
 
-
-
-
 @NgModule({
   declarations: [
     AppComponent,
-    WeatherComponent,
     TodoOverviewComponent,
-    ForcastBuienradarRegen3hComponent,
     CardpopupComponent,
     CreateTodoComponent,
     WeekselectorComponent,
@@ -64,7 +56,7 @@ import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
     MatProgressSpinnerModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true}
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
   ],
   bootstrap: [AppComponent]
 })
