@@ -43,17 +43,28 @@
 
 
 @media (max-width: 1000px) {
-  .header {
-    flex-direction: column;
-    align-items: flex-start;
+  .grid{
+    grid-template-areas:
+      "user"
+      "actionbtns"
+      "datepicker";
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
+    gap: 1rem;
 
-    .addTodo {
+    .user {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      justify-items: stretch;
+      align-items: unset;
+      justify-content: unset;
+    }
+
+    .actionbuttons {
       display: grid;
       justify-items: stretch;
-      grid-template-columns: 1fr 1fr;
-      column-gap: 7px;
-      row-gap: 7px;
-      width: 100%;
+      // grid template with 3 columns, 1fr 1fr 1fr until 500px, then 1fr 1fr
+      grid-template-columns: repeat(auto-fit, minmax(191px, 1fr));
     }
   }
 }
