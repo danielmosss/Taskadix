@@ -15,7 +15,7 @@ export class DataService {
   public userLoggedIn: boolean = false;
 
   public isMobile(): boolean {
-    return window.innerWidth <= 768;
+    return window.innerWidth <= 1000;
   }
 
   public getUsername() {
