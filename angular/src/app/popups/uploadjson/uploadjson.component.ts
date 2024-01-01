@@ -78,11 +78,15 @@ export class UploadjsonComponent implements OnInit {
         return;
       }
 
-      this._dataService.uploadBulkTodos(uploadedJson).subscribe(data => {
-        this._snackBar.open("Uploaded", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
-        this.dialogRef.close(data);
-      })
-      this.close();
+      try {
+        this._dataService.uploadBulkTodos(uploadedJson).subscribe(data => {
+          this._snackBar.open("Uploaded", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
+          this.dialogRef.close(data);
+        })
+      } catch (error) {
+        this._snackBar.open("Error uploading", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
+        this.close();
+      }
     })
   }
 
