@@ -110,17 +110,23 @@
         cursor: pointer;
 
         p {
-          font-size: 14px;
+          font-size: small;
           margin: 0;
           white-space: pre-line;
         }
 
         mat-card-header {
-          padding: 8px 12px 0;
+          padding: 5px 8px 0;
+
+          h3{
+            margin: 0;
+            font-weight: 600;
+            font-size: medium;
+          }
         }
 
         mat-card-content {
-          padding: 4px 12px 12px 12px;
+          padding: 4px 8px;
           text-align: left;
         }
       }

@@ -69,7 +69,7 @@
           <div class="placeholder" *cdkDragPlaceholder></div>
           <mat-card class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}">
             <mat-card-header>
-              <mat-card-title>{{task.title}}</mat-card-title>
+              <h3>{{task.title}}</h3>
             </mat-card-header>
             <mat-card-content>
               <p>{{task.description}}</p>
