@@ -70,8 +70,8 @@
 }
 
 .todoRow {
-  display: flex;
-  flex-direction: row;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
   gap: 0.75rem;
 
   .dayTasks {
