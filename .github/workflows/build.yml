@@ -47,8 +47,6 @@ jobs:
       run: |
         cd angular
         npm install --production
-        npm install -g @angular/cli
-
 
     # Create production angular webpack build
     - name: Build Angular Production App
