@@ -43,7 +43,7 @@
 
 
 @media (max-width: 1000px) {
-  .grid{
+  .grid {
     grid-template-areas:
       "user"
       "actionbtns"
@@ -63,7 +63,6 @@
     .actionbuttons {
       display: grid;
       justify-items: stretch;
-      // grid template with 3 columns, 1fr 1fr 1fr until 500px, then 1fr 1fr
       grid-template-columns: repeat(auto-fit, minmax(191px, 1fr));
     }
   }
@@ -71,7 +70,7 @@
 
 .todoRow {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(165px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
   gap: 0.75rem;
 
   .dayTasks {
@@ -80,6 +79,7 @@
     background-color: #434447;
     padding: 0.5rem;
     border-radius: 5px;
+    gap: 0.5rem;
 
     .day {
       padding: 6px 12px;
@@ -87,11 +87,11 @@
       text-align: center;
       background-color: #d6d6d6;
 
-      .name{
+      .name {
         font-size: x-large;
       }
 
-      .checkedCount{
+      .checkedCount {
         margin: 0;
       }
     }
@@ -99,48 +99,71 @@
     .placeholder {
       background: #424242;
       border: dotted 3px #999;
-      min-height: 60px;
+      min-height: 40px;
+      margin: 4px 0px;
     }
 
     .todo {
       .card {
-        margin-top: 0.5rem;
-        max-width: 300px;
         background-color: #d6d6d6;
+        background: #d6d6d6;
         cursor: pointer;
+        padding: 7px 8px;
+        border-radius: 4px;
 
-        p {
-          font-size: small;
-          margin: 0;
-          white-space: pre-line;
-        }
-
-        mat-card-header {
-          padding: 5px 8px 0;
-
-          h3{
-            margin: 0;
-            font-weight: 600;
-            font-size: medium;
+        .title {
+          h3 {
+            margin: 0 0 0.3rem 0;
+            font-weight: 500;
+            font-size: 18px;
           }
         }
 
-        mat-card-content {
-          padding: 4px 8px;
-          text-align: left;
+        .description {
+          p {
+            font-size: 15px;
+            margin: 0;
+            white-space: pre-line;
+            color: #111111;
+          }
         }
       }
     }
   }
 }
 
-
+// This is the preview of the card when dragging
 .cdk-drag-preview {
   box-sizing: border-box;
   border-radius: 4px;
   box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
     0 8px 10px 1px rgba(0, 0, 0, 0.14),
     0 3px 14px 2px rgba(0, 0, 0, 0.12);
+
+  .card {
+    margin-top: 0.5rem;
+    background-color: #d6d6d6;
+    background: #d6d6d6;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 4px;
+
+    .title {
+      h3 {
+        margin: 0;
+        font-weight: 600;
+        font-size: medium;
+      }
+    }
+
+    .description {
+      p {
+        font-size: small;
+        margin: 0;
+        white-space: pre-line;
+      }
+    }
+  }
 }
 
 @media (max-width: 1000px) {
