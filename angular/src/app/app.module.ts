@@ -33,6 +33,7 @@ import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 import { LoaderComponent } from './addons/loader/loader.component';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
 import { TabsComponent } from './addons/tabs/tabs.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { TabsComponent } from './addons/tabs/tabs.component';
     LoaderComponent,
     LoginComponent,
     UploadjsonComponent,
-    TabsComponent
+    TabsComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

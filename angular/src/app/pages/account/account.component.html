@@ -1,0 +1,60 @@
+<div class="gridContainer">
+  <div class="empty"></div>
+
+  <div class="content">
+    <!-- 3 textareas
+      use angular material
+      1. username (readonly)
+      2. email (readonly)
+      3. webcallurl (editable only if empty)
+         button (Sync webcall)
+    -->
+
+    <div class="username">
+      <mat-form-field>
+        <mat-label>Username</mat-label>
+        <input matInput placeholder="Username" [value]="userdata?.username" readonly>
+      </mat-form-field>
+    </div>
+
+    <div class="email">
+      <mat-form-field>
+        <mat-label>Email</mat-label>
+        <input matInput placeholder="Email" [value]="userdata?.email" readonly>
+      </mat-form-field>
+    </div>
+
+    <div class="webcallurl">
+      <mat-form-field *ngIf="userdata?.webcallurl != ''">
+        <mat-label>Webcall URL</mat-label>
+        <input matInput [value]="userdata?.webcallurl" readonly>
+      </mat-form-field>
+
+      <mat-form-field *ngIf="userdata?.webcallurl == ''">
+        <mat-label>Webcall URL</mat-label>
+        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx" [value]="userdata?.webcallurl">
+      </mat-form-field>
+
+      <div class="buttons">
+        <button mat-button class="mat-button pos">
+          <i class="fa-solid fa-sync"></i>
+          Sync webcall
+        </button>
+        <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
+          <i class="fa-solid fa-save"></i>
+          Save webcallurl
+        </button>
+      </div>
+    </div>
+
+    <div class="buttons right">
+      <button mat-button class="mat-button pos">
+        <i class="fa-solid fa-right-from-bracket" (click)="logout()"></i>
+        Logout
+      </button>
+    </div>
+
+  </div>
+
+  <div class="empty"></div>
+</div>

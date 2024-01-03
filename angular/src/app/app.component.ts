@@ -14,10 +14,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if (this._dateservice.isLoggedIn()) {
-      this._dateservice.getUserData().subscribe(data => {
-        this._dateservice.validJwtToken = true;
-        this._dateservice.username = data.username;
-      })
+      this._dateservice.getUserData();
     }
   }
 

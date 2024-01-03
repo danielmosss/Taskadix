@@ -30,20 +30,16 @@ export class OverviewComponent implements OnInit {
   public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
-  public username: string
+  public username = this._dateservice.getUsername();
 
   public showCheckedItems: boolean = false;
+
+  public viewAccountSettings: boolean = false;
 
   constructor(private _dateservice: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getTodoTasks();
-    setTimeout(async () => {
-      while (!this.username) {
-        this.username = this._dateservice.getUsername();
-        await timer(100);
-      }
-    })
   }
 
   logout() {

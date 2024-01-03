@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
+import { DayTodo, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 
 @Injectable({
@@ -11,15 +11,16 @@ export class DataService {
   private _SecureApi = this._hostname + "/api";
 
   public validJwtToken: boolean = false;
-  public username: string;
   public userLoggedIn: boolean = false;
+
+  public userdata: userdata | null;
 
   public isMobile(): boolean {
     return window.innerWidth <= 1000;
   }
 
   public getUsername() {
-    return this.username;
+    return this.userdata?.username;
   }
 
   constructor(private http: HttpClient) { }
@@ -61,7 +62,10 @@ export class DataService {
   }
 
   public getUserData(){
-    return this.http.get<{username: string}>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() });
+    this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
+      this.validJwtToken = true;
+      this.userdata = data;
+    })
   }
 
   public uploadBulkTodos(todoCards: newTodoRequirements[]){
@@ -82,12 +86,12 @@ export class DataService {
         this._jsonwebtoken = res.jsonwebtoken;
         this.validJwtToken = true;
         this.userLoggedIn = true;
-        this.username = username;
+        this.getUserData();
       }
     );
   }
   public logout() {
-    this.username = '';
+    this.userdata = null;
     localStorage.removeItem('jsonwebtoken');
   }
 
