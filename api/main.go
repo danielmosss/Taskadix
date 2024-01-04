@@ -4,14 +4,12 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"time"
-
 	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -38,15 +36,6 @@ func main() {
 	//} else {
 	//	port = ":8000"
 	//}
-
-	functions.ProcessCalanderData()
-
-	ticker := time.NewTicker(12 * time.Hour)
-	go func() {
-		for range ticker.C {
-			functions.ProcessCalanderData()
-		}
-	}()
 
 	fmt.Println("Starting server on port 8000")
 

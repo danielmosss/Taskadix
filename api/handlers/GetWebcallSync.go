@@ -18,7 +18,7 @@ func GetWebcallSync(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT 1 FROM users WHERE id = ? AND (webcalllastsynced < DATE_SUB(NOW(), INTERVAL 1 DAY) OR webcalllastsynced IS NULL)"
+	query := "SELECT 1 FROM users WHERE id = ? AND (webcalllastsynced < DATE_SUB(NOW(), INTERVAL 1 HOUR) OR webcalllastsynced IS NULL)"
 	result, err := dbConnection.Query(query, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -39,6 +39,8 @@ func GetWebcallSync(res http.ResponseWriter, req *http.Request) {
 	}
 	defer resultUpdate.Close()
 	defer dbConnection.Close()
+
+	functions.ProcessCalanderData(userId)
 
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"status": "success"}`))

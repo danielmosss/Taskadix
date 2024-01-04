@@ -4,8 +4,6 @@ import (
 	"fmt"
 	ics "github.com/arran4/golang-ical"
 	"net/http"
-	"os"
-	"strconv"
 	"strings"
 	"time"
 	_ "time/tzdata"
@@ -17,31 +15,52 @@ type Task struct {
 	Date        string `json:"date"`
 }
 
-func ProcessCalanderData() {
-	tasks, err := fetchCalendarData()
+func ProcessCalanderData(userid int) {
+	dbconnection, err := GetDatabaseConnection()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	query := "SELECT webcallurl FROM users WHERE id = ?;"
+	result, err := dbconnection.Query(query, userid)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	var webcallurl string
+	for result.Next() {
+		err := result.Scan(&webcallurl)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	defer result.Close()
+
+	tasks, err := fetchCalendarData(webcallurl)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	var userIdString = os.Getenv("userIdWebcall")
-	userId, err := strconv.Atoi(userIdString)
-	if err != nil {
-		fmt.Errorf("userIdWebcall is not defined or not a number")
-		return
-	}
-
 	for _, task := range tasks {
 		fmt.Println(task)
-		if !taskExistsInDB(task, userId) {
-			insertTaskIntoDB(task, userId)
+		if !taskExistsInDB(task, userid) {
+			insertTaskIntoDB(task, userid)
 		}
 	}
+
+	updateSync := "UPDATE users SET webcalllastsynced = NOW() WHERE id = ?;"
+	resultUpdate, err := dbconnection.Query(updateSync, userid)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer resultUpdate.Close()
+	defer dbconnection.Close()
 }
 
-func fetchCalendarData() ([]Task, error) {
-	url := os.Getenv("webcallCHEagenda")
-	url = strings.Replace(url, "webcal", "https", 1)
+func fetchCalendarData(webcallurl string) ([]Task, error) {
+	url := strings.Replace(webcallurl, "webcal", "https", 1)
 
 	resp, err := http.Get(url)
 	if err != nil {
@@ -114,28 +133,11 @@ func insertTaskIntoDB(task Task, userId int) {
 	if err != nil {
 		panic(err.Error())
 	}
-	defer dbConnection.Close()
-
-	query := "SELECT COUNT(*) FROM todos WHERE date = ? AND userId = ?;"
-	result, err := dbConnection.Query(query, task.Date, userId)
-	if err != nil {
-		panic(err.Error())
-	}
-	defer result.Close()
-
-	var todoOrder int
-	for result.Next() {
-		err := result.Scan(&todoOrder)
-		if err != nil {
-			panic(err.Error())
-		}
-	}
-
-	todoOrder = todoOrder + 1
 
 	queryInsert := "call insertAtodoTask(?, ?, ?, true, ?);"
 	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date, userId)
 	if err != nil {
 		panic(err.Error())
 	}
+	defer dbConnection.Close()
 }
