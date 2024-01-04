@@ -41,9 +41,10 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 	for result.Next() {
 		var webcallurl sql.NullString
 		var webcalllastsynced sql.NullString
+		var backgroundcolor sql.NullString
 
 		// webcallurl and webcalllastsynced are nullable, so we need to check for null values
-		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced, &userdata.BackgroundColor)
+		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced, &backgroundcolor)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
@@ -54,10 +55,17 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		} else {
 			userdata.Webcallurl = ""
 		}
+
 		if webcalllastsynced.Valid {
 			userdata.Webcalllastsynced = webcalllastsynced.String
 		} else {
 			userdata.Webcalllastsynced = ""
+		}
+
+		if backgroundcolor.Valid {
+			userdata.BackgroundColor = backgroundcolor.String
+		} else {
+			userdata.BackgroundColor = ""
 		}
 	}
 
