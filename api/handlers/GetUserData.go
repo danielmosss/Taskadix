@@ -67,7 +67,6 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		} else {
 			userdata.BackgroundColor = ""
 		}
-
 	}
 
 	jsondata, err := json.Marshal(userdata)
