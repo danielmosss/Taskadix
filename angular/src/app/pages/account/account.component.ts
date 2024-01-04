@@ -34,15 +34,17 @@ export class AccountComponent implements OnInit {
   }
 
   canSyncWebcall() {
-    if (this.userdata?.webcalllastsynced == null) {
+    if (this.userdata?.webcalllastsynced == "") {
       return true;
     }
-    let lastsynced = new Date(this.userdata.webcalllastsynced);
-    let today = new Date();
-    let diff = Math.abs(today.getTime() - lastsynced.getTime());
-    let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-    if (diffDays > 1) {
-      return true;
+    if (this.userdata) {
+      let lastsynced = new Date(this.userdata.webcalllastsynced);
+      let today = new Date();
+      let diff = Math.abs(today.getTime() - lastsynced.getTime());
+      let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+      if (diffDays > 1) {
+        return true;
+      }
     }
     return false;
   }

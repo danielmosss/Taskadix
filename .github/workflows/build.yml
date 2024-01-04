@@ -46,9 +46,7 @@ jobs:
     - name: Install Dependencies
       run: |
         cd angular
-        npm install
-        npm install -g @angular/cli
-
+        npm install --production
 
     # Create production angular webpack build
     - name: Build Angular Production App
