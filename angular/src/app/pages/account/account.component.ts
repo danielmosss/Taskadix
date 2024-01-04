@@ -21,33 +21,33 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.setUserData();
-    if (this.userdata?.backgroundcolor){
+    if (this.userdata?.backgroundcolor) {
       this.backgroundColor = this.userdata.backgroundcolor;
       this.updateBackgroundcolor();
-    }else{
+    } else {
       this.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
     }
   }
 
-  logout(){
+  logout() {
     this._dataservice.logout();
   }
 
-  canSyncWebcall(){
-    if (this.userdata?.webcalllastsynced == null){
+  canSyncWebcall() {
+    if (this.userdata?.webcalllastsynced == null) {
       return true;
     }
     let lastsynced = new Date(this.userdata.webcalllastsynced);
     let today = new Date();
     let diff = Math.abs(today.getTime() - lastsynced.getTime());
     let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
-    if (diffDays > 1){
+    if (diffDays > 1) {
       return true;
     }
     return false;
   }
 
-  setwebcallurl(){
+  setwebcallurl() {
     this._dataservice.saveWebcallUrl(this.setWebcallurl).subscribe((data: any) => {
       if (data.status == 'success') {
         this.webcallurlSet = true;
@@ -56,7 +56,7 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  syncWebcall(){
+  syncWebcall() {
     this._dataservice.syncWebcall().subscribe((data: any) => {
       if (data.status == 'success') {
         this.onSyncWebcall.emit();
@@ -65,21 +65,21 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  setUserData(){
+  setUserData() {
     this._dataservice.getUserDataReturn().subscribe((data: any) => {
       this.userdata = data;
     })
   }
 
-  updateBackgroundcolor(){
+  updateBackgroundcolor() {
     document.documentElement.style.setProperty('--background-color', this.backgroundColor);
   }
 
-  saveBackgroundcolor(){
+  saveBackgroundcolor() {
     this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
       if (data.status == 'success') {
-        this._snackbar.open('Background color has been updated.', '', {duration: 2000});
-        if (this.userdata){
+        this._snackbar.open('Background color has been updated.', '', { duration: 2000, horizontalPosition: 'left', verticalPosition: 'bottom', });
+        if (this.userdata) {
           this.userdata.backgroundcolor = this.backgroundColor;
         }
       }
