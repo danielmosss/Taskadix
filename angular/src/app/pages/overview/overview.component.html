@@ -82,5 +82,5 @@
 </ng-container>
 
 <ng-container *ngIf="viewAccountSettings">
-  <app-account></app-account>
+  <app-account (onSyncWebcall)="getTodoTasks()"></app-account>
 </ng-container>

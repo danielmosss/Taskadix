@@ -25,21 +25,25 @@
     </div>
 
     <div class="webcallurl">
-      <mat-form-field *ngIf="userdata?.webcallurl != ''">
+      <mat-form-field *ngIf="userdata?.webcallurl != ''" class="webcallForm">
         <mat-label>Webcall URL</mat-label>
         <input matInput [value]="userdata?.webcallurl" readonly>
       </mat-form-field>
 
-      <mat-form-field *ngIf="userdata?.webcallurl == ''">
+      <mat-form-field *ngIf="userdata?.webcallurl == '' || webcallurlSet">
         <mat-label>Webcall URL</mat-label>
-        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx" [value]="userdata?.webcallurl">
+        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx" [(ngModel)]="setWebcallurl">
       </mat-form-field>
 
+
       <div class="buttons">
-        <button mat-button class="mat-button pos">
-          <i class="fa-solid fa-sync"></i>
-          Sync webcall
-        </button>
+          <button mat-button class="mat-button pos" (click)="syncWebcall()">
+            <i class="fa-solid fa-sync"></i>
+            Sync webcall
+          </button>
+          <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
+            last sync: {{userdata?.webcalllastsynced}}
+          </button>
         <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
           <i class="fa-solid fa-save"></i>
           Save webcallurl

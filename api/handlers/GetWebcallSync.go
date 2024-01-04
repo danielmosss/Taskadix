@@ -2,19 +2,10 @@ package handlers
 
 import (
 	"api/functions"
-	"database/sql"
-	"encoding/json"
 	"net/http"
 )
 
-type userData struct {
-	Username          string `json:"username"`
-	Email             string `json:"email"`
-	Webcallurl        string `json:"webcallurl"`
-	Webcalllastsynced string `json:"webcalllast"`
-}
-
-func GetUserData(res http.ResponseWriter, req *http.Request) {
+func GetWebcallSync(res http.ResponseWriter, req *http.Request) {
 	userId, err := functions.GetUserID(req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusUnauthorized)
@@ -27,45 +18,28 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT username, email, webcallurl, webcalllastsynced FROM users WHERE id = ?;"
+	query := "SELECT 1 FROM users WHERE id = ? AND (webcalllastsynced < DATE_SUB(NOW(), INTERVAL 1 DAY) OR webcalllastsynced IS NULL)"
 	result, err := dbConnection.Query(query, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer result.Close()
-	defer dbConnection.Close()
 
-	var userdata userData
-	for result.Next() {
-		var webcallurl sql.NullString
-		var webcalllastsynced sql.NullString
-
-		// webcallurl and webcalllastsynced are nullable, so we need to check for null values
-		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced)
-		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
-			return
-		}
-
-		if webcallurl.Valid {
-			userdata.Webcallurl = webcallurl.String
-		} else {
-			userdata.Webcallurl = ""
-		}
-		if webcalllastsynced.Valid {
-			userdata.Webcalllastsynced = webcalllastsynced.String
-		} else {
-			userdata.Webcalllastsynced = ""
-		}
+	if !result.Next() {
+		http.Error(res, "Webcall lastest sync is less than 1 day ago", http.StatusForbidden)
+		return
 	}
 
-	jsondata, err := json.Marshal(userdata)
+	updateSync := "UPDATE users SET webcalllastsynced = NOW() WHERE id = ?;"
+	resultUpdate, err := dbConnection.Query(updateSync, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
+	defer resultUpdate.Close()
+	defer dbConnection.Close()
 
 	res.Header().Set("Content-Type", "application/json")
-	res.Write(jsondata)
+	res.Write([]byte(`{"status": "success"}`))
 }

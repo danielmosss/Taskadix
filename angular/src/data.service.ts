@@ -61,6 +61,14 @@ export class DataService {
     return this.http.post<{status: string}>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
+  public saveWebcallUrl(url: string){
+    return this.http.post<{status: string}>(this._SecureApi + "/PostWebcallUrl", {url: url}, { headers: this.getCustomHeaders() });
+  }
+
+  public syncWebcall(){
+    return this.http.get<{status: string}>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
+  }
+
   public getUserData(){
     this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
       this.validJwtToken = true;

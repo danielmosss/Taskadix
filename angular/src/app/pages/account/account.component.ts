@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -7,13 +7,15 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./account.component.scss']
 })
 export class AccountComponent implements OnInit {
+  @Output() onSyncWebcall = new EventEmitter<void>();
+
   public userdata = this._dataservice.userdata;
+  public setWebcallurl: string;
+  public webcallurlSet: boolean = false;
 
   constructor(private _dataservice: DataService) { }
 
   ngOnInit(): void {
-    // Get userinfo
-    // Will have: username, email, password, webcall
   }
 
   logout(){
@@ -21,6 +23,19 @@ export class AccountComponent implements OnInit {
   }
 
   setwebcallurl(){
-    // Set webcall url
+    this._dataservice.saveWebcallUrl(this.setWebcallurl).subscribe((data: any) => {
+      if (data.status == 'success') {
+        this._dataservice.getUserData();
+        this.webcallurlSet = true;
+      }
+    })
+  }
+
+  syncWebcall(){
+    this._dataservice.syncWebcall().subscribe((data: any) => {
+      if (data.status == 'success') {
+        this.onSyncWebcall.emit();
+      }
+    })
   }
 }
