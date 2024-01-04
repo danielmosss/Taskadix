@@ -4,14 +4,12 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
-	"log"
-	"net/http"
-	"os"
-	"time"
-
 	handlers2 "github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	"github.com/joho/godotenv"
+	"log"
+	"net/http"
+	"os"
 )
 
 func main() {
@@ -39,15 +37,6 @@ func main() {
 	//	port = ":8000"
 	//}
 
-	functions.ProcessCalanderData()
-
-	ticker := time.NewTicker(12 * time.Hour)
-	go func() {
-		for range ticker.C {
-			functions.ProcessCalanderData()
-		}
-	}()
-
 	fmt.Println("Starting server on port 8000")
 
 	handler := mux.NewRouter()
@@ -69,6 +58,9 @@ func main() {
 	securedRoutes.HandleFunc("/GetUserData", handlers.GetUserData).Methods("GET")
 	securedRoutes.HandleFunc("/UploadBulkTodo", handlers.UploadBulkTodo).Methods("POST")
 	securedRoutes.HandleFunc("/PostCheckTodoTask", handlers.PostCheckTodoTask).Methods("POST")
+	securedRoutes.HandleFunc("/PostWebcallUrl", handlers.PostWebcallUrl).Methods("POST")
+	securedRoutes.HandleFunc("/GetWebcallSync", handlers.GetWebcallSync).Methods("GET")
+	securedRoutes.HandleFunc("/PutBGcolor", handlers.PutBGcolor).Methods("PUT")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

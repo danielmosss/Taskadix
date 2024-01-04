@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayTodo, Todo, Weather, newTodoRequirements } from './app/interfaces';
+import { DayTodo, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 
 @Injectable({
@@ -11,15 +11,16 @@ export class DataService {
   private _SecureApi = this._hostname + "/api";
 
   public validJwtToken: boolean = false;
-  public username: string;
   public userLoggedIn: boolean = false;
+
+  public userdata: userdata | null;
 
   public isMobile(): boolean {
     return window.innerWidth <= 1000;
   }
 
   public getUsername() {
-    return this.username;
+    return this.userdata?.username;
   }
 
   constructor(private http: HttpClient) { }
@@ -60,8 +61,30 @@ export class DataService {
     return this.http.post<{status: string}>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public getUserData(){
-    return this.http.get<{username: string}>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() });
+  public saveWebcallUrl(url: string){
+    return this.http.post<{status: string}>(this._SecureApi + "/PostWebcallUrl", {url: url}, { headers: this.getCustomHeaders() });
+  }
+
+  public syncWebcall(){
+    return this.http.get<{status: string}>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
+  }
+
+  public putBackgroundcolor(color: string){
+    return this.http.put<{status: string}>(this._SecureApi + "/PutBGcolor", {backgroundColor: color}, { headers: this.getCustomHeaders() });
+  }
+
+  public getUserDataOnLoad(){
+    this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
+      this.validJwtToken = true;
+      this.userdata = data;
+      if(this.userdata?.backgroundcolor && this.userdata.backgroundcolor != ""){
+        this.updateBackgroundcolor(this.userdata.backgroundcolor);
+      }
+    })
+  }
+
+  public getUserDataReturn(){
+    return this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
   public uploadBulkTodos(todoCards: newTodoRequirements[]){
@@ -82,17 +105,21 @@ export class DataService {
         this._jsonwebtoken = res.jsonwebtoken;
         this.validJwtToken = true;
         this.userLoggedIn = true;
-        this.username = username;
+        this.getUserDataOnLoad();
       }
     );
   }
   public logout() {
-    this.username = '';
+    this.userdata = null;
     localStorage.removeItem('jsonwebtoken');
   }
 
   public isLoggedIn(): boolean {
     return !!this._jsonwebtoken;
+  }
+
+  public UserData() {
+    return this.userdata;
   }
 
   private get _jsonwebtoken(): string {
@@ -101,6 +128,10 @@ export class DataService {
 
   private set _jsonwebtoken(jsonwebtoken) {
     localStorage.setItem('jsonwebtoken', jsonwebtoken);
+  }
+
+  updateBackgroundcolor(backgroundcolor: string) {
+    document.documentElement.style.setProperty('--background-color', backgroundcolor);
   }
 
   public getCustomHeaders(): HttpHeaders {

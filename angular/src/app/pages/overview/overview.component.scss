@@ -41,7 +41,6 @@
   }
 }
 
-
 @media (max-width: 1000px) {
   .grid {
     grid-template-areas:
@@ -54,7 +53,7 @@
 
     .user {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       justify-items: stretch;
       align-items: unset;
       justify-content: unset;

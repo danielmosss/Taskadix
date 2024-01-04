@@ -8,12 +8,12 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit{
-  public username: string
+  public username = this._dateservice.getUsername();
 
   constructor(private _dateservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this.username = this._dateservice.getUsername();
+
   }
 
   logout() {

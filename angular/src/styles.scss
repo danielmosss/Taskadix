@@ -1,5 +1,9 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
+:root {
+  --background-color: #2b2d31;
+}
+
 html,
 body {
   height: 100%;
@@ -12,7 +16,7 @@ body {
 
 body {
   //background: radial-gradient(circle at bottom left, rgb(41 186 255), #0019fca8);
-  background: #2b2d31;
+  background: var(--background-color);
   background-size: cover;
   background-repeat: no-repeat;
   background-attachment: fixed;
