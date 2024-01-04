@@ -2,7 +2,8 @@ export interface userdata {
   username: string,
   email: string,
   webcallurl: string,
-  webcalllastsynced: string
+  webcalllastsynced: string,
+  backgroundcolor: string
 }
 
 export interface Weather {

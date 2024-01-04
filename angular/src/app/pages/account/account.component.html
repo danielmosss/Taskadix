@@ -24,6 +24,21 @@
       </mat-form-field>
     </div>
 
+    <div class="selector-wrapper">
+      <div class="colorInfo">
+        <ngx-colors ngx-colors-trigger
+        (change)="updateBackgroundcolor()"
+        style="float: left"
+          [(ngModel)]="backgroundColor">
+        </ngx-colors>
+        <div class="color">{{ backgroundColor }}</div>
+      </div>
+      <button mat-button class="mat-button neg" (click)="saveBackgroundcolor()">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        Save color
+      </button>
+    </div>
+
     <div class="webcallurl">
       <mat-form-field *ngIf="userdata?.webcallurl != ''" class="webcallForm">
         <mat-label>Webcall URL</mat-label>
@@ -32,20 +47,21 @@
 
       <mat-form-field *ngIf="userdata?.webcallurl == '' || webcallurlSet">
         <mat-label>Webcall URL</mat-label>
-        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx" [(ngModel)]="setWebcallurl">
+        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
+          [(ngModel)]="setWebcallurl">
       </mat-form-field>
 
 
       <div class="buttons">
-          <button mat-button class="mat-button pos" (click)="syncWebcall()">
-            <i class="fa-solid fa-sync"></i>
-            Sync webcall
-          </button>
-          <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
-            last sync: {{userdata?.webcalllastsynced}}
-          </button>
+        <button mat-button class="mat-button pos" (click)="syncWebcall()">
+          <i class="fa-solid fa-sync"></i>
+          Sync webcall
+        </button>
+        <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
+          last sync: {{userdata?.webcalllastsynced}}
+        </button>
         <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
-          <i class="fa-solid fa-save"></i>
+          <i class="fa-solid fa-cloud-arrow-up"></i>
           Save webcallurl
         </button>
       </div>

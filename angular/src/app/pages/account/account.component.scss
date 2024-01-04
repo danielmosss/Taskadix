@@ -10,3 +10,26 @@ mat-form-field{
 .webcallForm{
   margin-bottom: 0;
 }
+
+.selector-wrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+
+  background: white;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 1px 1px 1px rgba(0, 0, 0, 0.14),
+    0 1px 1px 1px rgba(0, 0, 0, 0.12);
+  padding: 12px 10px 12px 12px;
+  border-radius: 5px;
+  margin-bottom: 20px;
+  overflow: hidden;
+}
+.color {
+  font-family: sans-serif;
+  color: #4a4a4a;
+  font-size: 1em;
+  padding: 6px 10px 4px 10px;
+  letter-spacing: 1px;
+  line-height: 20px;
+  float: left;
+}

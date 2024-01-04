@@ -69,10 +69,17 @@ export class DataService {
     return this.http.get<{status: string}>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
   }
 
+  public putBackgroundcolor(color: string){
+    return this.http.put<{status: string}>(this._SecureApi + "/PutBGcolor", {backgroundColor: color}, { headers: this.getCustomHeaders() });
+  }
+
   public getUserData(){
     this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
       this.validJwtToken = true;
       this.userdata = data;
+      if(this.userdata?.backgroundcolor && this.userdata.backgroundcolor != ""){
+        this.updateBackgroundcolor(this.userdata.backgroundcolor);
+      }
     })
   }
 
@@ -113,6 +120,10 @@ export class DataService {
 
   private set _jsonwebtoken(jsonwebtoken) {
     localStorage.setItem('jsonwebtoken', jsonwebtoken);
+  }
+
+  updateBackgroundcolor(backgroundcolor: string) {
+    document.documentElement.style.setProperty('--background-color', backgroundcolor);
   }
 
   public getCustomHeaders(): HttpHeaders {

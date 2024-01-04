@@ -3,3 +3,6 @@ add column webcallurl varchar(255) null;
 
 alter table users
 add column webcalllastsynced timestamp null;
+
+alter table users
+add column backgroundcolor varchar(50) null;

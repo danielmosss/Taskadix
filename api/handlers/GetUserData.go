@@ -12,6 +12,7 @@ type userData struct {
 	Email             string `json:"email"`
 	Webcallurl        string `json:"webcallurl"`
 	Webcalllastsynced string `json:"webcalllast"`
+	BackgroundColor   string `json:"backgroundcolor"`
 }
 
 func GetUserData(res http.ResponseWriter, req *http.Request) {
@@ -27,7 +28,7 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT username, email, webcallurl, webcalllastsynced FROM users WHERE id = ?;"
+	query := "SELECT username, email, webcallurl, webcalllastsynced, backgroundcolor FROM users WHERE id = ?;"
 	result, err := dbConnection.Query(query, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -42,7 +43,7 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		var webcalllastsynced sql.NullString
 
 		// webcallurl and webcalllastsynced are nullable, so we need to check for null values
-		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced)
+		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced, &userdata.BackgroundColor)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return

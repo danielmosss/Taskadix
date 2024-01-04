@@ -1,4 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -13,9 +14,17 @@ export class AccountComponent implements OnInit {
   public setWebcallurl: string;
   public webcallurlSet: boolean = false;
 
-  constructor(private _dataservice: DataService) { }
+  public backgroundColor: string;
+
+  constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
+    if (this.userdata?.backgroundcolor){
+      this.backgroundColor = this.userdata.backgroundcolor;
+      this.updateBackgroundcolor();
+    }else{
+      this.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
+    }
   }
 
   logout(){
@@ -35,6 +44,18 @@ export class AccountComponent implements OnInit {
     this._dataservice.syncWebcall().subscribe((data: any) => {
       if (data.status == 'success') {
         this.onSyncWebcall.emit();
+      }
+    })
+  }
+
+  updateBackgroundcolor(){
+    document.documentElement.style.setProperty('--background-color', this.backgroundColor);
+  }
+
+  saveBackgroundcolor(){
+    this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
+      if (data.status == 'success') {
+        this._snackbar.open('Background color has been updated.', '', {duration: 2000});
       }
     })
   }

@@ -21,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { NgxColorsModule } from 'ngx-colors';
+
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
@@ -65,7 +67,8 @@ import { AccountComponent } from './pages/account/account.component';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
+    NgxColorsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }

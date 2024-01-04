@@ -71,6 +71,7 @@ func main() {
 	securedRoutes.HandleFunc("/PostCheckTodoTask", handlers.PostCheckTodoTask).Methods("POST")
 	securedRoutes.HandleFunc("/PostWebcallUrl", handlers.PostWebcallUrl).Methods("POST")
 	securedRoutes.HandleFunc("/GetWebcallSync", handlers.GetWebcallSync).Methods("GET")
+	securedRoutes.HandleFunc("/PutBGcolor", handlers.PutBGcolor).Methods("PUT")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(
