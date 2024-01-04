@@ -78,7 +78,7 @@ export class AccountComponent implements OnInit {
   saveBackgroundcolor() {
     this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
       if (data.status == 'success') {
-        this._snackbar.open('Background color has been updated.', '', { duration: 2000, horizontalPosition: 'left', verticalPosition: 'bottom', });
+        this._snackbar.open('Background color has been saved.', '', { duration: 2000, horizontalPosition: 'left', verticalPosition: 'bottom', });
         if (this.userdata) {
           this.userdata.backgroundcolor = this.backgroundColor;
         }
