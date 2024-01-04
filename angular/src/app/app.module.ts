@@ -21,6 +21,8 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 
+import { NgxColorsModule } from 'ngx-colors';
+
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
@@ -33,6 +35,7 @@ import { CardpopupComponent } from './popups/cardpopup/cardpopup.component';
 import { LoaderComponent } from './addons/loader/loader.component';
 import { WeekselectorComponent } from './addons/weekselector/weekselector.component';
 import { TabsComponent } from './addons/tabs/tabs.component';
+import { AccountComponent } from './pages/account/account.component';
 
 @NgModule({
   declarations: [
@@ -44,7 +47,8 @@ import { TabsComponent } from './addons/tabs/tabs.component';
     LoaderComponent,
     LoginComponent,
     UploadjsonComponent,
-    TabsComponent
+    TabsComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
@@ -63,7 +67,8 @@ import { TabsComponent } from './addons/tabs/tabs.component';
     ReactiveFormsModule,
     MatSnackBarModule,
     MatProgressSpinnerModule,
-    MatTabsModule
+    MatTabsModule,
+    NgxColorsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }

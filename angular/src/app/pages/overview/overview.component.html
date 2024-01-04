@@ -1,13 +1,9 @@
 <div class="grid">
 
   <div class="user">
-    <button mat-button class="mat-button info" disabled>
+    <button mat-button class="mat-button info" (click)="viewAccountSettings = !viewAccountSettings">
       <i class="fa-solid fa-user"></i>
-      {{username}}
-    </button>
-    <button mat-button class="mat-button pos">
-      <i class="fa-solid fa-right-from-bracket" (click)="logout()"></i>
-      Logout
+      Account/{{username}}
     </button>
   </div>
 
@@ -43,6 +39,7 @@
 
 </div>
 
+<ng-container *ngIf="!viewAccountSettings">
 <div class="container">
   <div class="todoRow">
     <div *ngFor="let day of Todolist; let i = index"
@@ -63,21 +60,27 @@
         </p>
       </div>
 
+      <ng-container *ngFor="let task of day.tasks">
+        <div class="todo" *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)" cdkDrag [cdkDragDisabled]="isMobile()">
 
-      <div *ngFor="let task of day.tasks" class="todo" cdkDrag [cdkDragDisabled]="isMobile()">
-        <div class="placeholder" *cdkDragPlaceholder></div>
+          <div class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}"
+            *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
+            <div class="title">
+              <h3>{{task.title}}</h3>
+            </div>
+            <div class="description">
+              <p>{{task.description}}</p>
+            </div>
+          </div>
 
-        <div class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}"
-          *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
-          <div class="title">
-            <h3>{{task.title}}</h3>
-          </div>
-          <div class="description">
-            <p>{{task.description}}</p>
-          </div>
+          <div class="placeholder" *cdkDragPlaceholder></div>
         </div>
-
-      </div>
+      </ng-container>
     </div>
   </div>
 </div>
+</ng-container>
+
+<ng-container *ngIf="viewAccountSettings">
+  <app-account (onSyncWebcall)="getTodoTasks()"></app-account>
+</ng-container>
