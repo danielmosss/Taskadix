@@ -53,7 +53,7 @@
 
 
       <div class="buttons">
-        <button mat-button class="mat-button pos" (click)="syncWebcall()">
+        <button mat-button class="mat-button pos" (click)="syncWebcall()" [disabled]="!canSyncWebcall()">
           <i class="fa-solid fa-sync"></i>
           Sync webcall
         </button>

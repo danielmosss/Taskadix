@@ -73,7 +73,7 @@ export class DataService {
     return this.http.put<{status: string}>(this._SecureApi + "/PutBGcolor", {backgroundColor: color}, { headers: this.getCustomHeaders() });
   }
 
-  public getUserData(){
+  public getUserDataOnLoad(){
     this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
       this.validJwtToken = true;
       this.userdata = data;
@@ -81,6 +81,10 @@ export class DataService {
         this.updateBackgroundcolor(this.userdata.backgroundcolor);
       }
     })
+  }
+
+  public getUserDataReturn(){
+    return this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
   public uploadBulkTodos(todoCards: newTodoRequirements[]){
@@ -101,7 +105,7 @@ export class DataService {
         this._jsonwebtoken = res.jsonwebtoken;
         this.validJwtToken = true;
         this.userLoggedIn = true;
-        this.getUserData();
+        this.getUserDataOnLoad();
       }
     );
   }
@@ -112,6 +116,10 @@ export class DataService {
 
   public isLoggedIn(): boolean {
     return !!this._jsonwebtoken;
+  }
+
+  public UserData() {
+    return this.userdata;
   }
 
   private get _jsonwebtoken(): string {

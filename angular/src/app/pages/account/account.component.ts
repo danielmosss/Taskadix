@@ -1,5 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { userdata } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -10,7 +11,7 @@ import { DataService } from 'src/data.service';
 export class AccountComponent implements OnInit {
   @Output() onSyncWebcall = new EventEmitter<void>();
 
-  public userdata = this._dataservice.userdata;
+  public userdata: userdata | null;
   public setWebcallurl: string;
   public webcallurlSet: boolean = false;
 
@@ -19,6 +20,7 @@ export class AccountComponent implements OnInit {
   constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.setUserData();
     if (this.userdata?.backgroundcolor){
       this.backgroundColor = this.userdata.backgroundcolor;
       this.updateBackgroundcolor();
@@ -31,11 +33,25 @@ export class AccountComponent implements OnInit {
     this._dataservice.logout();
   }
 
+  canSyncWebcall(){
+    if (this.userdata?.webcalllastsynced == null){
+      return true;
+    }
+    let lastsynced = new Date(this.userdata.webcalllastsynced);
+    let today = new Date();
+    let diff = Math.abs(today.getTime() - lastsynced.getTime());
+    let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+    if (diffDays > 1){
+      return true;
+    }
+    return false;
+  }
+
   setwebcallurl(){
     this._dataservice.saveWebcallUrl(this.setWebcallurl).subscribe((data: any) => {
       if (data.status == 'success') {
-        this._dataservice.getUserData();
         this.webcallurlSet = true;
+        this.setUserData();
       }
     })
   }
@@ -44,7 +60,14 @@ export class AccountComponent implements OnInit {
     this._dataservice.syncWebcall().subscribe((data: any) => {
       if (data.status == 'success') {
         this.onSyncWebcall.emit();
+        this.setUserData();
       }
+    })
+  }
+
+  setUserData(){
+    this._dataservice.getUserDataReturn().subscribe((data: any) => {
+      this.userdata = data;
     })
   }
 
@@ -56,6 +79,9 @@ export class AccountComponent implements OnInit {
     this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
       if (data.status == 'success') {
         this._snackbar.open('Background color has been updated.', '', {duration: 2000});
+        if (this.userdata){
+          this.userdata.backgroundcolor = this.backgroundColor;
+        }
       }
     })
   }

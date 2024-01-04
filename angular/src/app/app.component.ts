@@ -14,7 +14,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     if (this._dateservice.isLoggedIn()) {
-      this._dateservice.getUserData();
+      this._dateservice.getUserDataOnLoad();
     }
   }
 

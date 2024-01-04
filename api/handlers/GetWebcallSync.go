@@ -40,7 +40,7 @@ func GetWebcallSync(res http.ResponseWriter, req *http.Request) {
 	defer resultUpdate.Close()
 	defer dbConnection.Close()
 
-	functions.ProcessCalanderData(userId)
+	//functions.ProcessCalanderData(userId)
 
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"status": "success"}`))

@@ -11,7 +11,7 @@ type userData struct {
 	Username          string `json:"username"`
 	Email             string `json:"email"`
 	Webcallurl        string `json:"webcallurl"`
-	Webcalllastsynced string `json:"webcalllast"`
+	Webcalllastsynced string `json:"webcalllastsynced"`
 	BackgroundColor   string `json:"backgroundcolor"`
 }
 
