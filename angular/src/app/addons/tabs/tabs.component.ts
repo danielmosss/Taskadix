@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { userdata } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -8,12 +9,14 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit{
-  public username = this._dateservice.getUsername();
+  public userdata: userdata | null;
 
   constructor(private _dateservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-
+    this._dateservice.getUserDataReturn().subscribe(data => {
+      this.userdata = data;
+    })
   }
 
   logout() {

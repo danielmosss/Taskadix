@@ -10,7 +10,7 @@ import { DataService } from 'src/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CardpopupComponent } from '../../popups/cardpopup/cardpopup.component';
 import { CreateTodoComponent } from '../../popups/create-todo/create-todo.component';
-import { DayTodo, Todo } from '../../interfaces';
+import { DayTodo, Todo, userdata } from '../../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadjsonComponent } from '../../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
@@ -30,7 +30,7 @@ export class OverviewComponent implements OnInit {
   public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
-  public username = this._dateservice.getUsername();
+  public userdata: userdata | null;
 
   public showCheckedItems: boolean = false;
 
@@ -39,7 +39,14 @@ export class OverviewComponent implements OnInit {
   constructor(private _dateservice: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
+    this.getUserData();
     this.getTodoTasks();
+  }
+
+  getUserData() {
+    this._dateservice.getUserDataReturn().subscribe(data => {
+      this.userdata = data;
+    })
   }
 
   logout() {

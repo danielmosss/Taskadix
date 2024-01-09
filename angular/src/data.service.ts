@@ -19,10 +19,6 @@ export class DataService {
     return window.innerWidth <= 1000;
   }
 
-  public getUsername() {
-    return this.userdata?.username;
-  }
-
   constructor(private http: HttpClient) { }
 
   public getWeather() {
