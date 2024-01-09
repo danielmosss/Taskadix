@@ -7,11 +7,6 @@ import (
 	"time"
 )
 
-type dateRange struct {
-	Start string `json:"start"`
-	End   string `json:"end"`
-}
-
 func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	//GetTodoTasksByDateRange?start=${dateRange.start}&end=${dateRange.end}
 	var dateRange dateRange

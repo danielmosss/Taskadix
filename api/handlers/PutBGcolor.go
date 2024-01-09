@@ -7,10 +7,6 @@ import (
 	"net/http"
 )
 
-type backgroundColor struct {
-	BackgroundColor string `json:"backgroundColor"`
-}
-
 func PutBGcolor(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {

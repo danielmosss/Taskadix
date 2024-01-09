@@ -3,14 +3,11 @@ package handlers
 import (
 	"api/functions"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("PutTodoTaskInfo called")
-
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)

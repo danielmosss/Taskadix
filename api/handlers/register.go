@@ -8,12 +8,6 @@ import (
 	"net/http"
 )
 
-type RegisterRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-	Email    string `json:"email"`
-}
-
 func Register(res http.ResponseWriter, req *http.Request) {
 	// I don't want people to register at this moment, so I'm returning an error.
 	http.Error(res, "Register is not available", http.StatusGone)

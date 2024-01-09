@@ -4,12 +4,13 @@ import (
 	"api/functions"
 	"api/handlers"
 	"fmt"
-	handlers2 "github.com/gorilla/handlers"
-	"github.com/gorilla/mux"
-	"github.com/joho/godotenv"
 	"log"
 	"net/http"
 	"os"
+
+	handlers2 "github.com/gorilla/handlers"
+	"github.com/gorilla/mux"
+	"github.com/joho/godotenv"
 )
 
 func main() {
@@ -40,6 +41,9 @@ func main() {
 	fmt.Println("Starting server on port 8000")
 
 	handler := mux.NewRouter()
+
+	// log every request that comes in with middleware.
+	handler.Use(functions.LoggingMiddleware)
 
 	handler.HandleFunc("/login", handlers.Login).Methods("POST")
 	handler.HandleFunc("/register", handlers.Register).Methods("POST")

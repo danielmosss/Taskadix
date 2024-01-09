@@ -7,14 +7,6 @@ import (
 	"net/http"
 )
 
-type userData struct {
-	Username          string `json:"username"`
-	Email             string `json:"email"`
-	Webcallurl        string `json:"webcallurl"`
-	Webcalllastsynced string `json:"webcalllastsynced"`
-	BackgroundColor   string `json:"backgroundcolor"`
-}
-
 func GetUserData(res http.ResponseWriter, req *http.Request) {
 	userId, err := functions.GetUserID(req)
 	if err != nil {

@@ -8,15 +8,6 @@ import (
 	"net/http"
 )
 
-type LoginResponse struct {
-	JsonWebToken string `json:"jsonwebtoken"`
-}
-
-type LoginRequest struct {
-	Username string `json:"username"`
-	Password string `json:"password"`
-}
-
 func Login(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
