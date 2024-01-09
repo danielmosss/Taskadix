@@ -7,10 +7,6 @@ import (
 	"net/http"
 )
 
-type url struct {
-	Url string `json:"url"`
-}
-
 func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {

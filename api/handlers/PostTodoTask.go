@@ -3,14 +3,11 @@ package handlers
 import (
 	"api/functions"
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 )
 
 func PostTodoTask(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("PostTodoTask called")
-
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -35,7 +32,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Create a new task
+	// Create a new task with the given data and use a stored procedure to insert it into the database
 	query := "call insertAtodoTask(?, ?, ?, ?, ?);"
 	result, err := dbConnection.Query(query, newTask.Title, newTask.Description, newTask.Date, false, userId)
 	if err != nil {
@@ -53,6 +50,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
+	// Get the task that was just created and return it
 	var task todoCard
 	query = "SELECT id, title, description, date, todoOrder, checked, isCHEagenda FROM todos WHERE id = ?;"
 	result, err = dbConnection.Query(query, id)

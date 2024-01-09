@@ -1,14 +1,12 @@
 package handlers
 
 import (
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
 )
 
 func GetWeather(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("GetWeather called")
 	var weatherapikey string = os.Getenv("weatherApiKey")
 
 	if weatherapikey == "" {

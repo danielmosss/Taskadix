@@ -21,7 +21,5 @@ export class TabsComponent implements OnInit{
 
   logout() {
     this._dateservice.logout();
-    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
   }
-
 }

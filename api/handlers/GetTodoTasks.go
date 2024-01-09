@@ -3,13 +3,11 @@ package handlers
 import (
 	"api/functions"
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"time"
 )
 
 func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
-	fmt.Println("GetTodoTasks called")
 	userId, err := functions.GetUserID(req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusUnauthorized)
