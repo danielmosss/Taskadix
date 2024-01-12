@@ -61,15 +61,20 @@
       </div>
 
       <ng-container *ngFor="let task of day.tasks">
-        <div class="todo" *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)" cdkDrag [cdkDragDisabled]="isMobile()">
+        <div class="todo" cdkDrag [cdkDragDisabled]="isMobile()">
 
-          <div class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}"
-            *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
+          <div class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}" *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
             <div class="title">
               <h3>{{task.title}}</h3>
             </div>
             <div class="description">
               <p>{{task.description}}</p>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="!showCheckedItems && task.checked" [ngClass]="{'greyedoutTodo': task.checked}">
+            <div class="title">
+              <h3 class="removeMargins">{{task.title}}</h3>
             </div>
           </div>
 
