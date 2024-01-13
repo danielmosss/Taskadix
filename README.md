@@ -23,12 +23,19 @@
 ## 🚀 Features
 
 * ✅ Dashboard with clean overview.
-* ✅ View weather in instance. 
-* ✅ Overview for your week and your todos.
-* ✅ Ability to select a week to view.
-* ✅ Login
+* ✅ Overview
+      - 7 days (Default)
+      - Select week (Datepicker)
 * ✅ Responsive UI (I did my best 😅 feel free to make a PR with improvements)
+* ✅ Upload Json (It works, not the best)
+* ✅ (Un)check items
+* ✅ Account settings
+* ✅ Change background color
+* ✅ Set webcall url (che.myx.nl supported)
+* ✅ Login
 * 🟧 Register - (Disabled endpoint)
+* ❌ Change username
+* ❌ Forgot password
 
 
 ## ⌨️ How to use?
