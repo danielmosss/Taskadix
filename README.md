@@ -57,6 +57,9 @@
 
 ### Step 4: Run Migrations (From old to new)
 
+  ```bash
+  cd database/migrations
+  ```
 
 ### Step 5: Start the go restapi
 
