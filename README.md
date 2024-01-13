@@ -27,8 +27,7 @@
 * ✅ Overview for your week and your todos.
 * ✅ Ability to select a week to view.
 * ✅ Login
-* ✅ Responsive UI - Its ugly, only made it to be able to view my webapp on mobile.
-* ❌ Nice Responsive UI - I'm very bad at making clean and responsive UI's
+* ✅ Responsive UI (I did my best 😅 feel free to make a PR with improvements)
 * 🟧 Register - (Disabled endpoint)
 
 
@@ -56,21 +55,24 @@
   source todo.sql
   ```
 
-### Step 4: Start the go restapi
+### Step 4: Run Migrations (From old to new)
+
+
+### Step 5: Start the go restapi
 
   ```bash
   cd api
   go run main.go
   ```
 
-### Step 5: Start the angular frontend
+### Step 6: Start the angular frontend
 
   ```bash
   cd angular/src
   ng serve --configuration development
   ```
 
-### Step 6: Visit the dashboard
+### Step 7: Visit the dashboard
 
   For this you need to use a google browser and disable web security. 
   Here is a guide on how to do that: [Guide](https://alfilatov.com/posts/run-chrome-without-cors/)
