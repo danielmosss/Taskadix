@@ -172,4 +172,8 @@ export class OverviewComponent implements OnInit {
   getCheckItemsForDay(day: DayTodo) {
     return day.tasks.filter(t => t.checked).length
   }
+
+  getDate(day: DayTodo) {
+    return moment(day.date).format("- DD MMM");
+  }
 }
