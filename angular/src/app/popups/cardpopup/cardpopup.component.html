@@ -12,6 +12,13 @@
         <textarea matInput [value]="todoCard.description" (change)="changedProperty(todoCardProperty.description, $event)">
         </textarea>
       </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
     </div>
     <div class="footer buttons right">
       <button mat-button class="mat-button neg" (click)="editCard(true)">
