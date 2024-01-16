@@ -37,6 +37,7 @@ export class LoginComponent {
     this._dataService.register(this.username, this.password, this.email)
   }
 
+  // Check if the user has entered required fields before sending a request.
   canSendRequest(type: RequestType): boolean {
     switch (type) {
       case RequestType.LOGIN:

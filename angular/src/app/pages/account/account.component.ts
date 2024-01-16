@@ -33,6 +33,7 @@ export class AccountComponent implements OnInit {
     this._dataservice.logout();
   }
 
+  // Check if user can sync webcall, if the user has never synced before, or if the last sync was more than 1 day ago, the user can sync.
   canSyncWebcall() {
     if (this.userdata?.webcalllastsynced == "") {
       return true;
@@ -49,6 +50,7 @@ export class AccountComponent implements OnInit {
     return false;
   }
 
+  // Set webcall url and save it to the database.
   setwebcallurl() {
     this._dataservice.saveWebcallUrl(this.setWebcallurl).subscribe((data: any) => {
       if (data.status == 'success') {

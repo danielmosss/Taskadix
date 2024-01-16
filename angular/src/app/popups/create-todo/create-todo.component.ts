@@ -66,14 +66,11 @@ export class CreateTodoComponent implements OnInit {
     }
   }
 
+  // Check if the user has entered required fields.
   canSave() {
-    if (!this.todoCard) return false;
-    else if (!this.todoCard.title) return false;
-    else if (!this.todoCard.description) return false;
-    else if (!this.todoCard.date) return false;
-    else if (this.todoCard.title == "") return false;
-    else if (this.todoCard.description == "") return false;
-    else if (this.todoCard.date == "") return false;
-    else return true;
+    return this.todoCard &&
+           this.todoCard.title &&
+           this.todoCard.description &&
+           this.todoCard.date;
   }
 }

@@ -90,7 +90,7 @@ export class UploadjsonComponent implements OnInit {
     })
   }
 
-
+  // File reader that returns a promise.
   readFile(file: File){
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
