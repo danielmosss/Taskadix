@@ -52,7 +52,7 @@
 
       <div class="day">
         <div class="name withsubtitle">
-          {{day.day}}
+          {{day.day}} {{getDate(day)}}
         </div>
 
         <p *ngIf="!showCheckedItems && getCheckItemsForDay(day) > 0" class="checkedCount">

@@ -1,6 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import * as moment from 'moment';
 import { Todo } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
@@ -19,6 +21,7 @@ export class CardpopupComponent implements OnInit {
   public todoCardCopy: Todo = { ...this.todoCard };
   public editMode: boolean = false;
   todoCardProperty = todoCardProperty;
+  public formattedDate?: string = undefined;
 
   constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: Todo, private _dataService: DataService, private _snackBar: MatSnackBar) { }
   ngOnInit(): void {
@@ -90,5 +93,11 @@ export class CardpopupComponent implements OnInit {
       })
       this.dialogRef.close();
     })
+  }
+
+  onDateChange(event: MatDatepickerInputEvent<Date>) {
+    const formatted = moment(event.value).format('YYYY-MM-DD');
+    this.formattedDate = formatted; // Update the input field with formatted date
+    this.todoCard.date = formatted;
   }
 }

@@ -90,6 +90,7 @@ export class OverviewComponent implements OnInit {
     return date.toLocaleDateString('en-US', { weekday: 'long' });
   }
 
+  // Event fired when item is dropped in a list
   drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -154,6 +155,7 @@ export class OverviewComponent implements OnInit {
     })
   }
 
+  // open dialog with component CreateTodoComponent to create a new todo
   openCardCreate() {
     var dialog = this._dialog.open(CreateTodoComponent)
     dialog.afterClosed().subscribe((data?: Todo) => {
@@ -171,5 +173,9 @@ export class OverviewComponent implements OnInit {
 
   getCheckItemsForDay(day: DayTodo) {
     return day.tasks.filter(t => t.checked).length
+  }
+
+  getDate(day: DayTodo) {
+    return moment(day.date).format("- DD MMM");
   }
 }
