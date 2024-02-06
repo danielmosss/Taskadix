@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"api/functions"
+	"database/sql"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -66,7 +67,7 @@ func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
 			return
 		}
 
-		var maxTodoOrder int
+		var maxTodoOrder sql.NullInt64
 		for resultMaxTodoOrder.Next() {
 			err := resultMaxTodoOrder.Scan(&maxTodoOrder)
 			if err != nil {
@@ -75,8 +76,12 @@ func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
 			}
 		}
 
+		if !maxTodoOrder.Valid {
+			maxTodoOrder.Int64 = 0
+		}
+
 		queryUpdateDateAndTodoOrder := "UPDATE todos SET date = ?, todoOrder = ? WHERE id = ? AND userId = ?;"
-		resultUpdateDateAndTodoOrder, err := dbConnection.Query(queryUpdateDateAndTodoOrder, newTask.Date, maxTodoOrder+1, newTask.Id, userId)
+		resultUpdateDateAndTodoOrder, err := dbConnection.Query(queryUpdateDateAndTodoOrder, newTask.Date, maxTodoOrder.Int64+1, newTask.Id, userId)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
