@@ -1,0 +1,12 @@
+<div class="popup">
+  <div class="title">
+    <h2>Upload ICS</h2>
+  </div>
+  <div class="footer buttons right">
+    <button mat-button class="mat-button neg" (click)="close()">
+      <i class="fa-solid fa-xmark fa-xl"></i>
+    </button>
+    <input type="file" #fileInput style="display: none;" (change)="onFileSelected($event)" accept=".ics" />
+    <button mat-button class="mat-button pos" (click)="fileInput.click()">Upload ICS</button>
+  </div>
+</div>

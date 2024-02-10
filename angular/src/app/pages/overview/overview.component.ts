@@ -15,6 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadjsonComponent } from '../../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
 import * as moment from 'moment';
+import { UploadicsComponent } from 'src/app/popups/uploadics/uploadics.component';
 
 
 @Component({
@@ -57,6 +58,13 @@ export class OverviewComponent implements OnInit {
     var dialog = this._dialog.open(UploadjsonComponent)
     dialog.afterClosed().subscribe((data?: Todo[]) => {
       if (!data) return;
+      this.getTodoTasks();
+    })
+  }
+
+  openICSuploader(){
+    var dialog = this._dialog.open(UploadicsComponent)
+    dialog.afterClosed().subscribe((data?: Todo[]) => {
       this.getTodoTasks();
     })
   }
