@@ -11,15 +11,15 @@ import { DataService } from 'src/data.service';
 export class TabsComponent implements OnInit{
   public userdata: userdata | null;
 
-  constructor(private _dateservice: DataService, private _snackbar: MatSnackBar) { }
+  constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
-    this._dateservice.getUserDataReturn().subscribe(data => {
+    this._dataservice.getUserDataReturn().subscribe(data => {
       this.userdata = data;
     })
   }
 
   logout() {
-    this._dateservice.logout();
+    this._dataservice.logout();
   }
 }

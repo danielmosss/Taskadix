@@ -37,7 +37,7 @@ export class OverviewComponent implements OnInit {
 
   public viewAccountSettings: boolean = false;
 
-  constructor(private _dateservice: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
+  constructor(private _dataservice: DataService, private _dialog: MatDialog, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.getUserData();
@@ -45,13 +45,13 @@ export class OverviewComponent implements OnInit {
   }
 
   getUserData() {
-    this._dateservice.getUserDataReturn().subscribe(data => {
+    this._dataservice.getUserDataReturn().subscribe(data => {
       this.userdata = data;
     })
   }
 
   logout() {
-    this._dateservice.logout();
+    this._dataservice.logout();
   }
 
   openJsonuploader(){
@@ -70,12 +70,12 @@ export class OverviewComponent implements OnInit {
   }
 
   isMobile(){
-    return this._dateservice.isMobile();
+    return this._dataservice.isMobile();
   }
 
   getTodoTasks() {
-    if (this.dateRange) this._dateservice.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
-    else this._dateservice.getTodo().subscribe(data => { this.handleGetTodos(data); })
+    if (this.dateRange) this._dataservice.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
+    else this._dataservice.getTodo().subscribe(data => { this.handleGetTodos(data); })
   }
 
   async handleGetTodos(data: DayTodo[]) {
@@ -131,7 +131,7 @@ export class OverviewComponent implements OnInit {
       })
     }
 
-    this._dateservice.putTodoList(this.updatedList).subscribe(data => {
+    this._dataservice.putTodoList(this.updatedList).subscribe(data => {
       this.getTodoTasks();
       this.updatedList = [];
     })

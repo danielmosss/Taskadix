@@ -37,6 +37,7 @@ import { WeekselectorComponent } from './addons/weekselector/weekselector.compon
 import { TabsComponent } from './addons/tabs/tabs.component';
 import { AccountComponent } from './pages/account/account.component';
 import { UploadicsComponent } from './popups/uploadics/uploadics.component';
+import { CalendarComponent } from './pages/calendar/calendar.component';
 
 @NgModule({
   declarations: [
@@ -50,7 +51,8 @@ import { UploadicsComponent } from './popups/uploadics/uploadics.component';
     UploadjsonComponent,
     TabsComponent,
     AccountComponent,
-    UploadicsComponent
+    UploadicsComponent,
+    CalendarComponent
   ],
   imports: [
     BrowserModule,
