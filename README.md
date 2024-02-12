@@ -73,22 +73,22 @@
 
 ### Step 5: Copy the .env-template and rename it to: .env
   
-    ```bash
-    cd api
-    cp .env-template .env
-    ```
-  
-    Fill in the .env file with your own settings.
-  
-    ```bash
-    databaseConnectionString=root:passwordHere@tcp(localhost:portHere)/nameHere
-    JWT_SECRET=secretHere
-    ngrokRequest=ngrokRequestApiHere
-    ```
+  ```bash
+  cd api
+  cp .env-template .env
+  ```
 
-    databaseConnectionString - Fill in your own database settings.
-    JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.
-    ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
+  Fill in the .env file with your own settings.
+
+  ```bash
+  databaseConnectionString=root:passwordHere@tcp(localhost:portHere)/nameHere
+  JWT_SECRET=secretHere
+  ngrokRequest=ngrokRequestApiHere
+  ```
+  
+  databaseConnectionString - Fill in your own database settings.
+  JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.
+  ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
 
 ### Step 5: Start the go restapi
 
