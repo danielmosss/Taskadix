@@ -52,8 +52,8 @@ export class UploadicsComponent implements OnInit {
 
         // TODO: send start and end time to backend when time is implemented, same for location.
         this.newtodo = {
-          title: event.title,
-          description: `${event.startTime} - ${event.endTime} ${event.location ? `@ ${event.location}` : ""}\n${event.description}`,
+          title: event.title ? event.title : "ICS Event",
+          description: `${event.startTime} - ${event.endTime} ${event.location ? `@ ${event.location}` : ""}\n\n${event.description}`,
           date: event.startDate
         }
         this._dataService.postTodoInfo(this.newtodo).subscribe(data => {
