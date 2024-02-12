@@ -28,12 +28,13 @@
       - Select week (Datepicker)
 * ✅ Responsive UI (I did my best 😅 feel free to make a PR with improvements)
 * ✅ Upload Json (It works, not the best)
+* ✅ Upload ICS files (with 1 or more events)
 * ✅ (Un)check items
 * ✅ Account settings
 * ✅ Change background color
 * ✅ Set webcall url (che.myx.nl supported)
 * ✅ Login
-* 🟧 Register - (Disabled endpoint)
+* 🟧 Register - (Disabled endpoint) 
 * ❌ Change username
 * ❌ Forgot password
 
