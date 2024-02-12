@@ -28,12 +28,13 @@
       - Select week (Datepicker)
 * ✅ Responsive UI (I did my best 😅 feel free to make a PR with improvements)
 * ✅ Upload Json (It works, not the best)
+* ✅ Upload ICS files (with 1 or more events)
 * ✅ (Un)check items
 * ✅ Account settings
 * ✅ Change background color
 * ✅ Set webcall url (che.myx.nl supported)
 * ✅ Login
-* 🟧 Register - (Disabled endpoint)
+* 🟧 Register - (Disabled endpoint) 
 * ❌ Change username
 * ❌ Forgot password
 
@@ -66,7 +67,28 @@
 
   ```bash
   cd database/migrations
+  mysql -u root -p
+  -- Run for each file in the folder from lowest to highest number.
   ```
+
+### Step 5: Copy the .env-template and rename it to: .env
+  
+  ```bash
+  cd api
+  cp .env-template .env
+  ```
+
+  Fill in the .env file with your own settings.
+
+  ```bash
+  databaseConnectionString=root:passwordHere@tcp(localhost:portHere)/nameHere
+  JWT_SECRET=secretHere
+  ngrokRequest=ngrokRequestApiHere
+  ```
+
+  * databaseConnectionString - Fill in your own database settings.
+  * JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.
+  * ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
 
 ### Step 5: Start the go restapi
 
