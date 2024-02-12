@@ -86,9 +86,9 @@
   ngrokRequest=ngrokRequestApiHere
   ```
 
-  databaseConnectionString - Fill in your own database settings.<br>
-  JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.<br>
-  ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
+  * databaseConnectionString - Fill in your own database settings.
+  * JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.
+  * ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
 
 ### Step 5: Start the go restapi
 
