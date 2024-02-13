@@ -58,7 +58,7 @@
           Sync webcall
         </button>
         <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
-          last sync: {{userdata?.webcalllastsynced}}
+          Last sync: {{userdata?.webcalllastsynced}}
         </button>
         <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
           <i class="fa-solid fa-cloud-arrow-up"></i>
