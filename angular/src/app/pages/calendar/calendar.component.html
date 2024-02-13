@@ -1,25 +1,31 @@
 <div class="calendar">
   <!-- Static header for day names -->
 
-      <div class="calendar-week-number-placeholder"></div> <!-- Placeholder for alignment with week numbers -->
-      <div class="calendar-day-name">Zondag</div>
-      <div class="calendar-day-name">Maandag</div>
-      <div class="calendar-day-name">Dinsdag</div>
-      <div class="calendar-day-name">Woensdag</div>
-      <div class="calendar-day-name">Donderdag</div>
-      <div class="calendar-day-name">Vrijdag</div>
-      <div class="calendar-day-name">Zaterdag</div>
+  <div class="calendar-week-number-placeholder"></div> <!-- Placeholder for alignment with week numbers -->
+  <div class="calendar-day-name">Zondag</div>
+  <div class="calendar-day-name">Maandag</div>
+  <div class="calendar-day-name">Dinsdag</div>
+  <div class="calendar-day-name">Woensdag</div>
+  <div class="calendar-day-name">Donderdag</div>
+  <div class="calendar-day-name">Vrijdag</div>
+  <div class="calendar-day-name">Zaterdag</div>
 
 
-  <!-- Dynamic content for calendar weeks and days -->
-  <ng-container *ngFor="let week of monthView">
+  <ng-container *ngFor="let week of monthView; let weekIndex = index">
     <div class="calendar-week-number">{{ getWeekNumber(week[0].date) }}</div>
-    <ng-container *ngFor="let day of week">
-      <div class="calendar-day">
+    <ng-container *ngFor="let day of week; let dayIndex = index">
+      <div
+        class="calendar-day"
+        [id]="'week'+ weekIndex + 'day'+ dayIndex"
+        cdkDropList
+        [cdkDropListData]="day.events || []"
+        [cdkDropListConnectedTo]="getConnectedList(monthView)"
+        (cdkDropListDropped)="drop($event, weekIndex, dayIndex)"
+      >
         <div class="date-indicator">{{ day.date | date: 'd' }}</div>
-        <div class="events-container">
-          <div *ngFor="let event of day.events" class="event">
-            <div class="event-title">{{event.id}} - <strong>{{ event.title }}</strong></div>
+        <div class="events-container" *ngIf="day.events">
+          <div *ngFor="let event of day.events" cdkDrag class="event">
+            <div class="event-title">{{ event.id }} - <strong>{{ event.title }}</strong></div>
           </div>
         </div>
       </div>

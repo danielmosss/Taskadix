@@ -1,4 +1,6 @@
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { Todo } from 'src/app/interfaces';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
 
@@ -67,5 +69,30 @@ export class CalendarComponent implements OnInit {
 
   jsonFyObject(obj: any): string {
     return JSON.stringify(obj);
+  }
+
+  drop(event: CdkDragDrop<Todo[], any>, weekIndex: number, dayIndex: number): void {
+    if (event.previousContainer === event.container) {
+      // Move the item within the same list
+      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    } else {
+      // Transfer the item to a different list
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+    }
+    // Implement any additional update logic here
+    console.log(this.monthView)
+  }
+
+  // Helper function to generate an array of connected drop lists
+  getConnectedList(monthView: any): string[] {
+    return monthView.reduce((previous:any, week:any, weekIndex:any) => {
+      const weekLists = week.map((day:any, dayIndex:any) => `week${weekIndex}day${dayIndex}`);
+      return previous.concat(weekLists);
+    }, []);
   }
 }

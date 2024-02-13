@@ -5,7 +5,7 @@ import { Todo } from './app/interfaces';
 export interface CalendarDay {
   date: Date;
   momentDate?: string;
-  events?: Array<Todo>;
+  events: Array<Todo>;
 }
 
 @Injectable({
@@ -34,7 +34,8 @@ export class CalendarService {
     for (let day = new Date(startDay); day <= endDay; day.setDate(day.getDate() + 1)) {
       days.push({
         date: new Date(day),
-        momentDate: moment(day).format('YYYY-MM-DD')
+        momentDate: moment(day).format('YYYY-MM-DD'),
+        events: []
       });
     }
 
@@ -48,7 +49,9 @@ export class CalendarService {
 
     for (let i = 0; i < 7; i++) {
       days.push({
-        date: new Date(startDay)
+        date: new Date(startDay),
+        momentDate: moment(startDay).format('YYYY-MM-DD'),
+        events: []
       });
       startDay.setDate(startDay.getDate() + 1);
     }
@@ -60,7 +63,9 @@ export class CalendarService {
     let days: CalendarDay[] = [];
     const date = new Date(year, month, day);
     days.push({
-      date: date
+      date: date,
+      momentDate: moment(date).format('YYYY-MM-DD'),
+      events: []
     });
 
     return days;
