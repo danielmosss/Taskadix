@@ -1,6 +1,8 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Todo } from 'src/app/interfaces';
+import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
 
@@ -12,7 +14,7 @@ import { DataService } from 'src/data.service';
 export class CalendarComponent implements OnInit {
   monthView: CalendarDay[][] = [];
 
-  constructor(private calendarService: CalendarService, private _dataservice: DataService) { }
+  constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getMonthView();
@@ -94,5 +96,11 @@ export class CalendarComponent implements OnInit {
       const weekLists = week.map((day:any, dayIndex:any) => `week${weekIndex}day${dayIndex}`);
       return previous.concat(weekLists);
     }, []);
+  }
+
+  openCardInfo(event: Todo){
+    var dialog = this._dialog.open(CardpopupComponent, {
+      data: event
+    })
   }
 }

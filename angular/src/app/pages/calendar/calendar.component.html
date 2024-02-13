@@ -1,7 +1,7 @@
 <div class="calendar">
   <!-- Static header for day names -->
 
-  <div class="calendar-week-number-placeholder"></div> <!-- Placeholder for alignment with week numbers -->
+  <div class="calendar-week-number-empty"></div> <!-- Placeholder for alignment with week numbers -->
   <div class="calendar-day-name">Zondag</div>
   <div class="calendar-day-name">Maandag</div>
   <div class="calendar-day-name">Dinsdag</div>
@@ -20,11 +20,10 @@
         cdkDropList
         [cdkDropListData]="day.events || []"
         [cdkDropListConnectedTo]="getConnectedList(monthView)"
-        (cdkDropListDropped)="drop($event, weekIndex, dayIndex)"
-      >
+        (cdkDropListDropped)="drop($event, weekIndex, dayIndex)">
         <div class="date-indicator">{{ day.date | date: 'd' }}</div>
         <div class="events-container" *ngIf="day.events">
-          <div *ngFor="let event of day.events" cdkDrag class="event">
+          <div *ngFor="let event of day.events" cdkDrag class="event" (click)="openCardInfo(event)">
             <div class="event-title">{{ event.id }} - <strong>{{ event.title }}</strong></div>
           </div>
         </div>
