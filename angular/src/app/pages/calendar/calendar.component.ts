@@ -13,6 +13,7 @@ import { DataService } from 'src/data.service';
 })
 export class CalendarComponent implements OnInit {
   monthView: CalendarDay[][] = [];
+  today: Date = new Date();
 
   constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog) { }
 

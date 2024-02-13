@@ -41,10 +41,17 @@
 
 .calendar-day {
   background-color: #f9f9f9;
-  border: 1px solid #e1e1e1;
   position: relative;
   text-align: right;
   padding: 5px;
+  border-radius: 4px;
+
+  &.today{
+    background-color: #007bff;
+    background: #007bff;
+    cursor: pointer;
+    padding: 3px 4px;
+  }
 }
 
 .date-indicator {
@@ -62,6 +69,5 @@
     cursor: pointer;
     padding: 3px 4px;
     border-radius: 4px;
-
   }
 }
