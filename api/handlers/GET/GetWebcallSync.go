@@ -1,4 +1,4 @@
-package handlers
+package GET
 
 import (
 	"api/functions"

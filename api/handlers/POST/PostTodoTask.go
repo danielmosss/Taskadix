@@ -1,7 +1,8 @@
-package handlers
+package POST
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -14,7 +15,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var newTask newTask
+	var newTask handlers.NewTask
 	if err := json.Unmarshal(body, &newTask); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -51,7 +52,7 @@ func PostTodoTask(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// Get the task that was just created and return it
-	var task todoCard
+	var task handlers.TodoCard
 	query = "SELECT id, title, description, date, todoOrder, checked, isCHEagenda FROM todos WHERE id = ?;"
 	result, err = dbConnection.Query(query, id)
 	if err != nil {

@@ -1,7 +1,8 @@
-package handlers
+package GET
 
 import (
 	"api/functions"
+	"api/handlers"
 	"database/sql"
 	"encoding/json"
 	"net/http"
@@ -29,7 +30,7 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 	defer result.Close()
 	defer dbConnection.Close()
 
-	var userdata userData
+	var userdata handlers.UserData
 	for result.Next() {
 		var webcallurl sql.NullString
 		var webcalllastsynced sql.NullString
