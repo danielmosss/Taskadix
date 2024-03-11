@@ -32,17 +32,44 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.full-width{
+.full-width {
   width: 100%;
+}
+
+mat-dialog-container {
+  padding: 15px;
+}
+
+.mat-mdc-dialog-surface {
+  overflow: visible !important;
+  border-radius: 20px !important;
+}
+
+.mat-mdc-dialog-surface:has(.popup) {
+  overflow: visible;
 }
 
 .popup {
   background-color: #757575;
-  position: relative;
-  min-width: 70vw;
+  // position: relative;
+  // min-width: 70vw;
+  // height: 100%;
+  // max-height: 90vh;
+  // padding: 15px;
+
+  min-width: 450px;
   height: 100%;
   max-height: 90vh;
+  overflow-y: auto;
   padding: 15px;
+
+  .closedialogbutton {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: -30px;
+    -webkit-text-stroke: 1px #f3f3f3;
+  }
 }
 
 .buttons {
@@ -93,4 +120,8 @@ body {
   .popup {
     min-width: 450px;
   }
+}
+
+.timepicker-backdrop-overlay, .timepicker-overlay {
+  z-index: 1001 !important;
 }

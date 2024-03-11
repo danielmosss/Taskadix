@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 
 export interface WeekTask {
   id: string;
@@ -16,6 +18,9 @@ export interface WeekTask {
   styleUrls: ['./week-overview.component.scss']
 })
 export class WeekOverviewComponent {
+
+  constructor(private _dialog: MatDialog) { }
+
   weekTasks: WeekTask[] = [
     {
       id: '1',
@@ -66,4 +71,9 @@ export class WeekOverviewComponent {
     };
   }
 
+
+  openCreateAppointment(){
+    // Open the create appointment dialog
+    this._dialog.open(CreateAppointmentComponent);
+  }
 }

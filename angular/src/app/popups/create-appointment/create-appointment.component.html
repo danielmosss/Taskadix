@@ -1,0 +1,107 @@
+<!-- <div class="popup">
+  <div class="content">
+    <div class="header">
+      <mat-form-field class="full-width">
+        <mat-label>Title</mat-label>
+        <input matInput [value]="todoCard?.title" type="text" (change)="changedProperty(todoCardProperty.title ,$event)">
+      </mat-form-field>
+    </div>
+    <div class="body">
+      <mat-form-field class="full-width">
+        <mat-label>Description</mat-label>
+        <textarea matInput [value]="todoCard?.description" (change)="changedProperty(todoCardProperty.description, $event)">
+        </textarea>
+      </mat-form-field>
+
+      <mat-form-field class="full-width">
+        <mat-label>Choose a date</mat-label>
+        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
+        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+
+    </div>
+    <div class="footer buttons right">
+      <button mat-button class="mat-button neg" type="button" (click)="cancel()">
+        <i class="fa-solid fa-xmark fa-xl"></i>
+      </button>
+      <button mat-button class="mat-button pos" type="submit" (click)="saveCard()" [disabled]="!canSave()">
+        <i class="fa-solid fa-check fa-xl"></i>
+      </button>
+    </div>
+  </div>
+</div> -->
+
+
+<div class="popup">
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton"></i>
+  <div class="content">
+    <div class="item">
+      <div class="icon">
+        <i class="fa-solid fa-calendar fa-2x"></i>
+      </div>
+      <div class="input">
+        <mat-form-field class="full-width">
+          <mat-label>Title</mat-label>
+          <input matInput [value]="todoCard?.title" type="text"
+            (change)="changedProperty(todoCardProperty.title ,$event)">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="item">
+      <div class="icon">
+        <i class="fa-solid fa-align-left fa-2x"></i>
+      </div>
+      <div class="input">
+        <mat-form-field class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput [value]="todoCard?.description"
+            (change)="changedProperty(todoCardProperty.description, $event)">
+          </textarea>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="item">
+      <div class="icon">
+        <i class="fa-solid fa-calendar fa-2x"></i>
+      </div>
+      <div class="input">
+        <div class="date">
+          <mat-form-field class="full-width">
+            <mat-label>Choose a date</mat-label>
+            <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+          <mat-slide-toggle>Whole Day</mat-slide-toggle>
+        </div>
+        <div class="time">
+          <div class="begintime">
+            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly>
+            <ngx-material-timepicker #begin></ngx-material-timepicker>
+          </div>
+          <div class="endtime">
+            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly>
+            <ngx-material-timepicker #end></ngx-material-timepicker>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="footer buttons right">
+      <button mat-button class="mat-button neg" type="button" (click)="cancel()">
+        <i class="fa-solid fa-xmark fa-xl"></i>
+      </button>
+      <button mat-button class="mat-button pos" type="submit" (click)="saveCard()" [disabled]="!canSave()">
+        <i class="fa-solid fa-check fa-xl"></i>
+      </button>
+    </div>
+  </div>
+</div>

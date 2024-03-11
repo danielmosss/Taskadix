@@ -21,8 +21,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
+import {MatSlideToggleModule} from '@angular/material/slide-toggle';
 
 import { NgxColorsModule } from 'ngx-colors';
+
+// Timepicker
+import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
 
 
 // Components
@@ -40,6 +44,7 @@ import { AccountComponent } from './pages/account/account.component';
 import { UploadicsComponent } from './popups/uploadics/uploadics.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
 import { WeekOverviewComponent } from './pages/week-overview/week-overview.component';
+import { CreateAppointmentComponent } from './popups/create-appointment/create-appointment.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -61,7 +66,8 @@ const routes: Routes = [
     AccountComponent,
     UploadicsComponent,
     CalendarComponent,
-    WeekOverviewComponent
+    WeekOverviewComponent,
+    CreateAppointmentComponent
   ],
   imports: [
     BrowserModule,
@@ -82,6 +88,8 @@ const routes: Routes = [
     MatProgressSpinnerModule,
     MatTabsModule,
     NgxColorsModule,
+    MatSlideToggleModule,
+    NgxMaterialTimepickerModule,
     RouterModule.forRoot(routes)
   ],
   providers: [
