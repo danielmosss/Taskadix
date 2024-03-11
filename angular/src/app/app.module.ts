@@ -7,6 +7,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { HttpInterceptorService } from 'src/http-interceptor.service';
+import { RouterModule, Routes } from '@angular/router'
 
 // Angular Materials
 import { MatDialogModule } from '@angular/material/dialog';
@@ -38,6 +39,12 @@ import { TabsComponent } from './addons/tabs/tabs.component';
 import { AccountComponent } from './pages/account/account.component';
 import { UploadicsComponent } from './popups/uploadics/uploadics.component';
 import { CalendarComponent } from './pages/calendar/calendar.component';
+import { WeekOverviewComponent } from './pages/week-overview/week-overview.component';
+
+const routes: Routes = [
+  { path: '', component: OverviewComponent },
+  { path: 'calendar', component: CalendarComponent },
+]
 
 @NgModule({
   declarations: [
@@ -52,7 +59,8 @@ import { CalendarComponent } from './pages/calendar/calendar.component';
     TabsComponent,
     AccountComponent,
     UploadicsComponent,
-    CalendarComponent
+    CalendarComponent,
+    WeekOverviewComponent
   ],
   imports: [
     BrowserModule,
@@ -72,7 +80,8 @@ import { CalendarComponent } from './pages/calendar/calendar.component';
     MatSnackBarModule,
     MatProgressSpinnerModule,
     MatTabsModule,
-    NgxColorsModule
+    NgxColorsModule,
+    RouterModule.forRoot(routes)
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }

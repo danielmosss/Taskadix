@@ -16,3 +16,19 @@
     border-radius: 0px !important;
   }
 }
+
+
+.app{
+  display: grid;
+  grid-template-columns: 1fr 34fr;
+  height: 100%;
+
+  .sidenavbar{
+    background-color: #252525;
+    padding: 1rem;
+    overflow-y: auto;
+  }
+  .container{
+    margin: 1rem;
+  }
+}
