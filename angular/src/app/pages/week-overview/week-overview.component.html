@@ -1,1 +1,19 @@
-<p>week-overview works!</p>
+<div class="week-overview">
+  <div class="time-column">
+    <!-- Genereer de tijdlabels -->
+    <div class="time-label"></div>
+    <div *ngFor="let time of generateTimes()" class="time-label">{{ time }}</div>
+  </div>
+
+  <div *ngFor="let day of generateDays();" class="day-column">
+    <div class="day-title">{{ day }}</div>
+    <!-- Dit is waar je jouw taken plaatst -->
+    <div *ngFor="let task of weekTasks"
+         class="task"
+         [ngStyle]="getTaskStyle(task)">
+      <div class="task-title">{{ task.title }}</div>
+      <div class="task-time">{{ task.startTime }} - {{ task.endTime }}</div>
+      <div class="task-desc">{{ task.description }}</div>
+    </div>
+  </div>
+</div>

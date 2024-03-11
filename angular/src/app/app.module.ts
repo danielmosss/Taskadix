@@ -43,7 +43,8 @@ import { WeekOverviewComponent } from './pages/week-overview/week-overview.compo
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
-  { path: 'calendar', component: CalendarComponent },
+  { path: 'overview/month', component: CalendarComponent },
+  { path: 'overview/week', component: WeekOverviewComponent },
 ]
 
 @NgModule({

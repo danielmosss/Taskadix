@@ -1,0 +1,27 @@
+.week-overview {
+  display: flex;
+}
+
+.time-column, .day-column {
+  flex: 1;
+}
+
+.time-label, .day-title {
+  text-align: center;
+  height: 60px;
+}
+
+.task {
+  position: relative;
+  border: 1px solid #ccc;
+  margin: 2px;
+  padding: 2px;
+}
+
+.task-title {
+  font-weight: bold;
+}
+
+.task-time, .task-desc {
+  font-size: 0.8em;
+}
