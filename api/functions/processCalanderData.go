@@ -1,6 +1,7 @@
 package functions
 
 import (
+	"api/handlers"
 	"fmt"
 	ics "github.com/arran4/golang-ical"
 	"net/http"
@@ -8,12 +9,6 @@ import (
 	"time"
 	_ "time/tzdata"
 )
-
-type Task struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Date        string `json:"date"`
-}
 
 func ProcessCalanderData(userid int) {
 	dbconnection, err := GetDatabaseConnection()
@@ -59,7 +54,7 @@ func ProcessCalanderData(userid int) {
 	defer dbconnection.Close()
 }
 
-func fetchCalendarData(webcallurl string) ([]Task, error) {
+func fetchCalendarData(webcallurl string) ([]handlers.NewTask, error) {
 	url := strings.Replace(webcallurl, "webcal", "https", 1)
 
 	resp, err := http.Get(url)
@@ -74,7 +69,7 @@ func fetchCalendarData(webcallurl string) ([]Task, error) {
 		return nil, err
 	}
 
-	var tasks []Task
+	var tasks []handlers.NewTask
 	loc, error := time.LoadLocation("Europe/Amsterdam")
 	if error != nil {
 		return nil, error
@@ -93,7 +88,7 @@ func fetchCalendarData(webcallurl string) ([]Task, error) {
 		location = strings.Replace(location, "\\", "", -1)
 		description = description + "\n" + location
 
-		tasks = append(tasks, Task{
+		tasks = append(tasks, handlers.NewTask{
 			Title:       title,
 			Description: description,
 			Date:        start.Format("2006-01-02"),
@@ -103,7 +98,7 @@ func fetchCalendarData(webcallurl string) ([]Task, error) {
 	return tasks, nil
 }
 
-func taskExistsInDB(task Task, userId int) bool {
+func taskExistsInDB(task handlers.NewTask, userId int) bool {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
@@ -128,7 +123,7 @@ func taskExistsInDB(task Task, userId int) bool {
 	return count > 0
 }
 
-func insertTaskIntoDB(task Task, userId int) {
+func insertTaskIntoDB(task handlers.NewTask, userId int) {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())

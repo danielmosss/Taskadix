@@ -1,7 +1,8 @@
-package handlers
+package PUT
 
 import (
 	"api/functions"
+	"api/handlers"
 	"database/sql"
 	"encoding/json"
 	"io/ioutil"
@@ -15,7 +16,7 @@ func PutTodoTaskInfo(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var newTask todoCard
+	var newTask handlers.TodoCard
 	if err := json.Unmarshal(body, &newTask); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

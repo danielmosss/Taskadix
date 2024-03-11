@@ -1,7 +1,8 @@
-package handlers
+package GET
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -9,7 +10,7 @@ import (
 
 func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	//GetTodoTasksByDateRange?start=${dateRange.start}&end=${dateRange.end}
-	var dateRange dateRange
+	var dateRange handlers.DateRange
 	dateRange.Start = req.URL.Query().Get("start")
 	dateRange.End = req.URL.Query().Get("end")
 
@@ -50,9 +51,9 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	}
 	defer result.Close()
 
-	tasksMap := make(map[string][]todoCard)
+	tasksMap := make(map[string][]handlers.TodoCard)
 	for result.Next() {
-		var task todoCard
+		var task handlers.TodoCard
 		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.Checked, &task.IsCHE)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -62,7 +63,7 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	}
 
 	// update weekTasks to make an array of DayTodos with the date range instead of the first row of the database and the next 6 days
-	var weekTasks []DayTodos
+	var weekTasks []handlers.DayTodos
 	startDate, err := time.Parse(time.DateOnly, dateRange.Start)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -73,9 +74,9 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 		dayName := startDate.AddDate(0, 0, i).Format("Monday")
 		dayTasks, exists := tasksMap[date]
 		if !exists {
-			dayTasks = []todoCard{} // If no todos for this day, set to empty slice
+			dayTasks = []handlers.TodoCard{} // If no todos for this day, set to empty slice
 		}
-		weekTasks = append(weekTasks, DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
+		weekTasks = append(weekTasks, handlers.DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
 	}
 
 	tasksJSON, err := json.Marshal(weekTasks)
@@ -89,7 +90,7 @@ func GetTodoByDateRange(res http.ResponseWriter, req *http.Request) {
 	res.Write(tasksJSON)
 }
 
-func dateRange7DaysApartCheck(dateRange dateRange) bool {
+func dateRange7DaysApartCheck(dateRange handlers.DateRange) bool {
 	startTime, err := time.Parse(time.DateOnly, dateRange.Start)
 	if err != nil {
 		return false

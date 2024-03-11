@@ -1,21 +1,22 @@
-package handlers
+package POST
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 )
 
-func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
+func PostCheckTodoTask(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	var tasks []todoCard
-	if err := json.Unmarshal(body, &tasks); err != nil {
+	var markTask handlers.TodoCard
+	if err := json.Unmarshal(body, &markTask); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,17 +33,15 @@ func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	for _, task := range tasks {
-		query := "UPDATE todos SET title = ?, description = ?, date = ?, todoOrder = ? WHERE id = ? AND userId = ?;"
-		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.Id, userId)
-		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer result.Close()
+	query := "UPDATE todos SET checked = ? WHERE id = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, markTask.Checked, markTask.Id, userId)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
 	}
-
+	defer result.Close()
 	defer dbConnection.Close()
 
-	res.WriteHeader(http.StatusOK)
+	res.Header().Set("Content-Type", "application/json")
+	res.Write([]byte(`{"status": "success"}`))
 }

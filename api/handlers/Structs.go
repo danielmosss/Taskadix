@@ -1,6 +1,6 @@
 package handlers
 
-type todoCard struct {
+type TodoCard struct {
 	Id          int    `json:"id"`
 	Title       string `json:"title"`
 	Description string `json:"description"`
@@ -13,10 +13,10 @@ type todoCard struct {
 type DayTodos struct {
 	Day   string     `json:"day"`
 	Date  string     `json:"date"`
-	Tasks []todoCard `json:"tasks"`
+	Tasks []TodoCard `json:"tasks"`
 }
 
-type newTask struct {
+type NewTask struct {
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	Date        string `json:"date"`
@@ -28,11 +28,11 @@ type RegisterRequest struct {
 	Email    string `json:"email"`
 }
 
-type backgroundColor struct {
+type BackgroundColor struct {
 	BackgroundColor string `json:"backgroundColor"`
 }
 
-type url struct {
+type Url struct {
 	Url string `json:"url"`
 }
 
@@ -45,7 +45,7 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-type userData struct {
+type UserData struct {
 	Username          string `json:"username"`
 	Email             string `json:"email"`
 	Webcallurl        string `json:"webcallurl"`
@@ -53,7 +53,7 @@ type userData struct {
 	BackgroundColor   string `json:"backgroundcolor"`
 }
 
-type dateRange struct {
+type DateRange struct {
 	Start string `json:"start"`
 	End   string `json:"end"`
 }

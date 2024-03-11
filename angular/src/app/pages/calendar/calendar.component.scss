@@ -1,0 +1,73 @@
+.calendar {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  /* Reserve space for week numbers and 7 days */
+  gap: 4px;
+  /* Space between grid items */
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+}
+
+.calendar-day-name {
+  background-color: #e2e3e5;
+  /* Distinguish day names with a different color */
+  font-weight: bold;
+  text-align: center;
+  padding: 10px;
+}
+
+.calendar-week {
+  display: contents;
+  /* Use 'contents' to keep the grid structure */
+}
+
+.calendar-week-number {
+  grid-column: 1 / span 1;
+  /* Take up the first column */
+  background-color: #dde1e4;
+  /* Differentiate week numbers */
+  text-align: center;
+  padding: 10px;
+  min-height: 10vh;
+}
+
+.calendar-week-number-empty {
+  grid-column: 1 / span 1;
+  background-color: #dde1e4;
+}
+
+.calendar-day {
+  background-color: #f9f9f9;
+  position: relative;
+  text-align: right;
+  padding: 5px;
+  border-radius: 4px;
+
+  &.today{
+    background-color: #007bff;
+    background: #007bff;
+    cursor: pointer;
+    padding: 3px 4px;
+  }
+}
+
+.date-indicator {
+  font-size: 0.85em;
+  font-weight: bold;
+}
+
+.events-container {
+  text-align: left;
+
+  .event {
+    color: black;
+    background-color: #d6d6d6;
+    background: #d6d6d6;
+    cursor: pointer;
+    padding: 3px 4px;
+    border-radius: 4px;
+  }
+}

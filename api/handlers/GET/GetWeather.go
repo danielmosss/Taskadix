@@ -1,4 +1,4 @@
-package handlers
+package GET
 
 import (
 	"io/ioutil"

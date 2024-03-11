@@ -1,21 +1,22 @@
-package handlers
+package DELETE
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 )
 
-func PostMarkAsIrrelevant(res http.ResponseWriter, req *http.Request) {
+func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	var markTask todoCard
-	if err := json.Unmarshal(body, &markTask); err != nil {
+	var newTask handlers.TodoCard
+	if err := json.Unmarshal(body, &newTask); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,30 +33,12 @@ func PostMarkAsIrrelevant(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// Check if the user is authorized to mark the task as irrelevant
-	query := "call insertAnIrrelevantAgendaTodo(?,?);"
-	result, err := dbConnection.Query(query, markTask.Id, userId)
+	query := "DELETE FROM todos WHERE id = ? AND userId = ?;"
+	result, err := dbConnection.Query(query, newTask.Id, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer result.Close()
 	defer dbConnection.Close()
-
-	var id int
-	for result.Next() {
-		err := result.Scan(&id)
-		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
-			return
-		}
-	}
-
-	if id == 0 {
-		http.Error(res, "Unauthorized", http.StatusUnauthorized)
-		return
-	}
-
-	res.Header().Set("Content-Type", "application/json")
-	res.Write([]byte(`{"status": "success"}`))
 }

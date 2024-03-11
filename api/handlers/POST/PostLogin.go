@@ -1,7 +1,8 @@
-package handlers
+package POST
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"golang.org/x/crypto/bcrypt"
 	"io/ioutil"
@@ -15,7 +16,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var loginRequest LoginRequest
+	var loginRequest handlers.LoginRequest
 	if err := json.Unmarshal(body, &loginRequest); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -81,7 +82,7 @@ func Login(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	returnToken := LoginResponse{JsonWebToken: jwtToken}
+	returnToken := handlers.LoginResponse{JsonWebToken: jwtToken}
 
 	tokenInJson, err := json.Marshal(returnToken)
 	if err != nil {

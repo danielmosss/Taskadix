@@ -1,7 +1,8 @@
-package handlers
+package PUT
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -14,7 +15,7 @@ func PutBGcolor(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var backgroundColor backgroundColor
+	var backgroundColor handlers.BackgroundColor
 	if err := json.Unmarshal(body, &backgroundColor); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

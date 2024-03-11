@@ -1,21 +1,22 @@
-package handlers
+package PUT
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 )
 
-func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
+func PutTodoTasks(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	var newTask todoCard
-	if err := json.Unmarshal(body, &newTask); err != nil {
+	var tasks []handlers.TodoCard
+	if err := json.Unmarshal(body, &tasks); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,12 +33,17 @@ func DeleteTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "DELETE FROM todos WHERE id = ? AND userId = ?;"
-	result, err := dbConnection.Query(query, newTask.Id, userId)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
+	for _, task := range tasks {
+		query := "UPDATE todos SET title = ?, description = ?, date = ?, todoOrder = ? WHERE id = ? AND userId = ?;"
+		result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, task.TodoOrder, task.Id, userId)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer result.Close()
 	}
-	defer result.Close()
+
 	defer dbConnection.Close()
+
+	res.WriteHeader(http.StatusOK)
 }

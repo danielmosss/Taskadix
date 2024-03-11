@@ -1,7 +1,8 @@
-package handlers
+package GET
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"net/http"
 	"time"
@@ -37,9 +38,9 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	}
 	defer result.Close()
 
-	tasksMap := make(map[string][]todoCard)
+	tasksMap := make(map[string][]handlers.TodoCard)
 	for result.Next() {
-		var task todoCard
+		var task handlers.TodoCard
 		err := result.Scan(&task.Id, &task.Title, &task.Description, &task.Date, &task.TodoOrder, &task.Checked, &task.IsCHE)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -48,15 +49,15 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 		tasksMap[task.Date] = append(tasksMap[task.Date], task)
 	}
 
-	var weekTasks []DayTodos
+	var weekTasks []handlers.DayTodos
 	for i := 0; i < 7; i++ {
 		date := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format(time.DateOnly)
 		dayName := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format("Monday")
 		dayTasks, exists := tasksMap[date]
 		if !exists {
-			dayTasks = []todoCard{} // Empty slice
+			dayTasks = []handlers.TodoCard{} // Empty slice
 		}
-		weekTasks = append(weekTasks, DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
+		weekTasks = append(weekTasks, handlers.DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
 	}
 
 	tasksJSON, err := json.Marshal(weekTasks)

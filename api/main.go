@@ -2,7 +2,10 @@ package main
 
 import (
 	"api/functions"
-	"api/handlers"
+	"api/handlers/DELETE"
+	"api/handlers/GET"
+	"api/handlers/POST"
+	"api/handlers/PUT"
 	"fmt"
 	"log"
 	"net/http"
@@ -45,26 +48,26 @@ func main() {
 	// log every request that comes in with middleware.
 	handler.Use(functions.LoggingMiddleware)
 
-	handler.HandleFunc("/login", handlers.Login).Methods("POST")
-	handler.HandleFunc("/register", handlers.Register).Methods("POST")
+	handler.HandleFunc("/login", POST.Login).Methods("POST")
+	handler.HandleFunc("/register", POST.Register).Methods("POST")
 
 	securedRoutes := handler.PathPrefix("/api").Subrouter()
 	securedRoutes.Use(functions.TokenVerifyMiddleware)
 
-	securedRoutes.HandleFunc("/GetWeather", handlers.GetWeather).Methods("GET")
-	securedRoutes.HandleFunc("/GetTodoTasks", handlers.GetTodoTasks).Methods("GET")
-	securedRoutes.HandleFunc("/PutTodoTasks", handlers.PutTodoTasks).Methods("PUT")
-	securedRoutes.HandleFunc("/PostTodoTask", handlers.PostTodoTask).Methods("POST")
-	securedRoutes.HandleFunc("/PutTodoTaskInfo", handlers.PutTodoTaskInfo).Methods("PUT")
-	securedRoutes.HandleFunc("/DeleteTodoTask", handlers.DeleteTodoTask).Methods("DELETE")
-	securedRoutes.HandleFunc("/PostMarkAsIrrelevant", handlers.PostMarkAsIrrelevant).Methods("POST")
-	securedRoutes.HandleFunc("/GetTodoTasksByDateRange", handlers.GetTodoByDateRange).Methods("GET")
-	securedRoutes.HandleFunc("/GetUserData", handlers.GetUserData).Methods("GET")
-	securedRoutes.HandleFunc("/UploadBulkTodo", handlers.UploadBulkTodo).Methods("POST")
-	securedRoutes.HandleFunc("/PostCheckTodoTask", handlers.PostCheckTodoTask).Methods("POST")
-	securedRoutes.HandleFunc("/PostWebcallUrl", handlers.PostWebcallUrl).Methods("POST")
-	securedRoutes.HandleFunc("/GetWebcallSync", handlers.GetWebcallSync).Methods("GET")
-	securedRoutes.HandleFunc("/PutBGcolor", handlers.PutBGcolor).Methods("PUT")
+	securedRoutes.HandleFunc("/GetWeather", GET.GetWeather).Methods("GET")
+	securedRoutes.HandleFunc("/GetTodoTasks", GET.GetTodoTasks).Methods("GET")
+	securedRoutes.HandleFunc("/PutTodoTasks", PUT.PutTodoTasks).Methods("PUT")
+	securedRoutes.HandleFunc("/PostTodoTask", POST.PostTodoTask).Methods("POST")
+	securedRoutes.HandleFunc("/PutTodoTaskInfo", PUT.PutTodoTaskInfo).Methods("PUT")
+	securedRoutes.HandleFunc("/DeleteTodoTask", DELETE.DeleteTodoTask).Methods("DELETE")
+	securedRoutes.HandleFunc("/PostMarkAsIrrelevant", POST.PostMarkAsIrrelevant).Methods("POST")
+	securedRoutes.HandleFunc("/GetTodoTasksByDateRange", GET.GetTodoByDateRange).Methods("GET")
+	securedRoutes.HandleFunc("/GetUserData", GET.GetUserData).Methods("GET")
+	securedRoutes.HandleFunc("/UploadBulkTodo", POST.UploadBulkTodo).Methods("POST")
+	securedRoutes.HandleFunc("/PostCheckTodoTask", POST.PostCheckTodoTask).Methods("POST")
+	securedRoutes.HandleFunc("/PostWebcallUrl", POST.PostWebcallUrl).Methods("POST")
+	securedRoutes.HandleFunc("/GetWebcallSync", GET.GetWebcallSync).Methods("GET")
+	securedRoutes.HandleFunc("/PutBGcolor", PUT.PutBGcolor).Methods("PUT")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

@@ -1,21 +1,22 @@
-package handlers
+package POST
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
 )
 
-func PostCheckTodoTask(res http.ResponseWriter, req *http.Request) {
+func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	var markTask todoCard
-	if err := json.Unmarshal(body, &markTask); err != nil {
+	var url handlers.Url
+	if err := json.Unmarshal(body, &url); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
@@ -32,13 +33,25 @@ func PostCheckTodoTask(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "UPDATE todos SET checked = ? WHERE id = ? AND userId = ?;"
-	result, err := dbConnection.Query(query, markTask.Checked, markTask.Id, userId)
+	query := "SELECT * FROM users WHERE id = ? AND webcallurl IS NOT NULL;"
+	result, err := dbConnection.Query(query, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	defer result.Close()
+
+	if result.Next() {
+		http.Error(res, "Webcall URL already set", http.StatusForbidden)
+		return
+	}
+
+	queryUpdate := "UPDATE users SET webcallurl = ? WHERE webcallurl IS NULL AND id = ?;"
+	resultUpdate, err := dbConnection.Query(queryUpdate, url.Url, userId)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer resultUpdate.Close()
 	defer dbConnection.Close()
 
 	res.Header().Set("Content-Type", "application/json")
