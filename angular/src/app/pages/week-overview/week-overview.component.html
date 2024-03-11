@@ -1,19 +1,15 @@
-<div class="week-overview">
-  <div class="time-column">
-    <!-- Genereer de tijdlabels -->
-    <div class="time-label"></div>
-    <div *ngFor="let time of generateTimes()" class="time-label">{{ time }}</div>
+<div class="week-grid">
+  <!-- Time cells -->
+  <div class="timeColumn">
+    time
+    <div *ngFor="let time of times" class="time-cell">{{ time }}</div>
   </div>
+  <!-- Day cells -->
+  <div *ngFor="let day of days" class="day-cell">
+    {{ day }}
 
-  <div *ngFor="let day of generateDays();" class="day-column">
-    <div class="day-title">{{ day }}</div>
-    <!-- Dit is waar je jouw taken plaatst -->
-    <div *ngFor="let task of weekTasks"
-         class="task"
-         [ngStyle]="getTaskStyle(task)">
-      <div class="task-title">{{ task.title }}</div>
-      <div class="task-time">{{ task.startTime }} - {{ task.endTime }}</div>
-      <div class="task-desc">{{ task.description }}</div>
+    <div *ngFor="let task of weekTasks" [ngStyle]="getTaskStyle(task)" class="task">
+      {{ task.title }}
     </div>
   </div>
 </div>

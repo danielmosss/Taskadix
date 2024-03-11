@@ -35,23 +35,9 @@ export class WeekOverviewComponent {
     }
   ];
 
-  getTaskStyle(task: WeekTask): any {
-    // De uren zijn in 24-uurs formaat
-    const startHour = parseInt(task.startTime.split(':')[0], 10);
-    const startMinute = parseInt(task.startTime.split(':')[1], 10);
-    const endHour = parseInt(task.endTime.split(':')[0], 10);
-    const endMinute = parseInt(task.endTime.split(':')[1], 10);
+  times = this.generateTimes();
+  days = this.generateDays();
 
-    const startPosition = (startHour + startMinute / 60) * 60; // Bijvoorbeeld, 9.30 wordt 570 (9*60 + 30)
-    const endPosition = (endHour + endMinute / 60) * 60;
-
-    const height = endPosition - startPosition;
-
-    return {
-      top: `${startPosition}px`, // Hier ga je ervan uit dat elke uur 60px hoog is
-      height: `${height}px`
-    };
-  }
 
   generateTimes(): string[] {
     const times = [];
@@ -63,6 +49,21 @@ export class WeekOverviewComponent {
 
   generateDays(): string[] {
     return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  }
+
+  getTaskStyle(task: WeekTask): any {
+    const startHour = parseInt(task.startTime.split(':')[0], 10);
+    const startMinute = parseInt(task.startTime.split(':')[1], 10);
+    const endHour = parseInt(task.endTime.split(':')[0], 10);
+    const endMinute = parseInt(task.endTime.split(':')[1], 10);
+
+    const startRow = (startHour - 7) * 2 + (startMinute / 30) + 1; // Adjusted for 7:00 start and 2 rows per hour
+    const endRow = (endHour - 7) * 2 + (endMinute / 30) + 1; // Adjusted for 7:00 start and 2 rows per hour
+
+    return {
+      'grid-row-start': startRow,
+      'grid-row-end': endRow
+    };
   }
 
 }
