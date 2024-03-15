@@ -2,6 +2,8 @@
 
 :root {
   --background-color: #2b2d31;
+  --primary-color: #b22234;
+  --secondary-color: #f3f3f3;
 }
 
 html,
@@ -124,4 +126,36 @@ mat-dialog-container {
 
 .timepicker-backdrop-overlay, .timepicker-overlay {
   z-index: 1001 !important;
+}
+
+.timepicker__customCSS {
+  .timepicker__header {
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    background-color: var(--background-color) !important;
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .timepicker-dial__container{
+    display: block !important;
+    height: 60px;
+  }
+
+  .clock-face__clock-hand::before, .clock-face__clock-hand::after, .clock-face__clock-hand{
+    background-color: var(--background-color) !important;
+    border-color: var(--background-color) !important;
+  }
+
+  .clock-face__container{
+    .active{
+      background-color: var(--background-color) !important;
+    }
+  }
+
+  .timepicker-button{
+    color: var(--background-color) !important;
+  }
 }

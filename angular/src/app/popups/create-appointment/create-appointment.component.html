@@ -43,8 +43,7 @@
       <div class="input">
         <mat-form-field class="full-width">
           <mat-label>Title</mat-label>
-          <input matInput [value]="todoCard?.title" type="text"
-            (change)="changedProperty(todoCardProperty.title ,$event)">
+          <input matInput [value]="NewAppointment.title" type="text" [(ngModel)]="NewAppointment.title">
         </mat-form-field>
       </div>
     </div>
@@ -58,8 +57,7 @@
       <div class="input">
         <mat-form-field class="full-width">
           <mat-label>Description</mat-label>
-          <textarea matInput [value]="todoCard?.description"
-            (change)="changedProperty(todoCardProperty.description, $event)">
+          <textarea matInput [value]="NewAppointment.description" [(ngModel)]="NewAppointment.description">
           </textarea>
         </mat-form-field>
       </div>
@@ -79,18 +77,36 @@
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
-          <mat-slide-toggle>Whole Day</mat-slide-toggle>
         </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="item noAlignBaseline">
+      <div class="icon">
+        <i class="fa-solid fa-clock fa-2x"></i>
+      </div>
+      <div class="timeinput">
         <div class="time">
           <div class="begintime">
-            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly>
-            <ngx-material-timepicker #begin></ngx-material-timepicker>
+            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly (ngModelChange)="setEndtime($event)" [disabled]="eventIsWholeDay"
+              [(ngModel)]="begintime">
+            <ngx-material-timepicker
+            [timepickerClass]="'timepicker__customCSS'"
+            #begin></ngx-material-timepicker>
           </div>
           <div class="endtime">
-            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly>
-            <ngx-material-timepicker #end></ngx-material-timepicker>
+            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly [disabled]="eventIsWholeDay"
+              [(ngModel)]="endtime">
+            <ngx-material-timepicker
+            [timepickerClass]="'timepicker__customCSS'"
+            #end></ngx-material-timepicker>
           </div>
         </div>
+        <mat-slide-toggle
+        [(ngModel)]="eventIsWholeDay">
+        Whole Day</mat-slide-toggle>
       </div>
     </div>
 

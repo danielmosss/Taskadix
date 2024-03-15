@@ -161,3 +161,17 @@ export interface newTodoRequirements {
   date?: string
 }
 
+
+
+// Appointments
+export interface NewAppointment {
+  title: string,
+  description: string,
+  date: string,
+  isAllDay: boolean,
+  starttime?: string,
+  endtime?: string,
+  location: string,
+  categoryid: number,
+}
+

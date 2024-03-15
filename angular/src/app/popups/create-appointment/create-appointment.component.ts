@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
-import { Todo, newTodoRequirements } from 'src/app/interfaces';
+import { NewAppointment, Todo, newTodoRequirements } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
@@ -20,6 +20,11 @@ export class CreateAppointmentComponent implements OnInit {
   public todoCard?: newTodoRequirements;
   public formattedDate?: string = undefined;
   todoCardProperty = todoCardProperty;
+
+  public begintime: string
+  public endtime: string
+  public eventIsWholeDay: boolean = false;
+  public NewAppointment: NewAppointment = this.CreateNewAppointment();
 
   constructor(private dialogRef: MatDialogRef<CreateAppointmentComponent>, private _dataService: DataService) { }
   ngOnInit(): void {
@@ -67,5 +72,24 @@ export class CreateAppointmentComponent implements OnInit {
            this.todoCard.title &&
            this.todoCard.description &&
            this.todoCard.date;
+  }
+
+  setEndtime($event: string){
+    if (!this.endtime){
+      this.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
+    }
+  }
+
+  CreateNewAppointment(): NewAppointment {
+    return {
+      title: "",
+      description: "",
+      date: "",
+      isAllDay: false,
+      starttime: "",
+      endtime: "",
+      location: "",
+      categoryid: 0
+    }
   }
 }
