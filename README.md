@@ -1,6 +1,5 @@
 # dashboardTodo
 
-
 <p align="center">
   <img src="angular/src/assets/dashboardTodo.png" width="350">
 </p>
@@ -21,7 +20,9 @@
 </p>
 
 ## 🚀 Features
-
+> [!NOTE]  
+> I am working on many new features.<br>
+> Also, a new design will be brought along with it.
 * ✅ Dashboard with clean overview.
 * ✅ Overview
       - 7 days (Default)
@@ -40,6 +41,8 @@
 
 
 ## ⌨️ How to use?
+> [!CAUTION]
+> This guide may have inconsistencies because of its rapid development.
 
 ### Step 1: Clone the repo
   
