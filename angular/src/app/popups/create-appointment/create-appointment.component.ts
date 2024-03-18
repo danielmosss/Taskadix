@@ -71,7 +71,6 @@ export class CreateAppointmentComponent implements OnInit {
       v.title !== "" &&
       v.date !== "" &&
       v.category.id !== 0 &&
-      v.location !== "" &&
       (
         v.isAllDay
         ||

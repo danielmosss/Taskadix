@@ -29,7 +29,7 @@ create table appointments
     starttime   time,
     endtime     time,
     location    varchar(255),
-    categoryid  int,
+    categoryid  int          NOT NULL,
     FOREIGN KEY (userid) REFERENCES users (id),
     FOREIGN KEY (categoryid) REFERENCES appointment_category (id),
     CONSTRAINT title_non_empty CHECK (title <> ''),
