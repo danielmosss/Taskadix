@@ -21,12 +21,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
-import {MatSlideToggleModule} from '@angular/material/slide-toggle';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatSelectModule } from '@angular/material/select';
 
 import { NgxColorsModule } from 'ngx-colors';
 
 // Timepicker
-import {NgxMaterialTimepickerModule} from 'ngx-material-timepicker';
+import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 
 // Components
@@ -89,6 +90,7 @@ const routes: Routes = [
     MatTabsModule,
     NgxColorsModule,
     MatSlideToggleModule,
+    MatSelectModule,
     NgxMaterialTimepickerModule,
     RouterModule.forRoot(routes)
   ],

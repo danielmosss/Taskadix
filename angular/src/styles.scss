@@ -17,7 +17,6 @@ body {
 }
 
 body {
-  //background: radial-gradient(circle at bottom left, rgb(41 186 255), #0019fca8);
   background: var(--background-color);
   background-size: cover;
   background-repeat: no-repeat;
@@ -124,7 +123,8 @@ mat-dialog-container {
   }
 }
 
-.timepicker-backdrop-overlay, .timepicker-overlay {
+.timepicker-backdrop-overlay,
+.timepicker-overlay {
   z-index: 1001 !important;
 }
 
@@ -139,23 +139,25 @@ mat-dialog-container {
     justify-content: center;
   }
 
-  .timepicker-dial__container{
+  .timepicker-dial__container {
     display: block !important;
     height: 60px;
   }
 
-  .clock-face__clock-hand::before, .clock-face__clock-hand::after, .clock-face__clock-hand{
+  .clock-face__clock-hand::before,
+  .clock-face__clock-hand::after,
+  .clock-face__clock-hand {
     background-color: var(--background-color) !important;
     border-color: var(--background-color) !important;
   }
 
-  .clock-face__container{
-    .active{
+  .clock-face__container {
+    .active {
       background-color: var(--background-color) !important;
     }
   }
 
-  .timepicker-button{
+  .timepicker-button {
     color: var(--background-color) !important;
   }
 }

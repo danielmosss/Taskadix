@@ -1,38 +1,3 @@
-<!-- <div class="popup">
-  <div class="content">
-    <div class="header">
-      <mat-form-field class="full-width">
-        <mat-label>Title</mat-label>
-        <input matInput [value]="todoCard?.title" type="text" (change)="changedProperty(todoCardProperty.title ,$event)">
-      </mat-form-field>
-    </div>
-    <div class="body">
-      <mat-form-field class="full-width">
-        <mat-label>Description</mat-label>
-        <textarea matInput [value]="todoCard?.description" (change)="changedProperty(todoCardProperty.description, $event)">
-        </textarea>
-      </mat-form-field>
-
-      <mat-form-field class="full-width">
-        <mat-label>Choose a date</mat-label>
-        <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
-        <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-        <mat-datepicker #picker></mat-datepicker>
-      </mat-form-field>
-
-    </div>
-    <div class="footer buttons right">
-      <button mat-button class="mat-button neg" type="button" (click)="cancel()">
-        <i class="fa-solid fa-xmark fa-xl"></i>
-      </button>
-      <button mat-button class="mat-button pos" type="submit" (click)="saveCard()" [disabled]="!canSave()">
-        <i class="fa-solid fa-check fa-xl"></i>
-      </button>
-    </div>
-  </div>
-</div> -->
-
-
 <div class="popup">
   <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton"></i>
   <div class="content">
@@ -73,7 +38,7 @@
         <div class="date">
           <mat-form-field class="full-width">
             <mat-label>Choose a date</mat-label>
-            <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="formattedDate">
+            <input matInput [matDatepicker]="picker" (dateChange)="onDateChange($event)" [(ngModel)]="NewAppointment.date">
             <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
             <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
@@ -83,30 +48,62 @@
 
     <div class="divider"></div>
 
-    <div class="item noAlignBaseline">
+    <div class="item noAlignBaseline marginbottom">
       <div class="icon">
         <i class="fa-solid fa-clock fa-2x"></i>
       </div>
       <div class="timeinput">
         <div class="time">
           <div class="begintime">
-            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly (ngModelChange)="setEndtime($event)" [disabled]="eventIsWholeDay"
-              [(ngModel)]="begintime">
+            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly (ngModelChange)="setEndtime($event)" [disabled]="NewAppointment.isAllDay"
+              [(ngModel)]="NewAppointment.starttime">
             <ngx-material-timepicker
             [timepickerClass]="'timepicker__customCSS'"
             #begin></ngx-material-timepicker>
           </div>
           <div class="endtime">
-            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly [disabled]="eventIsWholeDay"
-              [(ngModel)]="endtime">
+            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly [disabled]="NewAppointment.isAllDay"
+              [(ngModel)]="NewAppointment.endtime">
             <ngx-material-timepicker
             [timepickerClass]="'timepicker__customCSS'"
             #end></ngx-material-timepicker>
           </div>
         </div>
         <mat-slide-toggle
-        [(ngModel)]="eventIsWholeDay">
+        [(ngModel)]="NewAppointment.isAllDay">
         Whole Day</mat-slide-toggle>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="item">
+      <div class="icon">
+        <i class="fa-solid fa-map-marker fa-2x"></i>
+      </div>
+      <div class="input">
+        <mat-form-field class="full-width">
+          <mat-label>Location</mat-label>
+          <input matInput [value]="NewAppointment.location" type="text" [(ngModel)]="NewAppointment.location">
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="item">
+      <div class="icon">
+        <i class="fa-solid fa-tags fa-2x"></i>
+      </div>
+      <div class="input">
+        <mat-form-field class="full-width">
+          <mat-label>Category</mat-label>
+          <mat-select (selectionChange)="categoryChange($event)" [value]="NewAppointment.category.term">
+            <mat-option *ngFor="let category of categories" [value]="category.term">
+              {{category.term}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
       </div>
     </div>
 
@@ -115,7 +112,7 @@
       <button mat-button class="mat-button neg" type="button" (click)="cancel()">
         <i class="fa-solid fa-xmark fa-xl"></i>
       </button>
-      <button mat-button class="mat-button pos" type="submit" (click)="saveCard()" [disabled]="!canSave()">
+      <button mat-button class="mat-button" type="submit" (click)="createAppointment()" [disabled]="!canCreateAppointment()" [ngClass]="{'pos': canCreateAppointment(), 'neg': !canCreateAppointment()}">
         <i class="fa-solid fa-check fa-xl"></i>
       </button>
     </div>

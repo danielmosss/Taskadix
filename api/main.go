@@ -6,6 +6,7 @@ import (
 	"api/handlers/GET"
 	"api/handlers/POST"
 	"api/handlers/PUT"
+	"api/handlersv2"
 	"fmt"
 	"log"
 	"net/http"
@@ -18,28 +19,6 @@ import (
 
 func main() {
 	godotenv.Load()
-
-	//port := os.Getenv("PORT")
-	//if port == "8080" {
-	//	rootCertPool := x509.NewCertPool()
-	//	// file is in the current directory with name DigiCertGlobalRootCA.crt.pem
-	//	pem, err := ioutil.ReadFile("/home/site/wwwroot/DigiCertGlobalRootCA.crt.pem")
-	//	if err != nil {
-	//		log.Fatalf("Failed to read the SSL certificate file: %v", err)
-	//	}
-	//	if ok := rootCertPool.AppendCertsFromPEM(pem); !ok {
-	//		log.Fatal("Failed to append PEM.")
-	//	}
-	//
-	//	// Configure TLS
-	//	mysql.RegisterTLSConfig("custom", &tls.Config{
-	//		RootCAs: rootCertPool,
-	//	})
-	//
-	//	port = ":443"
-	//} else {
-	//	port = ":8000"
-	//}
 
 	fmt.Println("Starting server on port 8000")
 
@@ -68,6 +47,8 @@ func main() {
 	securedRoutes.HandleFunc("/PostWebcallUrl", POST.PostWebcallUrl).Methods("POST")
 	securedRoutes.HandleFunc("/GetWebcallSync", GET.GetWebcallSync).Methods("GET")
 	securedRoutes.HandleFunc("/PutBGcolor", PUT.PutBGcolor).Methods("PUT")
+
+	securedRoutes.HandleFunc("/v2/GetCategories", handlersv2.GetCategories).Methods("GET")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

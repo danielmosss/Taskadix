@@ -172,6 +172,6 @@ export interface NewAppointment {
   starttime?: string,
   endtime?: string,
   location: string,
-  categoryid: number,
+  category: {id: number, term: string}
 }
 

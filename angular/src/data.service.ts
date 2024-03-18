@@ -142,4 +142,8 @@ export class DataService {
     }
     return headers;
   }
+
+  public getCategories() {
+    return this.http.get<{ id: number, term: string }[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
+  }
 }
