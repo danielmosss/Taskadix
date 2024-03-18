@@ -162,6 +162,13 @@ export interface newTodoRequirements {
 }
 
 
+//Category
+export interface Category {
+  id: number,
+  term: string,
+  color: string,
+}
+
 
 // Appointments
 export interface NewAppointment {
@@ -172,6 +179,18 @@ export interface NewAppointment {
   starttime?: string,
   endtime?: string,
   location: string,
-  category: {id: number, term: string}
+  category: { id: number, term: string }
 }
 
+export interface Appointment {
+  id: number,
+  userid: number,
+  title: string,
+  description: string,
+  date: string,
+  isAllDay: boolean,
+  startTime: string,
+  endTime: string,
+  location: string,
+  category: Category
+}

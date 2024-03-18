@@ -43,13 +43,13 @@ import { WeekselectorComponent } from './addons/weekselector/weekselector.compon
 import { TabsComponent } from './addons/tabs/tabs.component';
 import { AccountComponent } from './pages/account/account.component';
 import { UploadicsComponent } from './popups/uploadics/uploadics.component';
-import { CalendarComponent } from './pages/calendar/calendar.component';
+import { MonthOverviewComponent } from './pages/month-overview/month-overview.component';
 import { WeekOverviewComponent } from './pages/week-overview/week-overview.component';
 import { CreateAppointmentComponent } from './popups/create-appointment/create-appointment.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
-  { path: 'overview/month', component: CalendarComponent },
+  { path: 'overview/month', component: MonthOverviewComponent },
   { path: 'overview/week', component: WeekOverviewComponent },
 ]
 
@@ -66,7 +66,7 @@ const routes: Routes = [
     TabsComponent,
     AccountComponent,
     UploadicsComponent,
-    CalendarComponent,
+    MonthOverviewComponent,
     WeekOverviewComponent,
     CreateAppointmentComponent
   ],

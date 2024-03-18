@@ -50,7 +50,8 @@ func main() {
 
 	securedRoutes.HandleFunc("/v2/GetCategories", handlersv2.GetCategories).Methods("GET")
 	securedRoutes.HandleFunc("/v2/CreateAppointment", handlersv2.CreateAppointment).Methods("POST")
-	
+	securedRoutes.HandleFunc("/v2/GetMonthAppointments", handlersv2.GetMonthAppointments).Methods("GET")
+
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(
 		handlers2.AllowedOrigins([]string{"https://todo.mosselmansoftware.nl", ngrokAddres}),

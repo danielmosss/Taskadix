@@ -1,25 +1,26 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Todo } from 'src/app/interfaces';
+import { Appointment, Todo } from 'src/app/interfaces';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
 
 @Component({
   selector: 'app-calendar',
-  templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  templateUrl: './month-overview.component.html',
+  styleUrls: ['./month-overview.component.scss']
 })
-export class CalendarComponent implements OnInit {
-  monthView: CalendarDay[][] = [];
+export class MonthOverviewComponent implements OnInit {
+  monthView: { weeknumber: number, days: CalendarDay[] }[] = []
   today: Date = new Date();
 
   constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.getMonthView();
-    this.getTodoTasks();
+    //this.getTodoTasks();
+    this.getMonthAppointments();
   }
 
   getMonthView(): void {
@@ -28,7 +29,10 @@ export class CalendarComponent implements OnInit {
     // Transform flat array into weeks for easier management in template
     this.monthView = [];
     for (let i = 0; i < flatMonthView.length; i += 7) {
-      this.monthView.push(flatMonthView.slice(i, i + 7));
+      this.monthView.push({
+        weeknumber: this.getWeekNumber(flatMonthView[0].date),
+        days: flatMonthView.slice(i, i + 7)
+      })
     }
     console.log(this.monthView);
   }
@@ -39,29 +43,45 @@ export class CalendarComponent implements OnInit {
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
   }
 
-  getTodoTasks(): void {
-    this._dataservice.getTodo().subscribe(data => {
-      console.log(data)
-      data.forEach((task: any) => {
-        if (task.tasks.length == 0) return;
-        const date = new Date(task.date);
-        const calendarDay = this.findDayInMonthView(date);
-        if (!calendarDay) return;
-        if (!calendarDay.events) {
-          calendarDay.events = [];
+  getMonthAppointments() {
+    this._dataservice.getMonthAppointments(this.monthView[0].days[0].momentDate, this.monthView[5].days[6].momentDate).subscribe(monthData => {
+      monthData.forEach(day => {
+        let findday = this.findDayInMonthView(new Date(day.date))
+        console.log(findday)
+        if (findday) {
+          if (!findday.events) {
+            findday.events = [];
+          }
+          findday.events.push(day);
         }
-        //calendarDay.events.push(task.tasks);
-        task.tasks.forEach((todo: any) => {
-          if(calendarDay.events) calendarDay.events.push(todo);
-        })
       })
-      console.log(this.monthView)
-    });
+
+    })
   }
+
+  // getTodoTasks(): void {
+  //   this._dataservice.getTodo().subscribe(data => {
+  //     console.log(data)
+  //     data.forEach((task: any) => {
+  //       if (task.tasks.length == 0) return;
+  //       const date = new Date(task.date);
+  //       const calendarDay = this.findDayInMonthView(date);
+  //       if (!calendarDay) return;
+  //       if (!calendarDay.events) {
+  //         calendarDay.events = [];
+  //       }
+  //       //calendarDay.events.push(task.tasks);
+  //       task.tasks.forEach((todo: any) => {
+  //         if(calendarDay.events) calendarDay.events.push(todo);
+  //       })
+  //     })
+  //     console.log(this.monthView)
+  //   });
+  // }
 
   findDayInMonthView(day: Date): CalendarDay | undefined {
     for (let week of this.monthView) {
-      for (let calendarDay of week) {
+      for (let calendarDay of week.days) {
         if (calendarDay.date.toDateString() === day.toDateString()) {
           return calendarDay;
         }
@@ -74,7 +94,7 @@ export class CalendarComponent implements OnInit {
     return JSON.stringify(obj);
   }
 
-  drop(event: CdkDragDrop<Todo[], any>, weekIndex: number, dayIndex: number): void {
+  drop(event: CdkDragDrop<Appointment[], any>, weekIndex: number, dayIndex: number): void {
     if (event.previousContainer === event.container) {
       // Move the item within the same list
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -93,13 +113,13 @@ export class CalendarComponent implements OnInit {
 
   // Helper function to generate an array of connected drop lists
   getConnectedList(monthView: any): string[] {
-    return monthView.reduce((previous:any, week:any, weekIndex:any) => {
-      const weekLists = week.map((day:any, dayIndex:any) => `week${weekIndex}day${dayIndex}`);
+    return monthView.reduce((previous: any, week: any, weekIndex: any) => {
+      const weekLists = week.days.map((day: any, dayIndex: any) => `week${weekIndex}day${dayIndex}`);
       return previous.concat(weekLists);
     }, []);
   }
 
-  openCardInfo(event: Todo){
+  openCardInfo(event: Appointment) {
     var dialog = this._dialog.open(CardpopupComponent, {
       data: event
     })

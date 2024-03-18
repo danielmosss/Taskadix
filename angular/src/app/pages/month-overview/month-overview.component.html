@@ -12,8 +12,8 @@
 
 
   <ng-container *ngFor="let week of monthView; let weekIndex = index">
-    <div class="calendar-week-number">{{ getWeekNumber(week[0].date) }}</div>
-    <ng-container *ngFor="let day of week; let dayIndex = index">
+    <div class="calendar-week-number">{{ week.weeknumber }}</div>
+    <ng-container *ngFor="let day of week.days; let dayIndex = index">
       <div class="calendar-day" [id]="'week'+ weekIndex + 'day'+ dayIndex" cdkDropList
         [ngClass]="{ 'today': day.date.toDateString() === today.toDateString() }"
         [cdkDropListData]="day.events || []" [cdkDropListConnectedTo]="getConnectedList(monthView)"

@@ -1,0 +1,90 @@
+package handlersv2
+
+import (
+	"api/functions"
+	"encoding/json"
+	"net/http"
+)
+
+func GetMonthAppointments(res http.ResponseWriter, req *http.Request) {
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	beginDate := req.URL.Query().Get("start")
+	endDate := req.URL.Query().Get("end")
+
+	dbConnection, err := functions.GetDatabaseConnection()
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer dbConnection.Close()
+
+	query := `SELECT 
+    a.id,
+    a.userid,
+    a.title,
+    a.description,
+    a.date,
+    a.isallday,
+    a.starttime,
+    a.endtime,
+    a.location,
+    a.categoryid,
+    ac.term,
+    ac.color
+    FROM appointments a
+         	  INNER JOIN tododashboard.appointment_category ac on a.categoryid = ac.id
+			  WHERE a.userid = ?
+			  AND date >= ? AND date <= ?`
+	result, err := dbConnection.Query(query, userId, beginDate, endDate)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer result.Close()
+
+	appointmentMap := make(map[string][]Appointment)
+	for result.Next() {
+		var appointment Appointment
+		err := result.Scan(
+			&appointment.Id,
+			&appointment.Userid,
+			&appointment.Title,
+			&appointment.Description,
+			&appointment.Date,
+			&appointment.IsAllDay,
+			&appointment.StartTime,
+			&appointment.EndTime,
+			&appointment.Location,
+			&appointment.Category.ID,
+			&appointment.Category.Term,
+			&appointment.Category.Color,
+		)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		appointmentMap[appointment.Date] = append(appointmentMap[appointment.Date], appointment)
+	}
+
+	var appointmentArray []Appointment
+	for _, appointments := range appointmentMap {
+		for _, appointment := range appointments {
+			appointmentArray = append(appointmentArray, appointment)
+		}
+	}
+
+	JSON, err := json.Marshal(appointmentArray)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
+	res.Write(JSON)
+}

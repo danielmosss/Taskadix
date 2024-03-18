@@ -3,7 +3,6 @@
   grid-template-columns: 50px repeat(7, 1fr);
   /* Reserve space for week numbers and 7 days */
   gap: 4px;
-  /* Space between grid items */
 }
 
 .grid {
@@ -13,7 +12,6 @@
 
 .calendar-day-name {
   background-color: #e2e3e5;
-  /* Distinguish day names with a different color */
   font-weight: bold;
   text-align: center;
   padding: 10px;
@@ -21,17 +19,14 @@
 
 .calendar-week {
   display: contents;
-  /* Use 'contents' to keep the grid structure */
 }
 
 .calendar-week-number {
   grid-column: 1 / span 1;
-  /* Take up the first column */
   background-color: #dde1e4;
-  /* Differentiate week numbers */
   text-align: center;
   padding: 10px;
-  min-height: 10vh;
+  min-height: 8vh;
 }
 
 .calendar-week-number-empty {
@@ -46,7 +41,7 @@
   padding: 5px;
   border-radius: 4px;
 
-  &.today{
+  &.today {
     background-color: #007bff;
     background: #007bff;
     cursor: pointer;
@@ -70,4 +65,33 @@
     padding: 3px 4px;
     border-radius: 4px;
   }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  text-align: left;
+  color: black;
+  background: #d6d6d6;
+  cursor: pointer;
+  padding: 3px 4px;
+
+  // all the items that are in the html cdkDrag class="event" can be put here to style.
+
+}
+
+.cdk-drag-placeholder {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  text-align: left;
+  color: black;
+  background: #d6d6d6;
+  cursor: pointer;
+  padding: 3px 4px;
 }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayTodo, NewAppointment, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -38,53 +38,53 @@ export class DataService {
     return this.http.put<Array<DayTodo>>(this._SecureApi + "/PutTodoTasks", todo, { headers: this.getCustomHeaders() });
   }
 
-  public putTodoInfo(todoCard: Todo){
+  public putTodoInfo(todoCard: Todo) {
     return this.http.put<Todo>(this._SecureApi + "/PutTodoTaskInfo", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public deleteTodoTask(todoCard: Todo){
-    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", {body: todoCard, headers: this.getCustomHeaders()});
+  public deleteTodoTask(todoCard: Todo) {
+    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
   }
 
-  public postTodoInfo(todoCard: newTodoRequirements){
+  public postTodoInfo(todoCard: newTodoRequirements) {
     return this.http.post<Todo>(this._SecureApi + "/PostTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public markAsIrrelevant(todoCard: Todo){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
+  public markAsIrrelevant(todoCard: Todo) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public checkTodoTask(todoCard: Todo){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
+  public checkTodoTask(todoCard: Todo) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public saveWebcallUrl(url: string){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostWebcallUrl", {url: url}, { headers: this.getCustomHeaders() });
+  public saveWebcallUrl(url: string) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostWebcallUrl", { url: url }, { headers: this.getCustomHeaders() });
   }
 
-  public syncWebcall(){
-    return this.http.get<{status: string}>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
+  public syncWebcall() {
+    return this.http.get<{ status: string }>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
   }
 
-  public putBackgroundcolor(color: string){
-    return this.http.put<{status: string}>(this._SecureApi + "/PutBGcolor", {backgroundColor: color}, { headers: this.getCustomHeaders() });
+  public putBackgroundcolor(color: string) {
+    return this.http.put<{ status: string }>(this._SecureApi + "/PutBGcolor", { backgroundColor: color }, { headers: this.getCustomHeaders() });
   }
 
-  public getUserDataOnLoad(){
+  public getUserDataOnLoad() {
     this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
       this.validJwtToken = true;
       this.userdata = data;
-      if(this.userdata?.backgroundcolor && this.userdata.backgroundcolor != ""){
+      if (this.userdata?.backgroundcolor && this.userdata.backgroundcolor != "") {
         this.updateBackgroundcolor(this.userdata.backgroundcolor);
       }
     })
   }
 
-  public getUserDataReturn(){
+  public getUserDataReturn() {
     return this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
-  public uploadBulkTodos(todoCards: newTodoRequirements[]){
+  public uploadBulkTodos(todoCards: newTodoRequirements[]) {
     return this.http.post<Todo[]>(this._SecureApi + "/UploadBulkTodo", todoCards, { headers: this.getCustomHeaders() });
   }
 
@@ -147,7 +147,11 @@ export class DataService {
     return this.http.get<{ id: number, term: string }[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
   }
 
-  public createAppointment(appointment: NewAppointment){
+  public createAppointment(appointment: NewAppointment) {
     return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
+  }
+
+  public getMonthAppointments(beginDate: string, endDate: string) {
+    return this.http.get<Appointment[]>(this._SecureApi + `/v2/GetMonthAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
   }
 }

@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { Todo } from './app/interfaces';
+import { Appointment, Todo } from './app/interfaces';
 
 export interface CalendarDay {
   date: Date;
-  momentDate?: string;
-  events: Array<Todo>;
+  momentDate: string;
+  events: Array<Appointment>;
 }
 
 @Injectable({

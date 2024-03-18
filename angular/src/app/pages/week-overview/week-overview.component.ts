@@ -70,10 +70,4 @@ export class WeekOverviewComponent {
       'grid-row-end': endRow
     };
   }
-
-
-  openCreateAppointment(){
-    // Open the create appointment dialog
-    this._dialog.open(CreateAppointmentComponent);
-  }
 }
