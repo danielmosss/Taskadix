@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayTodo, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
+import { DayTodo, NewAppointment, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -145,5 +145,9 @@ export class DataService {
 
   public getCategories() {
     return this.http.get<{ id: number, term: string }[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
+  }
+
+  public createAppointment(appointment: NewAppointment){
+    return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
   }
 }

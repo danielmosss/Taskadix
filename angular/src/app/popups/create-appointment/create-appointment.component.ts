@@ -4,6 +4,7 @@ import { NewAppointment, Todo, newTodoRequirements } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -22,7 +23,7 @@ export class CreateAppointmentComponent implements OnInit {
       { id: 5, term: "Other" }
     ];
 
-  constructor(private dialogRef: MatDialogRef<CreateAppointmentComponent>, private _dataService: DataService) { }
+  constructor(private dialogRef: MatDialogRef<CreateAppointmentComponent>, private _dataService: DataService, private _snackbar: MatSnackBar) { }
   ngOnInit(): void {
     this._dataService.getCategories().subscribe(categories => {
       this.categories = categories;
@@ -80,6 +81,11 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   createAppointment(){
-    // make call to endpoint
+    this._dataService.createAppointment(this.NewAppointment).subscribe(
+      (res) => {
+        this.dialogRef.close();
+        this._snackbar.open("Appointment created", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
+      }
+    )
   }
 }
