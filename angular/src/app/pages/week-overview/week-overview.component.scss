@@ -1,26 +1,63 @@
 .week-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  /* 8 columns */
-  gap: 1px;
-  /* Gap between cells */
-}
+  grid-template-columns: 75px repeat(7, 250px);
 
-.time-cell {
-  grid-column: 1;
-  /* Time cells are always in the first column */
-  height: 50px;
-}
+  .timeColumn {
+    grid-column: 1;
 
-.appointments {
-  position: relative;
-  .appointment {
-    position: absolute;
-    color: black;
-    background-color: #d6d6d6;
-    background: #d6d6d6;
-    cursor: pointer;
-    padding: 3px 4px;
-    border-radius: 4px;
+    .weeknumber {
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      font-family: serif;
+      font-size: x-large;
+      color: #00C9C8;
+      height: 60px;
+    }
+
+    .time-cell {
+      display: grid;
+      justify-content: center;
+
+      .divider{
+        width: 50%;
+        background-color: #00C9C8;
+      }
+      .longDivider{
+        width: 100%;
+        background-color: #00C9C8;
+      }
+    }
+  }
+
+  .day-cell {
+    .day {
+      display: grid;
+      justify-content: center;
+      align-content: center;
+      font-family: serif;
+      font-size: xx-large;
+      height: 60px;
+    }
+
+    .appointments {
+      position: relative;
+
+      .appointment {
+        position: absolute;
+        box-sizing: border-box;
+        padding: 3px 4px;
+
+        .content {
+          color: black;
+          background-color: #d6d6d6;
+          background: #d6d6d6;
+          cursor: pointer;
+          padding: 3px 4px;
+          border-radius: 4px;
+          height: 100%;
+        }
+      }
+    }
   }
 }

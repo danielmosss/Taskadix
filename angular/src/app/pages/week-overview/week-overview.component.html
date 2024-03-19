@@ -1,9 +1,17 @@
 <div class="week-grid">
   <!-- Time cells -->
   <div class="timeColumn">
-    time
-    <div *ngFor="let time of times" class="time-cell">{{ time }}</div>
+    <div class="weeknumber">
+      week {{ weeknumber }}
+    </div>
+    <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour - (dividerHeight * 3)}">
+      {{ time }}
+      <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+      <div class="longDivider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+      <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+    </div>
   </div>
+
   <!-- Day cells -->
   <div *ngFor="let day of days" class="day-cell">
     <div class="day">
@@ -11,8 +19,10 @@
     </div>
 
     <div class="appointments">
-      <div *ngFor="let task of weekTasks" [ngStyle]="getTaskStyle(task)" class="appointment">
-        {{ task.title }}
+      <div *ngFor="let appointment of weekAppointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
+        <div class="content">
+          {{ appointment.title }}
+        </div>
       </div>
     </div>
   </div>
