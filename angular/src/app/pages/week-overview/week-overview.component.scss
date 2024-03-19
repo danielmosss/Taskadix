@@ -1,10 +1,26 @@
 .week-grid {
   display: grid;
-  grid-template-columns: repeat(8, 1fr); /* 8 columns */
-  grid-auto-rows: 30px; /* Each row is 30px high, so 2 rows per hour */
-  gap: 1px; /* Gap between cells */
+  grid-template-columns: repeat(8, 1fr);
+  /* 8 columns */
+  gap: 1px;
+  /* Gap between cells */
 }
 
 .time-cell {
-  grid-column: 1; /* Time cells are always in the first column */
+  grid-column: 1;
+  /* Time cells are always in the first column */
+  height: 50px;
+}
+
+.appointments {
+  position: relative;
+  .appointment {
+    position: absolute;
+    color: black;
+    background-color: #d6d6d6;
+    background: #d6d6d6;
+    cursor: pointer;
+    padding: 3px 4px;
+    border-radius: 4px;
+  }
 }

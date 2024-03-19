@@ -6,10 +6,14 @@
   </div>
   <!-- Day cells -->
   <div *ngFor="let day of days" class="day-cell">
-    {{ day }}
+    <div class="day">
+      {{ day }}
+    </div>
 
-    <div *ngFor="let task of weekTasks" [ngStyle]="getTaskStyle(task)" class="task">
-      {{ task.title }}
+    <div class="appointments">
+      <div *ngFor="let task of weekTasks" [ngStyle]="getTaskStyle(task)" class="appointment">
+        {{ task.title }}
+      </div>
     </div>
   </div>
 </div>
