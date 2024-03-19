@@ -83,7 +83,7 @@ export class CreateAppointmentComponent implements OnInit {
   createAppointment(){
     this._dataService.createAppointment(this.NewAppointment).subscribe(
       (res) => {
-        this.dialogRef.close();
+        this.dialogRef.close(res);
         this._snackbar.open("Appointment created", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
       }
     )

@@ -154,4 +154,8 @@ export class DataService {
   public getMonthAppointments(beginDate: string, endDate: string) {
     return this.http.get<Appointment[]>(this._SecureApi + `/v2/GetMonthAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
   }
+
+  public getAppointment(appointmentId: number){
+    return this.http.get<Appointment>(this._SecureApi + `/v2/GetAppointment?id=${appointmentId}`, { headers: this.getCustomHeaders() });
+  }
 }

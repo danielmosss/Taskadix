@@ -124,4 +124,17 @@ export class MonthOverviewComponent implements OnInit {
       data: event
     })
   }
+
+  newAppointment(appointmentId: number) {
+    console.log(appointmentId)
+    this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
+      const date = new Date(appointment.date);
+      const calendarDay = this.findDayInMonthView(date);
+      if (!calendarDay) return;
+      if (!calendarDay.events) {
+        calendarDay.events = [];
+      }
+      calendarDay.events.push(appointment);
+    })
+  }
 }

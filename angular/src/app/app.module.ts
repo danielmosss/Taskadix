@@ -46,6 +46,7 @@ import { UploadicsComponent } from './popups/uploadics/uploadics.component';
 import { MonthOverviewComponent } from './pages/month-overview/month-overview.component';
 import { WeekOverviewComponent } from './pages/week-overview/week-overview.component';
 import { CreateAppointmentComponent } from './popups/create-appointment/create-appointment.component';
+import { HeaderOverviewComponent } from './pages/header-overview/header-overview.component';
 
 const routes: Routes = [
   { path: '', component: OverviewComponent },
@@ -68,7 +69,8 @@ const routes: Routes = [
     UploadicsComponent,
     MonthOverviewComponent,
     WeekOverviewComponent,
-    CreateAppointmentComponent
+    CreateAppointmentComponent,
+    HeaderOverviewComponent
   ],
   imports: [
     BrowserModule,
