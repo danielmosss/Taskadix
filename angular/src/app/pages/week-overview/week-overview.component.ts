@@ -30,6 +30,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   ngOnInit(): void {
     this.times = this.generateTimes();
     this.days = this.generateDays();
+    this.weeknumber = moment().week();
     this.getAppointments(this.days[0].date, this.days[6].date);
 
     setInterval(() => {
