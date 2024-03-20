@@ -131,20 +131,20 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   }
 
-  getTaskStyle(task: Appointment): any {
-    if (task.isAllDay) {
+  getTaskStyle(appointment: Appointment): any {
+    if (appointment.isAllDay) {
       let top = 30;
-      const wholeDayAppointments = this.days.find(day => day.date === task.date)?.appointments.filter(appointment => appointment.isAllDay);
+      const wholeDayAppointments = this.days.find(day => day.date === appointment.date)?.appointments.filter(appointment => appointment.isAllDay);
       if (wholeDayAppointments) {
-        top = (wholeDayAppointments.indexOf(task) * (top + 10));
+        top = (wholeDayAppointments.indexOf(appointment) * (top + 10));
       }
       return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
     }
 
-    const startHour = parseInt(task.starttime.split(':')[0], 10);
-    const startMinute = parseInt(task.starttime.split(':')[1], 10);
-    const endHour = parseInt(task.endtime.split(':')[0], 10);
-    const endMinute = parseInt(task.endtime.split(':')[1], 10);
+    const startHour = parseInt(appointment.starttime.split(':')[0], 10);
+    const startMinute = parseInt(appointment.starttime.split(':')[1], 10);
+    const endHour = parseInt(appointment.endtime.split(':')[0], 10);
+    const endMinute = parseInt(appointment.endtime.split(':')[1], 10);
 
     const startPosition = (startHour + startMinute / 60) * this.heightPerHour; // Bijvoorbeeld, 9.30 wordt 570 (9*60 + 30)
     const endPosition = (endHour + endMinute / 60) * this.heightPerHour;
@@ -154,9 +154,15 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return {
       top: `${startPosition}px`,
       height: `${height}px`,
-      width: `${task.width}px`,
-      left: `${task.left}px`
+      width: `${appointment.width}px`,
+      left: `${appointment.left}px`
     };
+  }
+
+  ShowCategory(appointment: Appointment): boolean{
+    let height = this.getTaskStyle(appointment).height;
+    let heightNumber = parseInt(height.slice(0, -2), 10);
+    return heightNumber > 30;
   }
 
   newAppointment(appointmentId: number) {
