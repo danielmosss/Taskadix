@@ -189,8 +189,10 @@ export interface Appointment {
   description: string,
   date: string,
   isAllDay: boolean,
-  startTime: string,
-  endTime: string,
+  starttime: string,
+  endtime: string,
   location: string,
-  category: Category
+  category: Category,
+  width?: number,
+  left?: number,
 }

@@ -1,27 +1,42 @@
-<div class="week-grid">
-  <!-- Time cells -->
-  <div class="timeColumn">
+<div class="header">
+  <app-header-overview (newAppointmentId)="newAppointment($event)"></app-header-overview>
+</div>
+
+<div class="weekoverview">
+  <div class="week-grid-header">
     <div class="weeknumber">
       week {{ weeknumber }}
     </div>
-    <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour - (dividerHeight * 3)}">
-      {{ time }}
-      <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
-      <div class="longDivider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
-      <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+    <div *ngFor="let day of days" class="day-cell">
+      <div class="day">
+        {{ day.day }}
+      </div>
     </div>
   </div>
 
-  <!-- Day cells -->
-  <div *ngFor="let day of days" class="day-cell">
-    <div class="day">
-      {{ day }}
+  <div class="week-grid">
+    <!-- Time cells -->
+    <div class="timeColumn">
+
+      <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour}">
+        {{ time }}
+        <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+        <div class="longDivider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+        <div class="divider" *ngIf="!isLast" [ngStyle]="{'height.px': dividerHeight}"></div>
+      </div>
     </div>
 
-    <div class="appointments">
-      <div *ngFor="let appointment of weekAppointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
-        <div class="content">
-          {{ appointment.title }}
+    <!-- Day cells -->
+    <div *ngFor="let day of days" class="day-cell">
+      <div class="appointments">
+        <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
+          <div class="content" *ngIf="appointment.date === day.date">
+            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+            </div>
+            <div class="info">
+              {{ appointment.title }}
+            </div>
+          </div>
         </div>
       </div>
     </div>

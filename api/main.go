@@ -50,7 +50,7 @@ func main() {
 
 	securedRoutes.HandleFunc("/v2/GetCategories", handlersv2.GetCategories).Methods("GET")
 	securedRoutes.HandleFunc("/v2/CreateAppointment", handlersv2.CreateAppointment).Methods("POST")
-	securedRoutes.HandleFunc("/v2/GetMonthAppointments", handlersv2.GetMonthAppointments).Methods("GET")
+	securedRoutes.HandleFunc("/v2/GetAppointments", handlersv2.GetAppointments).Methods("GET")
 	securedRoutes.HandleFunc("/v2/GetAppointment", handlersv2.GetAppointment).Methods("GET")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")

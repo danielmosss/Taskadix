@@ -44,40 +44,21 @@ export class MonthOverviewComponent implements OnInit {
   }
 
   getMonthAppointments() {
-    this._dataservice.getMonthAppointments(this.monthView[0].days[0].momentDate, this.monthView[5].days[6].momentDate).subscribe(monthData => {
+    this._dataservice.getAppointments(this.monthView[0].days[0].momentDate, this.monthView[5].days[6].momentDate).subscribe(monthData => {
       monthData.forEach(day => {
         let findday = this.findDayInMonthView(new Date(day.date))
-        console.log(findday)
         if (findday) {
           if (!findday.events) {
             findday.events = [];
           }
-          findday.events.push(day);
+          day.appointments.forEach(appointment => {
+            if (findday) findday.events.push(appointment);
+          })
         }
       })
 
     })
   }
-
-  // getTodoTasks(): void {
-  //   this._dataservice.getTodo().subscribe(data => {
-  //     console.log(data)
-  //     data.forEach((task: any) => {
-  //       if (task.tasks.length == 0) return;
-  //       const date = new Date(task.date);
-  //       const calendarDay = this.findDayInMonthView(date);
-  //       if (!calendarDay) return;
-  //       if (!calendarDay.events) {
-  //         calendarDay.events = [];
-  //       }
-  //       //calendarDay.events.push(task.tasks);
-  //       task.tasks.forEach((todo: any) => {
-  //         if(calendarDay.events) calendarDay.events.push(todo);
-  //       })
-  //     })
-  //     console.log(this.monthView)
-  //   });
-  // }
 
   findDayInMonthView(day: Date): CalendarDay | undefined {
     for (let week of this.monthView) {
