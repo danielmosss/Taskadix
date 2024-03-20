@@ -15,7 +15,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
 
   public weeknumber: number = 0;
-  public heightPerHour: number = 100;
+  public heightPerHour: number = 90;
   public widthPerDay: number = 240;
   public dividerHeight: number = 3;
 
@@ -31,15 +31,20 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.weekgridScroll.nativeElement.scrollTop = this.heightPerHour * 7;
+    let hour = parseInt(this.getCurrentTime().hour, 10);
+    let scrollHeight = 0;
+    if (hour >= 0 && hour < 6) scrollHeight = 0;
+    else if (hour >= 6 && hour < 24) scrollHeight = (hour - 2) * this.heightPerHour;
+    else if (hour >= 17 && hour < 24) scrollHeight = 16 * this.heightPerHour;
+
+    this.weekgridScroll.nativeElement.scrollTop = scrollHeight;
   }
 
   findDayInWeek(date: Date): { date: string, day: string, appointments: Appointment[] } | undefined {
     return this.days.find(day => day.date === moment(date).format('YYYY-MM-DD'));
   }
 
-  getAppointments(beginDate: string, endDate: string){
-    // Get appointments from the database
+  getAppointments(beginDate: string, endDate: string) {
     this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
       data.forEach(element => {
         const day = this.days.find(day => day.date === element.date);
@@ -53,13 +58,12 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   generateTimes(): string[] {
     const times = [];
-    for (let hour = 0; hour <= 24; hour++) {
+    for (let hour = 0; hour < 24; hour++) {
       times.push(`${hour.toString().padStart(2, '0')}:00`);
     }
     return times;
   }
 
-  // this needs to give back an {date: string, day: string}[] from sunday to saturday for the current week
   generateDays(): { date: string, day: string, appointments: Appointment[] }[] {
     const days: { date: string, day: string, appointments: Appointment[] }[] = [];
     const today = new Date();
@@ -91,7 +95,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         }
       }
 
-      const gap = 4; // Gap in pixels
+      const gap = 4;
       const width = (this.widthPerDay - gap * (overlaps.length - 1)) / overlaps.length;
 
       overlaps.forEach((task, index) => {
@@ -126,7 +130,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     const height = endPosition - startPosition;
 
     return {
-      top: `${startPosition}px`, // Hier ga je ervan uit dat elke uur 60px hoog is
+      top: `${startPosition}px`,
       height: `${height}px`,
       width: `${task.width}px`,
       left: `${task.left}px`
@@ -148,5 +152,17 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   getFormattedTime(time: string): string {
     return moment(time, 'HH:mm').format('HH:mm');
+  }
+
+  getCurrentTime(): { hour: string, minute: string } {
+    const currentTime = moment().format('HH:mm');
+    return { hour: currentTime.split(':')[0], minute: currentTime.split(':')[1] };
+  }
+
+
+  GetActivePosition(): string {
+    const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
+    const position = (parseInt(currentHour, 10) + parseInt(currentMinute, 10) / 60) * this.heightPerHour;
+    return position.toString()
   }
 }

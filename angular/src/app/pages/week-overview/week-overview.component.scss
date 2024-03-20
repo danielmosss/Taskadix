@@ -43,6 +43,7 @@
 
       .time-cell {
         display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
         justify-content: center;
 
         .divider {
@@ -64,58 +65,59 @@
 
       .daylines {
         position: relative;
+
         .lines {
           background-color: var(--background-color);
           position: absolute;
-          width: 100%;
           height: 3px;
+        }
+
+        .active {
+          background-color: #00C9C8;
+          position: absolute;
+          height: 2px;
         }
       }
 
+      .appointments {
+        position: relative;
 
-        .appointments {
-          position: relative;
+        .appointment {
+          position: absolute;
 
-          .appointment {
-            position: absolute;
+          .content {
+            color: black;
+            background-color: #d6d6d6;
+            border-top-right-radius: 10px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 5px;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 17fr;
 
-            .content {
-              color: black;
-              background-color: #d6d6d6;
-              border-top-right-radius: 10px;
-              border-bottom-right-radius: 10px;
-              border-top-left-radius: 5px;
+            .categoryColor {
               border-bottom-left-radius: 5px;
-              height: 100%;
-              display: grid;
-              grid-template-columns: 1fr 17fr;
+              border-top-left-radius: 5px;
+            }
 
-              .categoryColor {
-                border-bottom-left-radius: 5px;
-                border-top-left-radius: 5px;
+            .cardContent {
+              padding: 5px;
+              display: grid;
+              grid-template-columns: 10fr 1fr;
+              cursor: pointer;
+
+              .appointmentContent {
+                .category {}
+
+                .title {}
+
+                .time {}
               }
 
-              .cardContent {
-                padding: 5px;
-                display: grid;
-                grid-template-columns: 10fr 1fr;
-                cursor: pointer;
-
-                .appointmentContent{
-                  .category{
-
-                  }
-                  .title{
-
-                  }
-                  .time{
-
-                  }
-                }
-                .checkbox{
-                  .cursorPointer{
-                    cursor: pointer;
-                  }
+              .checkbox {
+                .cursorPointer {
+                  cursor: pointer;
                 }
               }
             }
@@ -124,3 +126,4 @@
       }
     }
   }
+}
