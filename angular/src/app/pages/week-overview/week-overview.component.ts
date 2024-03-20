@@ -91,10 +91,12 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         }
       }
 
-      const width = this.widthPerDay / overlaps.length;
+      const gap = 4; // Gap in pixels
+      const width = (this.widthPerDay - gap * (overlaps.length - 1)) / overlaps.length;
+
       overlaps.forEach((task, index) => {
         task.width = width;
-        task.left = width * index;
+        task.left = index * (width + gap);
       });
 
       i += overlaps.length - 1;
@@ -106,13 +108,10 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   getTaskStyle(task: Appointment): any {
     if (task.isAllDay) {
       let top = 30;
-      // change high depending if this is the first second or x whole day appointment
-      // check in the array if there are more whole day appointments
       const wholeDayAppointments = this.days.find(day => day.date === task.date)?.appointments.filter(appointment => appointment.isAllDay);
       if (wholeDayAppointments) {
         top = (wholeDayAppointments.indexOf(task) * (top + 4));
       }
-
       return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
     }
 
