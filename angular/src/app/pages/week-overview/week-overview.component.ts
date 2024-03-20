@@ -14,6 +14,7 @@ import { DataService } from 'src/data.service';
 export class WeekOverviewComponent implements OnInit {
   public weeknumber: number = 0;
   public heightPerHour: number = 60;
+  public widthPerDay: number = 240;
   public dividerHeight: number = 2;
 
   public days: { date: string, day: string, appointments: Appointment[] }[] = [];
@@ -84,7 +85,7 @@ export class WeekOverviewComponent implements OnInit {
         }
       }
 
-      const width = 250 / overlaps.length;
+      const width = this.widthPerDay / overlaps.length;
       overlaps.forEach((task, index) => {
         task.width = width;
         task.left = width * index;

@@ -3,7 +3,7 @@
 </div>
 
 <div class="weekoverview">
-  <div class="week-grid-header">
+  <div class="week-grid-header" [ngStyle]="{'grid-template-columns': '75px repeat(7, ' + widthPerDay + 'px)'}">
     <div class="weeknumber">
       week {{ weeknumber }}
     </div>
@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="week-grid">
+  <div class="week-grid" [ngStyle]="{'grid-template-columns': '75px repeat(7, ' + widthPerDay + 'px)'}">
     <!-- Time cells -->
     <div class="timeColumn">
 
@@ -27,7 +27,13 @@
     </div>
 
     <!-- Day cells -->
-    <div *ngFor="let day of days" class="day-cell">
+    <div *ngFor="let day of days; let isLast=last" class="day-cell">
+      <div *ngFor="let time of times; let i = index; let isLast=last" class="daylines">
+        <div class="lines" *ngIf="!isLast"
+          [ngStyle]="{'top.px': (i + 1) * heightPerHour}">
+        </div>
+      </div>
+
       <div class="appointments">
         <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
           <div class="content" *ngIf="appointment.date === day.date">
