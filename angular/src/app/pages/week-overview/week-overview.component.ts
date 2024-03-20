@@ -17,7 +17,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   public weeknumber: number = 0;
   public activeTimePosition: string = this.GetActivePosition();
 
-  public heightPerHour: number = 90;
+  public heightPerHour: number = 60;
   public widthPerDay: number = 240;
   public gridDividerWidth: number = 3;
   public dividerHeight: number = 3;
@@ -181,6 +181,9 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return { hour: currentTime.split(':')[0], minute: currentTime.split(':')[1] };
   }
 
+  getDateNumber(date: string): string {
+    return moment(date).format('DD');
+  }
 
   GetActivePosition(): string {
     const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
