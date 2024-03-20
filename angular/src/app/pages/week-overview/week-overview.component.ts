@@ -15,6 +15,8 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
 
   public weeknumber: number = 0;
+  public activeTimePosition: string = this.GetActivePosition();
+
   public heightPerHour: number = 90;
   public widthPerDay: number = 240;
   public dividerHeight: number = 3;
@@ -28,6 +30,10 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     this.times = this.generateTimes();
     this.days = this.generateDays();
     this.getAppointments(this.days[0].date, this.days[6].date);
+
+    setInterval(() => {
+      this.activeTimePosition = this.GetActivePosition();
+    }, 60000);
   }
 
   ngAfterViewInit(): void {
@@ -147,6 +153,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         calendarDay.appointments = [];
       }
       calendarDay.appointments.push(appointment);
+      calendarDay.appointments = this.calculateOverlaps(calendarDay.appointments);
     })
   }
 
