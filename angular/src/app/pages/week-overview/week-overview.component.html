@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="week-grid" [ngStyle]="{'grid-template-columns': '75px repeat(7, ' + widthPerDay + 'px)'}">
+  <div #weekgridScroll class="week-grid" [ngStyle]="{'grid-template-columns': '75px repeat(7, ' + widthPerDay + 'px)'}">
     <!-- Time cells -->
     <div class="timeColumn">
 
@@ -29,8 +29,7 @@
     <!-- Day cells -->
     <div *ngFor="let day of days; let isLast=last" class="day-cell">
       <div *ngFor="let time of times; let i = index; let isLast=last" class="daylines">
-        <div class="lines" *ngIf="!isLast"
-          [ngStyle]="{'top.px': (i + 1) * heightPerHour}">
+        <div class="lines" *ngIf="!isLast" [ngStyle]="{'top.px': (i + 1) * heightPerHour}">
         </div>
       </div>
 
@@ -39,8 +38,21 @@
           <div class="content" *ngIf="appointment.date === day.date">
             <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
             </div>
-            <div class="info">
-              {{ appointment.title }}
+            <div class="cardContent">
+              <div class="appointmentContent">
+                <div class="category" [ngStyle]="{'color': appointment.category.color}" *ngIf="!appointment.isAllDay">
+                  {{ appointment.category.term }}
+                </div>
+                <div class="title">
+                  {{ appointment.title }}
+                </div>
+                <div class="time" *ngIf="!appointment.isAllDay">
+                  {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
+                </div>
+              </div>
+              <div class="checkbox">
+                <i class="fa fa-check cursorPointer" aria-hidden="true"></i>
+              </div>
             </div>
           </div>
         </div>

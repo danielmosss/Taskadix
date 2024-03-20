@@ -48,11 +48,13 @@
         .divider {
           width: 50%;
           background-color: #00C9C8;
+          border-radius: 20px;
         }
 
         .longDivider {
           width: 100%;
           background-color: #00C9C8;
+          border-radius: 20px;
         }
       }
     }
@@ -80,7 +82,6 @@
             .content {
               color: black;
               background-color: #d6d6d6;
-              cursor: pointer;
               border-top-right-radius: 10px;
               border-bottom-right-radius: 10px;
               border-top-left-radius: 5px;
@@ -94,8 +95,28 @@
                 border-top-left-radius: 5px;
               }
 
-              .info {
-                padding: 3px 4px;
+              .cardContent {
+                padding: 5px 0 5px 5px;
+                display: grid;
+                grid-template-columns: 10fr 1fr;
+                cursor: pointer;
+
+                .appointmentContent{
+                  .category{
+
+                  }
+                  .title{
+
+                  }
+                  .time{
+
+                  }
+                }
+                .checkbox{
+                  .cursorPointer{
+                    cursor: pointer;
+                  }
+                }
               }
             }
           }

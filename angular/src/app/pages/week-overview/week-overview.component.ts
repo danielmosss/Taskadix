@@ -1,4 +1,4 @@
-import { APP_BOOTSTRAP_LISTENER, Component, OnInit } from '@angular/core';
+import { APP_BOOTSTRAP_LISTENER, AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment } from 'src/app/interfaces';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
@@ -11,11 +11,13 @@ import { DataService } from 'src/data.service';
   templateUrl: './week-overview.component.html',
   styleUrls: ['./week-overview.component.scss']
 })
-export class WeekOverviewComponent implements OnInit {
+export class WeekOverviewComponent implements OnInit, AfterViewInit {
+  @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
+
   public weeknumber: number = 0;
-  public heightPerHour: number = 60;
+  public heightPerHour: number = 100;
   public widthPerDay: number = 240;
-  public dividerHeight: number = 2;
+  public dividerHeight: number = 3;
 
   public days: { date: string, day: string, appointments: Appointment[] }[] = [];
   public times: string[] = [];
@@ -26,6 +28,10 @@ export class WeekOverviewComponent implements OnInit {
     this.times = this.generateTimes();
     this.days = this.generateDays();
     this.getAppointments(this.days[0].date, this.days[6].date);
+  }
+
+  ngAfterViewInit(): void {
+    this.weekgridScroll.nativeElement.scrollTop = this.heightPerHour * 7;
   }
 
   findDayInWeek(date: Date): { date: string, day: string, appointments: Appointment[] } | undefined {
@@ -98,7 +104,17 @@ export class WeekOverviewComponent implements OnInit {
   }
 
   getTaskStyle(task: Appointment): any {
-    if (task.isAllDay) return { top: '0px', height: '30px', width: '100%', left: '0px' };
+    if (task.isAllDay) {
+      let top = 30;
+      // change high depending if this is the first second or x whole day appointment
+      // check in the array if there are more whole day appointments
+      const wholeDayAppointments = this.days.find(day => day.date === task.date)?.appointments.filter(appointment => appointment.isAllDay);
+      if (wholeDayAppointments) {
+        top = (wholeDayAppointments.indexOf(task) * (top + 4));
+      }
+
+      return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
+    }
 
     const startHour = parseInt(task.starttime.split(':')[0], 10);
     const startMinute = parseInt(task.starttime.split(':')[1], 10);
@@ -129,5 +145,9 @@ export class WeekOverviewComponent implements OnInit {
       }
       calendarDay.appointments.push(appointment);
     })
+  }
+
+  getFormattedTime(time: string): string {
+    return moment(time, 'HH:mm').format('HH:mm');
   }
 }
