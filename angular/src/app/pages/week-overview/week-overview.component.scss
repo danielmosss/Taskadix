@@ -61,8 +61,6 @@
     }
 
     .day-cell {
-      border-right: 3px solid var(--background-color);
-
       .daylines {
         position: relative;
 
@@ -84,6 +82,8 @@
 
         .appointment {
           position: absolute;
+          box-sizing: border-box;
+          padding: 0px 2px;
 
           .appointmentTime {
             color: black;
@@ -94,7 +94,9 @@
             border-bottom-left-radius: 5px;
             height: 100%;
             display: grid;
-            grid-template-columns: 1fr 17fr;
+            grid-template-columns: minmax(5px, 1fr) 17fr;
+            overflow: scroll;
+            scrollbar-width: none;
 
             .categoryColor {
               border-bottom-left-radius: 5px;
@@ -143,6 +145,11 @@
           }
         }
       }
+    }
+
+    .divider{
+      background-color: var(--background-color);
+      border-radius: 20px;
     }
   }
 }

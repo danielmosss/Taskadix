@@ -19,6 +19,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   public heightPerHour: number = 90;
   public widthPerDay: number = 240;
+  public gridDividerWidth: number = 3;
   public dividerHeight: number = 3;
 
   public days: { date: string, day: string, appointments: Appointment[] }[] = [];
@@ -112,12 +113,10 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     }
 
     // Calculate width and left for overlapping tasks
-    const gap = 4;
-    const totalWidth = this.widthPerDay - gap * (overlaps.length - 1);
-    const width = totalWidth / overlaps.length;
+    const width = this.widthPerDay / overlaps.length;
     overlaps.forEach((task, index) => {
       task.width = width;
-      task.left = index * (width + gap);
+      task.left = index * width
     });
 
     // Add processed tasks to the result array
