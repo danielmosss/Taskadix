@@ -85,7 +85,7 @@
         .appointment {
           position: absolute;
 
-          .content {
+          .appointmentTime {
             color: black;
             background-color: #d6d6d6;
             border-top-right-radius: 10px;
@@ -103,23 +103,42 @@
 
             .cardContent {
               padding: 5px;
-              display: grid;
-              grid-template-columns: 10fr 1fr;
               cursor: pointer;
 
-              .appointmentContent {
-                .category {}
+              .category {}
 
-                .title {}
+              .title {}
 
-                .time {}
-              }
+              .time {}
 
-              .checkbox {
-                .cursorPointer {
-                  cursor: pointer;
-                }
-              }
+            }
+          }
+
+          .appointmentWholeDay{
+            color: black;
+            background-color: #d6d6d6;
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 10px;
+            border-top-left-radius: 5px;
+            border-bottom-left-radius: 10px;
+            display: grid;
+            grid-template-rows: 1fr 4fr;
+
+            .categoryColor {
+              border-top-right-radius: 5px;
+              border-top-left-radius: 5px;
+            }
+
+            .cardContent {
+              padding: 5px;
+              cursor: pointer;
+
+              .category {}
+
+              .title {}
+
+              .time {}
+
             }
           }
         }

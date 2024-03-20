@@ -88,31 +88,47 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   }
 
   calculateOverlaps(tasks: Appointment[]): Appointment[] {
-    const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
+  // Sort tasks by start time
+  const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
+  const result = [];
 
-    for (let i = 0; i < sortedTasks.length; i++) {
-      let overlaps = [sortedTasks[i]];
+  let i = 0;
+  while (i < sortedTasks.length) {
+    const currentTask = sortedTasks[i];
+    let overlaps = [currentTask];
 
-      for (let j = i + 1; j < sortedTasks.length; j++) {
-        if (sortedTasks[j].starttime < sortedTasks[i].endtime) {
-          overlaps.push(sortedTasks[j]);
-        } else {
-          break;
+    // Find all tasks that overlap with the current or any overlapping task
+    let maxEndTime = currentTask.endtime;
+    for (let j = i + 1; j < sortedTasks.length; j++) {
+      const nextTask = sortedTasks[j];
+      if (nextTask.starttime < maxEndTime) {
+        overlaps.push(nextTask);
+        if (nextTask.endtime > maxEndTime) {
+          maxEndTime = nextTask.endtime;
         }
+      } else {
+        break;
       }
-
-      const gap = 4;
-      const width = (this.widthPerDay - gap * (overlaps.length - 1)) / overlaps.length;
-
-      overlaps.forEach((task, index) => {
-        task.width = width;
-        task.left = index * (width + gap);
-      });
-
-      i += overlaps.length - 1;
     }
 
-    return sortedTasks;
+    // Calculate width and left for overlapping tasks
+    const gap = 4;
+    const totalWidth = this.widthPerDay - gap * (overlaps.length - 1);
+    const width = totalWidth / overlaps.length;
+    overlaps.forEach((task, index) => {
+      task.width = width;
+      task.left = index * (width + gap);
+    });
+
+    // Add processed tasks to the result array
+    result.push(...overlaps);
+
+    // Skip over the processed tasks
+    i += overlaps.length;
+  }
+
+  return result;
+
   }
 
   getTaskStyle(task: Appointment): any {
@@ -120,7 +136,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       let top = 30;
       const wholeDayAppointments = this.days.find(day => day.date === task.date)?.appointments.filter(appointment => appointment.isAllDay);
       if (wholeDayAppointments) {
-        top = (wholeDayAppointments.indexOf(task) * (top + 4));
+        top = (wholeDayAppointments.indexOf(task) * (top + 10));
       }
       return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
     }
@@ -144,7 +160,6 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   }
 
   newAppointment(appointmentId: number) {
-    console.log(appointmentId)
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
       const date = new Date(appointment.date);
       const calendarDay = this.findDayInWeek(date);

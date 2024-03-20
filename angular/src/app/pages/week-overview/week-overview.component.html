@@ -37,26 +37,34 @@
 
       <div class="appointments">
         <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
-          <div class="content" *ngIf="appointment.date === day.date">
-            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
-            </div>
-            <div class="cardContent">
-              <div class="appointmentContent">
-                <div class="category" [ngStyle]="{'color': appointment.category.color}" *ngIf="!appointment.isAllDay">
+          <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
+            <div class="appointmentTime">
+              <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+              </div>
+              <div class="cardContent">
+                <div class="category" [ngStyle]="{'color': appointment.category.color}">
                   {{ appointment.category.term }}
                 </div>
                 <div class="title">
                   {{ appointment.title }}
                 </div>
-                <div class="time" *ngIf="!appointment.isAllDay">
+                <div class="time">
                   {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
                 </div>
               </div>
-              <div class="checkbox">
-                <i class="fa fa-check cursorPointer" aria-hidden="true"></i>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="appointment.date === day.date && appointment.isAllDay">
+            <div class="appointmentWholeDay">
+              <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+              </div>
+              <div class="cardContent">
+                <div class="title">
+                  {{ appointment.title }}
+                </div>
               </div>
             </div>
-          </div>
+          </ng-container>
         </div>
       </div>
     </div>
