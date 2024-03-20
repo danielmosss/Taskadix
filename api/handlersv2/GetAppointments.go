@@ -6,7 +6,12 @@ import (
 	"net/http"
 )
 
-func GetMonthAppointments(res http.ResponseWriter, req *http.Request) {
+type responseAppointment struct {
+	Date         string        `json:"date"`
+	Appointments []Appointment `json:"appointments"`
+}
+
+func GetAppointments(res http.ResponseWriter, req *http.Request) {
 	userId, err := functions.GetUserID(req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusUnauthorized)
@@ -71,11 +76,12 @@ func GetMonthAppointments(res http.ResponseWriter, req *http.Request) {
 		appointmentMap[appointment.Date] = append(appointmentMap[appointment.Date], appointment)
 	}
 
-	var appointmentArray []Appointment
-	for _, appointments := range appointmentMap {
-		for _, appointment := range appointments {
-			appointmentArray = append(appointmentArray, appointment)
-		}
+	var appointmentArray []responseAppointment
+	for i, appointments := range appointmentMap {
+		appointmentArray = append(appointmentArray, responseAppointment{
+			Date:         i,
+			Appointments: appointments,
+		})
 	}
 
 	JSON, err := json.Marshal(appointmentArray)
