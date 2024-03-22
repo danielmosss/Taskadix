@@ -44,7 +44,10 @@
         </div>
         <div class="todos">
           <div class="todo" *ngFor="let todo of day.tasks">
-            <div class="checked" *ngIf="todo.checked"></div>
+            <div class="checked" [ngStyle]="{
+              'background-color': !todo.checked ? 'var(--lightgray)' : '#96ED93',
+              'border-right': !todo.checked ? '3px dotted var(--gray)' : 'none'
+              }"></div>
             <div class="cardContent">
               <div class="title">
                 {{ todo.title }}

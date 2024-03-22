@@ -98,6 +98,7 @@
 
           .date {
             color: white;
+            font-weight: 500;
           }
 
           .progress-loader {
@@ -128,9 +129,8 @@
             grid-template-columns: minmax(5px, 25px) 1fr;
 
             .checked {
-              border-bottom-left-radius: 12px;
-              border-top-left-radius: 12px;
-              background-color: #96ED93;
+              border-bottom-left-radius: 10px;
+              border-top-left-radius: 10px;
             }
 
             .cardContent {
