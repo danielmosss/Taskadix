@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Appointment, DayTodo, NewAppointment, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class DataService {
     return window.innerWidth <= 1000;
   }
 
-  constructor(private http: HttpClient, private _snackbar: MatSnackBar) { }
+  constructor(private http: HttpClient, private _snackbar: MatSnackBar, private _router: Router) { }
 
   public getWeather() {
     return this.http.get<Weather>(this._SecureApi + "/GetWeather", { headers: this.getCustomHeaders() });
@@ -111,7 +112,7 @@ export class DataService {
   public logout() {
     this.userdata = null;
     localStorage.removeItem('jsonwebtoken');
-    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
+    this._router.navigate(['/login']);
   }
 
   public isLoggedIn(): boolean {
