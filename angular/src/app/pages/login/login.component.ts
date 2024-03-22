@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { DataService } from 'src/data.service';
 
 enum RequestType {
@@ -19,19 +20,24 @@ export class LoginComponent {
   public hide: boolean = true;
   public loginMode: boolean = true;
 
-  constructor(private _dataService: DataService, private _snackbar: MatSnackBar) { }
+  constructor(private _dataService: DataService, private _snackbar: MatSnackBar, private _router: Router) { }
 
   public login(): void {
-    if(!this.canSendRequest(RequestType.LOGIN)){
-      this._snackbar.open("Make sure you have entered a username and password", "OK", {duration: 5000, horizontalPosition: "left", verticalPosition: "bottom"});
+    if (!this.canSendRequest(RequestType.LOGIN)) {
+      this._snackbar.open("Make sure you have entered a username and password", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       return;
     }
     this._dataService.login(this.username, this.password)
+    if (this._dataService.isLoggedIn()) {
+      this._router.navigate(["/"]);
+    } else {
+      this._snackbar.open("Invalid username or password", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
+    }
   }
 
   public register(): void {
-    if(!this.canSendRequest(RequestType.REGISTER)){
-      this._snackbar.open("Make sure you have entered a username, password and email", "OK", {duration: 5000, horizontalPosition: "left", verticalPosition: "bottom"});
+    if (!this.canSendRequest(RequestType.REGISTER)) {
+      this._snackbar.open("Make sure you have entered a username, password and email", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       return;
     }
     this._dataService.register(this.username, this.password, this.email)

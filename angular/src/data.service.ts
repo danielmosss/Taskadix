@@ -96,15 +96,17 @@ export class DataService {
     );
   }
 
-  public login(username: string, password: string) {
+  public login(username: string, password: string): boolean {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
       (res) => {
         this._jsonwebtoken = res.jsonwebtoken;
         this.validJwtToken = true;
         this.userLoggedIn = true;
         this.getUserDataOnLoad();
+        return true
       }
     );
+    return false;
   }
   public logout() {
     this.userdata = null;

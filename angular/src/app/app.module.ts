@@ -47,11 +47,34 @@ import { MonthOverviewComponent } from './pages/month-overview/month-overview.co
 import { WeekOverviewComponent } from './pages/week-overview/week-overview.component';
 import { CreateAppointmentComponent } from './popups/create-appointment/create-appointment.component';
 import { HeaderOverviewComponent } from './pages/header-overview/header-overview.component';
+import { AuthGuardService } from 'src/auth-guard.service';
+import { DayOverviewComponent } from './pages/day-overview/day-overview.component';
 
 const routes: Routes = [
-  { path: '', component: OverviewComponent },
-  { path: 'overview/month', component: MonthOverviewComponent },
-  { path: 'overview/week', component: WeekOverviewComponent },
+  {
+    path: '',
+    component: OverviewComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'login',
+    component: LoginComponent
+  },
+  {
+    path: 'overview/month',
+    component: MonthOverviewComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'overview/week',
+    component: WeekOverviewComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'overview/day',
+    component: DayOverviewComponent,
+    canActivate: [AuthGuardService]
+  },
 ]
 
 @NgModule({
@@ -70,7 +93,8 @@ const routes: Routes = [
     MonthOverviewComponent,
     WeekOverviewComponent,
     CreateAppointmentComponent,
-    HeaderOverviewComponent
+    HeaderOverviewComponent,
+    DayOverviewComponent
   ],
   imports: [
     BrowserModule,
