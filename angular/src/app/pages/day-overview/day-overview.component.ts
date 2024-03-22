@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
@@ -8,7 +8,7 @@ import { DataService } from 'src/data.service';
   templateUrl: './day-overview.component.html',
   styleUrls: ['./day-overview.component.scss']
 })
-export class DayOverviewComponent implements OnInit{
+export class DayOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
 
   public heightPerHour: number = 60;
@@ -24,6 +24,16 @@ export class DayOverviewComponent implements OnInit{
   ngOnInit(): void {
     this.times = this.generateTimes();
     this.getAppointments(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
+  }
+
+  ngAfterViewInit(): void {
+    let hour = parseInt(this.getCurrentTime().hour, 10);
+    let scrollHeight = 0;
+    if (hour >= 0 && hour < 6) scrollHeight = 0;
+    else if (hour >= 6 && hour < 24) scrollHeight = (hour - 2) * this.heightPerHour;
+    else if (hour >= 17 && hour < 24) scrollHeight = 16 * this.heightPerHour;
+
+    this.daygridScroll.nativeElement.scrollTop = scrollHeight;
   }
 
   newAppointment(appointmentId: number) {
@@ -122,7 +132,7 @@ export class DayOverviewComponent implements OnInit{
     return dateName;
   }
 
-  ShowCategory(appointment: Appointment): boolean{
+  ShowCategory(appointment: Appointment): boolean {
     let height = this.getTaskStyle(appointment).height;
     let heightNumber = parseInt(height.slice(0, -2), 10);
     return heightNumber > 60;

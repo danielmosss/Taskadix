@@ -2,6 +2,8 @@
 
 :root {
   --background-color: #2b2d31;
+  --gray: #252525;
+  --lightgray: #424242;
   --primary-color: #b22234;
   --secondary-color: #f3f3f3;
 }
@@ -115,6 +117,10 @@ mat-dialog-container {
 
 .withsubtitle {
   margin-bottom: 0;
+}
+
+.issubtitle{
+  margin-top: 0;
 }
 
 @media (min-width: 1000px) {

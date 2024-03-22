@@ -23,6 +23,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
 
 import { NgxColorsModule } from 'ngx-colors';
 
@@ -49,10 +50,16 @@ import { CreateAppointmentComponent } from './popups/create-appointment/create-a
 import { HeaderOverviewComponent } from './pages/header-overview/header-overview.component';
 import { AuthGuardService } from 'src/auth-guard.service';
 import { DayOverviewComponent } from './pages/day-overview/day-overview.component';
+import { HomeComponent } from './pages/home/home.component';
 
 const routes: Routes = [
   {
     path: '',
+    component: HomeComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'todos',
     component: OverviewComponent,
     canActivate: [AuthGuardService]
   },
@@ -94,7 +101,8 @@ const routes: Routes = [
     WeekOverviewComponent,
     CreateAppointmentComponent,
     HeaderOverviewComponent,
-    DayOverviewComponent
+    DayOverviewComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -118,7 +126,8 @@ const routes: Routes = [
     MatSlideToggleModule,
     MatSelectModule,
     NgxMaterialTimepickerModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes),
+    MatProgressBarModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
