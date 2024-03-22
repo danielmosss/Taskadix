@@ -22,12 +22,12 @@ export class LoginComponent {
 
   constructor(private _dataService: DataService, private _snackbar: MatSnackBar, private _router: Router) { }
 
-  public login(): void {
+  public async login(): Promise<void>{
     if (!this.canSendRequest(RequestType.LOGIN)) {
       this._snackbar.open("Make sure you have entered a username and password", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       return;
     }
-    this._dataService.login(this.username, this.password)
+    await this._dataService.login(this.username, this.password)
     if (this._dataService.isLoggedIn()) {
       this._router.navigate(["/"]);
     } else {
