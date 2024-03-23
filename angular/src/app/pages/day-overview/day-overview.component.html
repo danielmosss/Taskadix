@@ -1,15 +1,15 @@
 <div class="header">
-  <app-header-overview (newAppointmentId)="newAppointment($event)"></app-header-overview>
+  <app-header-overview (newAppointmentId)="newAppointment($event)"
+    (dayDateSelected)="dayDateSelected($event)"></app-header-overview>
 </div>
 
 <div class="dayoverview">
-  <div class="day-header"
-    [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
+  <div class="day-header" [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
     <div class="weeknumber">
       week {{ weeknumber }}
     </div>
     <div class="date">
-      {{getDateName()}}
+      {{ this.day.datename}}
     </div>
   </div>
 
@@ -28,19 +28,20 @@
       <div *ngFor="let time of times; let i = index; let isLast=last" class="daylines">
         <div class="lines" [ngStyle]="{'top.px': (i) * heightPerHour, 'width.px': widthPerDay }">
         </div>
-        <div class="active"
-          [ngStyle]="{'top.px': getActivePosition(), 'width.px': widthPerDay}">
+        <div class="active" [ngStyle]="{'top.px': getActivePosition(), 'width.px': widthPerDay}">
         </div>
       </div>
 
       <div class="appointments">
-        <div *ngFor="let appointment of this.day?.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
+        <div *ngFor="let appointment of this.day?.appointments" [ngStyle]="getTaskStyle(appointment)"
+          class="appointment">
           <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
             <div class="appointmentTime">
-              <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}" >
+              <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
               </div>
               <div class="cardContent">
-                <div class="category" [ngStyle]="{'color': appointment.category.color}" *ngIf="ShowCategory(appointment)">
+                <div class="category" [ngStyle]="{'color': appointment.category.color}"
+                  *ngIf="ShowCategory(appointment)">
                   {{ appointment.category.term }}
                 </div>
                 <div class="title">

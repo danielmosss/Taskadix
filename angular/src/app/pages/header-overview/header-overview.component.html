@@ -1,5 +1,8 @@
 <div class="header">
-  <div class="datepicker"></div>
+  <div class="datepicker">
+    <app-weekselector (onDateSelected)="handleDateRangeSelection($event)" *ngIf="isActiveView('/week')"></app-weekselector>
+    <app-dayselector (onDateSelected)="handleDateSelection($event)" *ngIf="isActiveView('/day')"></app-dayselector>
+  </div>
   <div class="other">
     <div class="switchDayWeekMonth">
       <div class="option" (click)="navigateTo('/overview/day')">

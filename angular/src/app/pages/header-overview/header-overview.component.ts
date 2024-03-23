@@ -18,6 +18,8 @@ export class HeaderOverviewComponent implements OnInit {
   @Input() type: Type = Type.month;
   // emit a new appointmentid to the parent component
   @Output() newAppointmentId: EventEmitter<number> = new EventEmitter<number>();
+  @Output() dateRange: EventEmitter<{ start: string, end: string }> = new EventEmitter<{ start: string, end: string }>();
+  @Output() dayDateSelected: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _dialog: MatDialog, private _router: Router) { }
 
@@ -46,5 +48,13 @@ export class HeaderOverviewComponent implements OnInit {
 
   navigateTo(route: string) {
     this._router.navigate([route])
+  }
+
+  handleDateRangeSelection(dateRange: { start: string, end: string }) {
+    this.dateRange.emit(dateRange)
+  }
+
+  handleDateSelection(date: string) {
+    this.dayDateSelected.emit(date)
   }
 }

@@ -1,9 +1,9 @@
-.app{
+.app {
   display: grid;
   grid-template-columns: 1.2fr 34fr;
   height: 100%;
 
-  .sidenavbar{
+  .sidenavbar {
     background-color: #252525;
     overflow-y: auto;
     width: 68px;
@@ -24,9 +24,18 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+
+      .groupicon {
+        width: 33px;
+      }
+
+      .familyicon {
+        width: 38px;
+      }
     }
   }
-  .container{
+
+  .container {
     margin: 1rem;
     overflow-y: auto;
     scrollbar-width: none;

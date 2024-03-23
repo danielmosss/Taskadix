@@ -51,6 +51,7 @@ import { HeaderOverviewComponent } from './pages/header-overview/header-overview
 import { AuthGuardService } from 'src/auth-guard.service';
 import { DayOverviewComponent } from './pages/day-overview/day-overview.component';
 import { HomeComponent } from './pages/home/home.component';
+import { DayselectorComponent } from './addons/dayselector/dayselector.component';
 
 const routes: Routes = [
   {
@@ -102,7 +103,8 @@ const routes: Routes = [
     CreateAppointmentComponent,
     HeaderOverviewComponent,
     DayOverviewComponent,
-    HomeComponent
+    HomeComponent,
+    DayselectorComponent
   ],
   imports: [
     BrowserModule,

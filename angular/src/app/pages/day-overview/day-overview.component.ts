@@ -17,13 +17,14 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   public dividerHeight: number = 3;
   public weeknumber: number = moment().week();
 
-  public day: { date: string, day: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), day: moment().format('dddd'), appointments: [] };
+  public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: '', day: moment().format('dddd'), appointments: [] };
   public times: string[] = [];
 
   constructor(private _dataservice: DataService) { }
 
   ngOnInit(): void {
     this.times = this.generateTimes();
+    this.day.datename = this.getDateName();
     this.getAppointments(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
   }
 
@@ -127,7 +128,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   getDateName(): string {
     moment.locale('nl');
-    let dateName = moment().format('dddd DD MMMM YYYY');
+    let dateName = moment(this.day.date).format('dddd DD MMMM YYYY');
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
     dateName = dateName.replace(/\b\w/g, l => l.toUpperCase());
     return dateName;
@@ -160,5 +161,10 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
     const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
     const position = (parseInt(currentHour, 10) + parseInt(currentMinute, 10) / 60) * this.heightPerHour;
     return position.toString()
+  }
+
+  dayDateSelected(date: string) {
+    this.day = { date: date, datename: this.getDateName(), day: moment(date).format('dddd'), appointments: [] };
+    this.getAppointments(date, date);
   }
 }

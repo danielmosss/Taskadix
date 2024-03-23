@@ -1,13 +1,14 @@
 <div class="app">
   <div class="sidenavbar">
     <div class="icon" [ngStyle]="{'background-color': isActive('/', true)}" (click)="navigateTo('/')">
-      <i class="fa-solid fa-2x fa-tower-observation"></i>
+      <!-- <i class="fa-solid fa-2x fa-tower-observation"></i> -->
+      <img src="assets/icons/overview.svg" alt="overview" class="groupicon">
     </div>
     <div class="icon" [ngStyle]="{'background-color': isActive('overview', false)}" (click)="navigateTo('/overview/week')">
       <i class="fa-solid fa-2x fa-calendar-week"></i>
     </div>
     <div class="icon" [ngStyle]="{'background-color': isActive('/family', true)}" (click)="navigateTo('/family')">
-      <i class="fa-solid fa-2x fa-people-group"></i>
+      <img src="assets/icons/family.svg" alt="family" class="familyicon">
     </div>
   </div>
   <div class="container">
