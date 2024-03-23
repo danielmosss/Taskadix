@@ -90,18 +90,13 @@
             background-color: #d6d6d6;
             border-top-right-radius: 10px;
             border-bottom-right-radius: 10px;
-            border-top-left-radius: 5px;
-            border-bottom-left-radius: 5px;
+            border-top-left-radius: 6px;
+            border-bottom-left-radius: 6px;
             height: 100%;
             display: grid;
             grid-template-columns: minmax(5px, 25px) 1fr;
             overflow: scroll;
             scrollbar-width: none;
-
-            .categoryColor {
-              border-bottom-left-radius: 5px;
-              border-top-left-radius: 5px;
-            }
 
             .cardContent {
               padding: 5px;
