@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 
 enum Type {
@@ -18,7 +19,7 @@ export class HeaderOverviewComponent implements OnInit {
   // emit a new appointmentid to the parent component
   @Output() newAppointmentId: EventEmitter<number> = new EventEmitter<number>();
 
-  constructor(private _dialog: MatDialog) { }
+  constructor(private _dialog: MatDialog, private _router: Router) { }
 
   ngOnInit(): void {
 
@@ -30,5 +31,20 @@ export class HeaderOverviewComponent implements OnInit {
       console.log(result)
       this.newAppointmentId.emit(result.id)
     })
+  }
+
+  isActiveView(route: string, exactMatch: boolean = false): boolean {
+    if (this._router.url.includes(route) && !exactMatch) {
+      return true;
+    }
+    else if (this._router.url === route && exactMatch) {
+      return true
+    }
+
+    return false;
+  }
+
+  navigateTo(route: string) {
+    this._router.navigate([route])
   }
 }

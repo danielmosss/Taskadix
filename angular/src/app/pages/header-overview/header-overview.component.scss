@@ -1,0 +1,44 @@
+.switchDayWeekMonth {
+  display: grid;
+  grid-template-columns: 5fr 2px 5fr 2px 5fr;
+  border-radius: 10px;
+  background-color: var(--gray);
+  max-width: 300px;
+
+  .option {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    padding: 15px 0 11px 0;
+
+    .text {
+      font-weight: 500;
+      color: white;
+    }
+
+    .underlineActive {
+      margin-top: 2px;
+      height: 2px;
+      width: 20%;
+    }
+  }
+
+  .divider {
+    background-color: white;
+    border-radius: 20px;
+    width: 2px;
+    margin: 12px 0;
+  }
+
+  .switchDayWeekMonth__item {
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+
+    &.active {
+      background-color: #f5f5f5;
+    }
+  }
+}

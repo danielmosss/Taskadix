@@ -2,14 +2,36 @@
   <div class="datepicker"></div>
   <div class="other">
     <div class="switchDayWeekMonth">
-
+      <div class="option" (click)="navigateTo('/overview/day')">
+        <div class="text"> DAY </div>
+        <div class="underlineActive" [ngStyle]="{'background-color': isActiveView('/day') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
+      <div class="divider">
+      </div>
+      <div class="option" (click)="navigateTo('/overview/week')">
+        <div class="text"> WEEK </div>
+        <div class="underlineActive"
+          [ngStyle]="{'background-color': isActiveView('/week') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
+      <div class="divider">
+      </div>
+      <div class="option" (click)="navigateTo('/overview/month')">
+        <div class="text"> MONTH </div>
+        <div class="underlineActive"
+          [ngStyle]="{'background-color': isActiveView('/month') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
     </div>
     <div class="createAppointment">
       <button mat-button class="mat-button pos" (click)="openCreateAppointment()">Create Appointment</button>
     </div>
+
     <div class="filterCategory">
 
     </div>
+
   </div>
 
 </div>
