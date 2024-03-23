@@ -3,7 +3,7 @@
 .weekoverview {
   background-color: #252525;
   border-radius: 15px;
-  height: 90vh;
+  height: 82vh;
   padding: 5px 20px;
   overflow-y: auto;
   scrollbar-width: none;
@@ -34,7 +34,7 @@
   .week-grid {
     display: grid;
     overflow-y: scroll;
-    height: 80vh;
+    height: 75vh;
     scrollbar-width: none;
 
     .timeColumn {
