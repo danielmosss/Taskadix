@@ -62,6 +62,7 @@
           background-color: #00C9C8;
           position: absolute;
           height: 2px;
+          z-index: 1;
         }
       }
 
@@ -72,6 +73,7 @@
           position: absolute;
           box-sizing: border-box;
           padding: 0px 2px;
+          z-index: 2;
 
           .appointmentTime {
             color: black;

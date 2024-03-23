@@ -27,6 +27,23 @@
             </div>
           </div>
         </div>
+
+        <ng-container *ngIf="this.day.appointments.length === 0">
+          <div class="appointment">
+            <div class="categoryColor" [ngStyle]="{'background-color': '#96ED93'}"></div>
+            <div class="cardContent">
+              <div class="appointHeader">
+                <h2 class="title">
+                  Geen afspraken
+                </h2>
+                <div class="category"></div>
+              </div>
+              <div class="time">
+                Je hebt geen afspraken vandaag.
+              </div>
+            </div>
+          </div>
+        </ng-container>
       </div>
     </div>
 
@@ -37,9 +54,7 @@
             {{ getDateName(day.date) }}
           </h2>
           <div class="progress-loader">
-            <div class="progress"
-            [ngStyle]="{'width': getPercentTaskedChecked(day.tasks) + '%'}"
-            ></div>
+            <div class="progress" [ngStyle]="{'width': getPercentTaskedChecked(day.tasks) + '%'}"></div>
           </div>
         </div>
         <div class="todos">
