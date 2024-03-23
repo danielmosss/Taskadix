@@ -14,11 +14,9 @@ body {
   height: 100%;
 }
 
-// Remove the mat-hint from the datepickers
-.mat-mdc-form-field-subscript-wrapper{
+.header-datepicker .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
-
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
