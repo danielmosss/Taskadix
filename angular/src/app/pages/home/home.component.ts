@@ -41,10 +41,7 @@ export class HomeComponent implements OnInit {
         const day = this.day;
         if (day && element.appointments.length > 0) {
           day.appointments = element.appointments;
-          // add them 5x more to day.appointments for testing overflow
-          for (let i = 0; i < 5; i++) {
-            day.appointments = day.appointments.concat(element.appointments);
-          }
+          day.appointments = day.appointments.sort((a, b) => a.starttime.localeCompare(b.starttime));
         }
       });
     });

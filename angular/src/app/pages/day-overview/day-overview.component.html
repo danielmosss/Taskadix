@@ -1,7 +1,6 @@
-<div class="header">
-  <app-header-overview (newAppointmentId)="newAppointment($event)"
-    (dayDateSelected)="dayDateSelected($event)"></app-header-overview>
-</div>
+<app-header-overview (newAppointmentId)="newAppointment($event)"
+  (dayDateSelected)="dayDateSelected($event)"></app-header-overview>
+
 
 <div class="dayoverview">
   <div class="day-header" [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
