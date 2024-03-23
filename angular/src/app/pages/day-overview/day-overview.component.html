@@ -5,7 +5,9 @@
 <div class="dayoverview">
   <div class="day-header"
     [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
-    <div class="emptytimeheader"></div>
+    <div class="weeknumber">
+      week {{ weeknumber }}
+    </div>
     <div class="date">
       {{getDateName()}}
     </div>

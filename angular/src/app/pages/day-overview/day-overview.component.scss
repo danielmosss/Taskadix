@@ -2,7 +2,7 @@
   height: 5vh;
 }
 
-.dayoverview{
+.dayoverview {
   background-color: #252525;
   border-radius: 15px;
   height: 90vh;
@@ -10,17 +10,31 @@
   width: -moz-fit-content;
   width: fit-content;
 
-  .day-header{
+  .day-header {
     display: grid;
 
-    .date{
+    .weeknumber {
+      display: grid;
+      justify-content: center;
+      align-content: center;
       font-family: serif;
+      font-size: 22px;
+      color: #00C9C8;
+      height: 60px;
+    }
+
+    .date {
+      margin-left: 50px;
+      display: grid;
+      align-content: center;
+      font-family: "Source Serif Pro";
       font-size: xx-large;
       height: 60px;
+      color: white;
     }
   }
 
-  .day-grid{
+  .day-grid {
     display: grid;
     overflow-y: scroll;
     height: 80vh;
@@ -48,7 +62,7 @@
       }
     }
 
-    .day-cell{
+    .day-cell {
       .daylines {
         position: relative;
 

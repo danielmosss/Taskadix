@@ -15,6 +15,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   public widthPerDay: number = 1698;
   public widthTimeColumn: number = 75;
   public dividerHeight: number = 3;
+  public weeknumber: number = moment().week();
 
   public day: { date: string, day: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), day: moment().format('dddd'), appointments: [] };
   public times: string[] = [];
