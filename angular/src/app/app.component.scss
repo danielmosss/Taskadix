@@ -1,11 +1,12 @@
 .app{
   display: grid;
-  grid-template-columns: 1.1fr 34fr;
+  grid-template-columns: 1.2fr 34fr;
   height: 100%;
 
   .sidenavbar{
     background-color: #252525;
     overflow-y: auto;
+    width: 68px;
 
     display: flex;
     flex-direction: column;
@@ -27,5 +28,7 @@
   }
   .container{
     margin: 1rem;
+    overflow-y: auto;
+    scrollbar-width: none;
   }
 }

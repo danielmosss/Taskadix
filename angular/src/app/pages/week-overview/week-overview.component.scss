@@ -1,5 +1,5 @@
 .header {
-  height: 5vh;
+  height: 6vh;
 }
 
 .weekoverview {
@@ -7,6 +7,8 @@
   border-radius: 15px;
   height: 90vh;
   padding: 5px 20px;
+  overflow-y: auto;
+  scrollbar-width: none;
 
   .week-grid-header {
     display: grid;
@@ -17,7 +19,7 @@
       align-content: center;
       font-family: serif;
       font-size: 22px;
-      color: #00C9C8;
+      color: var(--aquablue);
       height: 60px;
     }
 
@@ -47,13 +49,13 @@
 
         .divider {
           width: 50%;
-          background-color: #00C9C8;
+          background-color: var(--aquablue);
           border-radius: 20px;
         }
 
         .longDivider {
           width: 100%;
-          background-color: #00C9C8;
+          background-color: var(--aquablue);
           border-radius: 20px;
         }
       }
@@ -70,7 +72,7 @@
         }
 
         .active {
-          background-color: #00C9C8;
+          background-color: var(--aquablue);
           position: absolute;
           height: 2px;
           z-index: 1;

@@ -12,7 +12,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
 
   public heightPerHour: number = 60;
-  public widthPerDay: number = 1698;
+  public widthPerDay: number = 1670;
   public widthTimeColumn: number = 75;
   public dividerHeight: number = 3;
   public weeknumber: number = moment().week();

@@ -18,7 +18,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   public activeTimePosition: string = this.GetActivePosition();
 
   public heightPerHour: number = 60;
-  public widthPerDay: number = 240;
+  public widthPerDay: number = 235;
   public gridDividerWidth: number = 3;
   public dividerHeight: number = 3;
 
