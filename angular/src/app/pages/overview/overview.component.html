@@ -1,17 +1,5 @@
-<div class="grid">
+<!-- <div class="grid">
 
-  <div class="user">
-    <button mat-button class="mat-button info" (click)="viewAccountSettings = !viewAccountSettings">
-      <i class="fa-solid fa-user"></i>
-      Account/{{userdata?.username}}
-    </button>
-  </div>
-
-  <div class="actionbuttons">
-    <button mat-button class="mat-button pos" (click)="openCardCreate()">
-      <i class="fa-solid fa-plus fa-lg"></i>
-      Create todo
-    </button>
     <button mat-button class="mat-button pos" (click)="openJsonuploader()">
       <i class="fa-solid fa-file-arrow-up"></i>
       Upload JSON
@@ -20,28 +8,40 @@
       <i class="fa-solid fa-file-arrow-up"></i>
       Upload ICS
     </button>
-    <button mat-button class="mat-button neg" (click)="showCheckedItems = !showCheckedItems">
-      <div *ngIf="showCheckedItems">
-        <i class="fa-solid fa-eye-slash"></i>
-        Hide checked items
-      </div>
-      <div *ngIf="!showCheckedItems">
-        <i class="fa-solid fa-eye"></i>
-        Show checked items
-      </div>
-    </button>
-  </div>
 
+</div> -->
+
+<div class="header">
   <div class="datepicker">
-    <div class="weekSelector">
-      <app-weekselector (onDateSelected)="handleDateSelection($event)"></app-weekselector>
-      <div *ngIf="loading" class="loader">
-        <app-loader [size]="40" [colortype]="'primary'" [height100]="true"></app-loader>
+    <app-weekselector class="header-datepicker"(onDateSelected)="handleDateSelection($event)"></app-weekselector>
+  </div>
+  <div class="other">
+    <div class="actionButton" (click)="openCreateTodo()">
+      <div class="icontainer">
+        <div class="icon">
+          <i class="fa-regular fa-circle fa-2x"></i>
+          <i class="fa-solid fa-plus plus"></i>
+        </div>
+      </div>
+      <div class="text"> TODO </div>
+    </div>
+    <div class="actionButton" (click)="showCheckedItems = !showCheckedItems">
+      <div class="icontainer">
+        <div class="icon">
+          <i class="fa-solid fa-eye" *ngIf="!showCheckedItems"></i>
+          <i class="fa-solid fa-eye-slash" *ngIf="showCheckedItems"></i>
+        </div>
+      </div>
+      <div class="text">
+        <span *ngIf="!showCheckedItems">SHOW</span>
+        <span *ngIf="showCheckedItems">HIDE</span>
+        CHECKED ITEMS
       </div>
     </div>
-  </div>
 
+  </div>
 </div>
+
 
 <ng-container *ngIf="!viewAccountSettings">
 <div class="container">
@@ -88,8 +88,4 @@
     </div>
   </div>
 </div>
-</ng-container>
-
-<ng-container *ngIf="viewAccountSettings">
-  <app-account (onSyncWebcall)="getTodoTasks()"></app-account>
 </ng-container>

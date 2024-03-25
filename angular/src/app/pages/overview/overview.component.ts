@@ -164,7 +164,7 @@ export class OverviewComponent implements OnInit {
   }
 
   // open dialog with component CreateTodoComponent to create a new todo
-  openCardCreate() {
+  openCreateTodo() {
     var dialog = this._dialog.open(CreateTodoComponent)
     dialog.afterClosed().subscribe((data?: Todo) => {
       if (!data) return;

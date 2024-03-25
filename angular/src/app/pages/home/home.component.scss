@@ -39,7 +39,7 @@
 
       .appointment {
         color: black;
-        background-color: #d6d6d6;
+        background-color: var(--verylightgray);
         border-radius: 12px;
         display: grid;
         grid-template-columns: minmax(5px, 25px) 1fr;
@@ -135,13 +135,13 @@
               padding: 10px;
 
               .title {
-                color: white;
+                color: black;
                 font-size: 23px;
                 font-weight: 500;
               }
 
               .description {
-                color: white;
+                color: black;
                 font-size: 15px;
               }
             }

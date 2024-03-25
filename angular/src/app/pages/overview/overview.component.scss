@@ -1,68 +1,46 @@
-.grid {
-  display: grid;
-  grid-template-areas:
-    "actionbtns actionbtns user"
-    "datepicker datepicker user";
-  grid-template-columns: 2fr 2fr 1fr;
-  grid-template-rows: 3fr 5fr;
+.header {
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
 
-  margin-bottom: 1rem;
-  border-bottom: 2px solid #ffffff;
-
-  .user {
-    grid-area: user;
+  .other {
     display: flex;
-    align-items: flex-start;
-    justify-content: flex-end;
     flex-direction: row;
-    gap: 1rem;
-  }
+    align-items: center;
+    column-gap: 20px;
 
-  .actionbuttons {
-    grid-area: actionbtns;
-    display: flex;
-    gap: 1rem;
-    flex-direction: row;
-  }
+    .actionButton {
+      background-color: var(--gray);
+      height: 49px;
+      border-radius: 10px;
+      cursor: pointer;
 
-  .datepicker {
-    grid-area: datepicker;
+      column-gap: 15px;
+      padding: 0 15px;
 
-    .weekSelector {
       display: flex;
-      flex-direction: row;
-      align-items: flex-start;
-      gap: 1rem;
+      align-items: center;
 
-      .loader {
-        margin: 10px 20px 0 0;
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          color: var(--aquablue);
+        }
+
+        .plus {
+          font-size: 20px;
+          position: absolute;
+        }
       }
-    }
-  }
-}
 
-@media (max-width: 1000px) {
-  .grid {
-    grid-template-areas:
-      "user"
-      "actionbtns"
-      "datepicker";
-    grid-template-columns: 1fr;
-    grid-template-rows: repeat(auto-fit, minmax(0, 1fr));
-    gap: 1rem;
-
-    .user {
-      display: grid;
-      grid-template-columns: 1fr;
-      justify-items: stretch;
-      align-items: unset;
-      justify-content: unset;
-    }
-
-    .actionbuttons {
-      display: grid;
-      justify-items: stretch;
-      grid-template-columns: repeat(auto-fit, minmax(191px, 1fr));
+      .text {
+        font-weight: 500;
+        color: white;
+      }
     }
   }
 }
@@ -75,7 +53,7 @@
   .dayTasks {
     display: flex;
     flex-direction: column;
-    background-color: #434447;
+    background-color: var(--gray);
     padding: 0.5rem;
     border-radius: 5px;
     gap: 0.5rem;
@@ -84,7 +62,8 @@
       padding: 6px 0px;
       min-width: 100px;
       text-align: center;
-      background-color: #d6d6d6;
+      background-color: var(--lightgray);
+      color: white;
 
       .name {
         font-size: x-large;
@@ -104,8 +83,7 @@
 
     .todo {
       .card {
-        background-color: #d6d6d6;
-        background: #d6d6d6;
+        background: var(--lightgray);
         cursor: pointer;
         padding: 7px 8px;
         border-radius: 4px;
@@ -115,6 +93,7 @@
             margin: 0 0 0.3rem 0;
             font-weight: 500;
             font-size: 18px;
+            color: white;
           }
 
           .removeMargins{
@@ -127,7 +106,7 @@
             font-size: 15px;
             margin: 0;
             white-space: pre-line;
-            color: #111111;
+            color: white;
           }
         }
       }

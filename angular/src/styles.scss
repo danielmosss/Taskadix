@@ -3,7 +3,9 @@
 :root {
   --background-color: #2b2d31;
   --gray: #252525;
+  --mediumgray: #333333;
   --lightgray: #424242;
+  --verylightgray: #686868;
   --primary-color: #b22234;
   --secondary-color: #f3f3f3;
   --aquablue: #00C9C8;
@@ -116,7 +118,7 @@ mat-dialog-container {
 }
 
 .greyedoutTodo {
-  background-color: #888888 !important;
+  background-color: var(--mediumgray) !important;
 }
 
 .withsubtitle {
