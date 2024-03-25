@@ -59,4 +59,8 @@ export class HomeComponent implements OnInit {
     let checkedTasks = tasks.filter(task => task.checked);
     return (checkedTasks.length / tasks.length) * 100;
   }
+
+  checkTodo(isChecked: boolean, todo: Todo) {
+    todo.checked = isChecked;
+  }
 }

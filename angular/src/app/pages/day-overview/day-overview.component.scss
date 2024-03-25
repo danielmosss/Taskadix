@@ -133,11 +133,6 @@
             display: grid;
             grid-template-rows: 1fr 4fr;
 
-            .categoryColor {
-              border-top-right-radius: 5px;
-              border-top-left-radius: 5px;
-            }
-
             .cardContent {
               padding: 5px;
               cursor: pointer;
