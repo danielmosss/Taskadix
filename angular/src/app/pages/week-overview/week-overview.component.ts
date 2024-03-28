@@ -5,6 +5,12 @@ import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/cr
 import * as moment from 'moment';
 import { DataService } from 'src/data.service';
 
+interface day {
+  date: string,
+  day: string,
+  istoday: boolean,
+  appointments: Appointment[]
+}
 
 @Component({
   selector: 'app-week-overview',
@@ -22,7 +28,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   public gridDividerWidth: number = 3;
   public dividerHeight: number = 3;
 
-  public days: { date: string, day: string, appointments: Appointment[] }[] = [];
+  public days: day[] = [];
   public times: string[] = [];
 
   constructor(private _dialog: MatDialog, private _dataservice: DataService) { }
@@ -72,8 +78,8 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return times;
   }
 
-  generateDays(): { date: string, day: string, appointments: Appointment[] }[] {
-    const days: { date: string, day: string, appointments: Appointment[] }[] = [];
+  generateDays(): day[] {
+    const days: day[] = [];
     const today = new Date();
     const day = today.getDay();
     const diff = today.getDate() - day + (day === 0 ? -6 : 0);
@@ -82,6 +88,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       days.push({
         date: moment(sunday).format('YYYY-MM-DD'),
         day: sunday.toLocaleString('en-us', { weekday: 'long' }),
+        istoday: moment(sunday).isSame(moment(), 'day'),
         appointments: []
       })
       sunday.setDate(sunday.getDate() + 1);
@@ -90,44 +97,44 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   }
 
   calculateOverlaps(tasks: Appointment[]): Appointment[] {
-  // Sort tasks by start time
-  const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
-  const result = [];
+    // Sort tasks by start time
+    const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
+    const result = [];
 
-  let i = 0;
-  while (i < sortedTasks.length) {
-    const currentTask = sortedTasks[i];
-    let overlaps = [currentTask];
+    let i = 0;
+    while (i < sortedTasks.length) {
+      const currentTask = sortedTasks[i];
+      let overlaps = [currentTask];
 
-    // Find all tasks that overlap with the current or any overlapping task
-    let maxEndTime = currentTask.endtime;
-    for (let j = i + 1; j < sortedTasks.length; j++) {
-      const nextTask = sortedTasks[j];
-      if (nextTask.starttime < maxEndTime) {
-        overlaps.push(nextTask);
-        if (nextTask.endtime > maxEndTime) {
-          maxEndTime = nextTask.endtime;
+      // Find all tasks that overlap with the current or any overlapping task
+      let maxEndTime = currentTask.endtime;
+      for (let j = i + 1; j < sortedTasks.length; j++) {
+        const nextTask = sortedTasks[j];
+        if (nextTask.starttime < maxEndTime) {
+          overlaps.push(nextTask);
+          if (nextTask.endtime > maxEndTime) {
+            maxEndTime = nextTask.endtime;
+          }
+        } else {
+          break;
         }
-      } else {
-        break;
       }
+
+      // Calculate width and left for overlapping tasks
+      const width = this.widthPerDay / overlaps.length;
+      overlaps.forEach((task, index) => {
+        task.width = width;
+        task.left = index * width
+      });
+
+      // Add processed tasks to the result array
+      result.push(...overlaps);
+
+      // Skip over the processed tasks
+      i += overlaps.length;
     }
 
-    // Calculate width and left for overlapping tasks
-    const width = this.widthPerDay / overlaps.length;
-    overlaps.forEach((task, index) => {
-      task.width = width;
-      task.left = index * width
-    });
-
-    // Add processed tasks to the result array
-    result.push(...overlaps);
-
-    // Skip over the processed tasks
-    i += overlaps.length;
-  }
-
-  return result;
+    return result;
 
   }
 
@@ -159,7 +166,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     };
   }
 
-  ShowCategory(appointment: Appointment): boolean{
+  ShowCategory(appointment: Appointment): boolean {
     let height = this.getTaskStyle(appointment).height;
     let heightNumber = parseInt(height.slice(0, -2), 10);
     return heightNumber > 30;

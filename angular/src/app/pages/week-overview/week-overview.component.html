@@ -1,5 +1,4 @@
-
-  <app-header-overview (newAppointmentId)="newAppointment($event)"></app-header-overview>
+<app-header-overview (newAppointmentId)="newAppointment($event)"></app-header-overview>
 
 
 <div class="weekoverview">
@@ -10,8 +9,12 @@
     </div>
     <div *ngFor="let day of days" class="day-cell">
       <div class="day">
-        {{ day.day }}
-        {{ getDateNumber(day.date) }}
+        <div class="text">
+          {{ day.day }}
+          {{ getDateNumber(day.date) }}
+        </div>
+        <div class="underlineActive" [ngStyle]="{'background-color': this.day.istoday ? '#00C9C8' : 'transparent'}">
+        </div>
       </div>
     </div>
   </div>
@@ -45,10 +48,11 @@
           <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
             <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
               <div class="appointmentTime">
-                <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}" >
+                <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
                 </div>
                 <div class="cardContent">
-                  <div class="category" [ngStyle]="{'color': appointment.category.color}" *ngIf="ShowCategory(appointment)">
+                  <div class="category" [ngStyle]="{'color': appointment.category.color}"
+                    *ngIf="ShowCategory(appointment)">
                     {{ appointment.category.term }}
                   </div>
                   <div class="title">
