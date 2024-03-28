@@ -1,0 +1,40 @@
+<div class="popup2">
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton"></i>
+
+  <div class="appointmentTime">
+    <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+    </div>
+    <div class="cardContent">
+      <div class="titlerow">
+        <h2 class="title">
+          {{ appointment.title }}
+        </h2>
+        <div class="category" [ngStyle]="{'color': appointment.category.color}">
+          {{ appointment.category.term }}
+        </div>
+      </div>
+
+
+      <div class="Item">
+        <i class="fa-solid fa-clock"></i>
+        <p class="time">
+          {{getDateName(appointment.date)}} {{formatTime(appointment.starttime)}} - {{formatTime(appointment.endtime)}}
+        </p>
+      </div>
+
+      <div class="Item">
+        <i class="fa-solid fa-location-dot"></i>
+        <p class="location">
+          {{appointment.location == "" ? "Geen locatie" : appointment.location}}
+        </p>
+      </div>
+
+      <div class="Item">
+        <i class="fa-solid fa-clipboard"></i>
+        <p class="description">
+          {{appointment.description == "" ? "Geen beschrijving" : appointment.description}}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

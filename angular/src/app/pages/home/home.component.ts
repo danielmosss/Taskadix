@@ -2,6 +2,9 @@ import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@ang
 import { Appointment, Todo } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 import * as moment from 'moment';
+import { MatDialog } from '@angular/material/dialog';
+import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 @Component({
   selector: 'app-home',
@@ -9,10 +12,18 @@ import * as moment from 'moment';
   styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
+
+  // Global functions
+  formatTime = this.globalfunctions.getFormattedTime;
+  getDateName = this.globalfunctions.getDateName;
+  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
+  // Global functions
+
+
   public day: { date: string, day: string, appointments: Appointment[] } = { date: '', day: '', appointments: [] };
   public upcomingSevenDaysTodos: { date: string, tasks: Todo[] }[] = [];
 
-  constructor(private _dataservice: DataService) { }
+  constructor(private _dataservice: DataService, private _dialog: MatDialog, private globalfunctions: GlobalfunctionsService) { }
 
   ngOnInit(): void {
     this.day.date = moment().format('YYYY-MM-DD');
@@ -25,14 +36,6 @@ export class HomeComponent implements OnInit {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
     const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
-  }
-
-  getDateName(date?: string): string {
-    moment.locale('nl');
-    let dateName = moment(date ? date : moment()).format('DD MMMM');
-    dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
-    dateName = dateName.replace(/\b\w/g, l => l.toUpperCase());
-    return dateName;
   }
 
   getAppointments(beginDate: string, endDate: string) {
@@ -49,10 +52,6 @@ export class HomeComponent implements OnInit {
     this._dataservice.getTodo().subscribe((data) => {
       this.upcomingSevenDaysTodos = data;
     });
-  }
-
-  getFormattedTime(time: string): string {
-    return moment(time, 'HH:mm').format('HH:mm');
   }
 
   getPercentTaskedChecked(tasks: Todo[]): number {

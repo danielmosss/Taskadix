@@ -50,7 +50,7 @@
               <div class="appointmentTime">
                 <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
                 </div>
-                <div class="cardContent">
+                <div class="cardContent" (click)="openAppointmentDetails(appointment)">
                   <div class="category" [ngStyle]="{'color': appointment.category.color}"
                     *ngIf="ShowCategory(appointment)">
                     {{ appointment.category.term }}
@@ -68,7 +68,7 @@
               <div class="appointmentWholeDay">
                 <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
                 </div>
-                <div class="cardContent">
+                <div class="cardContent" (click)="openAppointmentDetails(appointment)">
                   <div class="title">
                     {{ appointment.title }}
                   </div>

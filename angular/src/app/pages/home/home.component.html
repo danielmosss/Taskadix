@@ -13,7 +13,7 @@
       <div class="appointments">
         <div class="appointment" *ngFor="let appointment of this.day.appointments">
           <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
-          <div class="cardContent">
+          <div class="cardContent" (click)="openAppointmentDetails(appointment)">
             <div class="appointHeader">
               <h2 class="title">
                 {{ appointment.title }}
@@ -23,7 +23,7 @@
               </div>
             </div>
             <div class="time">
-              {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
+              {{ formatTime(appointment.starttime) }} - {{ formatTime(appointment.endtime) }}
             </div>
           </div>
         </div>

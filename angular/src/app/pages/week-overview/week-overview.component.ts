@@ -4,6 +4,7 @@ import { Appointment } from 'src/app/interfaces';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 import * as moment from 'moment';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 interface day {
   date: string,
@@ -18,6 +19,11 @@ interface day {
   styleUrls: ['./week-overview.component.scss']
 })
 export class WeekOverviewComponent implements OnInit, AfterViewInit {
+
+  // Global functions
+  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
+  // Global functions
+
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
 
   public weeknumber: number = 0;
@@ -31,7 +37,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   public days: day[] = [];
   public times: string[] = [];
 
-  constructor(private _dialog: MatDialog, private _dataservice: DataService) { }
+  constructor(private _dialog: MatDialog, private _dataservice: DataService, private globalfunctions: GlobalfunctionsService) { }
 
   ngOnInit(): void {
     this.times = this.generateTimes();

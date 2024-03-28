@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, 
 import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 @Component({
   selector: 'app-day-overview',
@@ -9,6 +10,11 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./day-overview.component.scss']
 })
 export class DayOverviewComponent implements OnInit, AfterViewInit {
+
+  // Global functions
+  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
+  // Global functions
+
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
 
   public heightPerHour: number = 60;
@@ -20,7 +26,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
   public times: string[] = [];
 
-  constructor(private _dataservice: DataService) { }
+  constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService) { }
 
   ngOnInit(): void {
     this.times = this.generateTimes();
@@ -115,7 +121,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   getAppointments(beginDate: string, endDate: string) {
     this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
-      if(data == null) return;
+      if (data == null) return;
       data.forEach(element => {
         const day = this.day;
         if (day && element.appointments.length > 0) {

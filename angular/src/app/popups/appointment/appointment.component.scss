@@ -1,0 +1,67 @@
+.popup2{
+  padding: 0;
+}
+
+.appointmentTime {
+  color: black;
+  border-radius: 15px;
+  min-height: 10vh;
+  display: grid;
+  grid-template-columns: minmax(5px, 25px) 1fr;
+  overflow: scroll;
+  scrollbar-width: none;
+
+  .cardContent {
+    padding: 15px 12px 3px 10px;
+    cursor: pointer;
+
+    .titlerow {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+
+      .category {
+        font-size: 17px;
+        font-weight: 400;
+        line-height: 16px;
+      }
+
+      .title {
+        margin-top: 0;
+        margin-bottom: 12px;
+        font-size: 20px;
+        font-weight: 500;
+        line-height: 16px;
+      }
+    }
+
+    .Item{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      column-gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .time {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .description{
+      margin: 0;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .location {
+      margin: 0;
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+  }
+}
