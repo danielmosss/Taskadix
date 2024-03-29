@@ -48,8 +48,7 @@
     }
 
     &.today {
-      background-color: #007bff;
-      background: #007bff;
+      background: var(--blue);
     }
 
     .date-indicator {
