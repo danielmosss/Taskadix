@@ -1,69 +1,90 @@
 .calendar {
   display: grid;
-  grid-template-columns: 50px repeat(7, 1fr);
+  grid-template-columns: 40px repeat(7, 1fr);
   /* Reserve space for week numbers and 7 days */
   gap: 4px;
-}
 
-.grid {
-  display: grid;
-  grid-template-columns: 50px repeat(7, 1fr);
-}
+  background: var(--gray);
+  padding: 5px 25px 25px 0;
+  border-radius: 20px;
 
-.calendar-day-name {
-  background-color: #e2e3e5;
-  font-weight: bold;
-  text-align: center;
-  padding: 10px;
-}
-
-.calendar-week {
-  display: contents;
-}
-
-.calendar-week-number {
-  grid-column: 1 / span 1;
-  background-color: #dde1e4;
-  text-align: center;
-  padding: 10px;
-  min-height: 8vh;
-}
-
-.calendar-week-number-empty {
-  grid-column: 1 / span 1;
-  background-color: #dde1e4;
-}
-
-.calendar-day {
-  background-color: #f9f9f9;
-  position: relative;
-  text-align: right;
-  padding: 5px;
-  border-radius: 4px;
-
-  &.today {
-    background-color: #007bff;
-    background: #007bff;
-    cursor: pointer;
-    padding: 3px 4px;
+  .calendar-week-number-empty {
+    grid-column: 1 / span 1;
   }
-}
 
-.date-indicator {
-  font-size: 0.85em;
-  font-weight: bold;
-}
+  .calendar-day-name {
+    font-weight: 500;
+    font-size: x-large;
+    text-align: center;
+    padding: 10px;
+    color: white;
+  }
 
-.events-container {
-  text-align: left;
+  .calendar-week-number {
+    grid-column: 1 / span 1;
+    text-align: center;
+    padding: 10px;
+    min-height: 8vh;
+    color: white;
+  }
 
-  .event {
-    color: black;
-    background-color: #d6d6d6;
-    background: #d6d6d6;
-    cursor: pointer;
-    padding: 3px 4px;
+  .calendar-day {
+    position: relative;
+    text-align: right;
+    padding: 5px;
     border-radius: 4px;
+
+    min-height: 8vh;
+    max-height: 12.5vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+    &.NotInSelectedMonth {
+      background: var(--darkgray);
+    }
+
+    &.InSelectedMonth{
+      background: var(--lightgray);
+    }
+
+    &.today {
+      background-color: #007bff;
+      background: #007bff;
+    }
+
+    .date-indicator {
+      font-size: 0.85em;
+      font-weight: 450;
+      color: white;
+    }
+
+    .events-container {
+      text-align: left;
+      display: flex;
+    flex-direction: column;
+    gap: 3px;
+
+      .event {
+        border-radius: 5px;
+        color: black;
+        background-color: #d6d6d6;
+        background: #d6d6d6;
+        cursor: pointer;
+
+        display: grid;
+        grid-template-columns: 0.8rem 1fr;
+        gap: 2px;
+
+        .categoryColor{
+          border-bottom-left-radius: 5px;
+          border-top-left-radius: 5px;
+        }
+
+        .eventContent{
+          padding: 3px 4px;
+        }
+      }
+    }
   }
 }
 

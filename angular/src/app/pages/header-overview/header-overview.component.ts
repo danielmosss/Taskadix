@@ -20,6 +20,7 @@ export class HeaderOverviewComponent implements OnInit {
   @Output() newAppointmentId: EventEmitter<number> = new EventEmitter<number>();
   @Output() dateRange: EventEmitter<{ start: string, end: string }> = new EventEmitter<{ start: string, end: string }>();
   @Output() dayDateSelected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() monthSelected: EventEmitter<string> = new EventEmitter<string>();
 
   constructor(private _dialog: MatDialog, private _router: Router) { }
 
@@ -54,8 +55,8 @@ export class HeaderOverviewComponent implements OnInit {
     this.dateRange.emit(dateRange)
   }
 
-  handleMonthSelection(month: any) {
-    console.log(month)
+  handleMonthSelection(month: string) {
+    this.monthSelected.emit(month)
   }
 
   handleDateSelection(date: string) {

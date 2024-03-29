@@ -5,7 +5,8 @@ import { Appointment, Todo } from './app/interfaces';
 export interface CalendarDay {
   date: Date;
   momentDate: string;
-  events: Array<Appointment>;
+  appointments: Array<Appointment>;
+  isInSelectedMonth?: boolean;
 }
 
 @Injectable({
@@ -35,38 +36,10 @@ export class CalendarService {
       days.push({
         date: new Date(day),
         momentDate: moment(day).format('YYYY-MM-DD'),
-        events: []
+        appointments: [],
+        isInSelectedMonth: day.getMonth() === month
       });
     }
-
-    return days;
-  }
-
-  getWeekView(year: number, month: number, day: number): CalendarDay[] {
-    let days: CalendarDay[] = [];
-    const startDay = new Date(year, month, day);
-    startDay.setDate(startDay.getDate() - startDay.getDay()); // Adjust to start the week on Sunday
-
-    for (let i = 0; i < 7; i++) {
-      days.push({
-        date: new Date(startDay),
-        momentDate: moment(startDay).format('YYYY-MM-DD'),
-        events: []
-      });
-      startDay.setDate(startDay.getDate() + 1);
-    }
-
-    return days;
-  }
-
-  getDayView(year: number, month: number, day: number): CalendarDay[] {
-    let days: CalendarDay[] = [];
-    const date = new Date(year, month, day);
-    days.push({
-      date: date,
-      momentDate: moment(date).format('YYYY-MM-DD'),
-      events: []
-    });
 
     return days;
   }

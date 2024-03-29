@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
   openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
+  getWeekNumber = this.globalfunctions.getWeekNumber;
   // Global functions
 
 
@@ -29,13 +30,6 @@ export class HomeComponent implements OnInit {
     this.day.date = moment().format('YYYY-MM-DD');
     this.day.day = moment().format('dddd');
     this.getAppointments(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
-  }
-
-  getWeekNumber(): number {
-    let date = new Date();
-    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
   }
 
   getAppointments(beginDate: string, endDate: string) {

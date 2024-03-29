@@ -5,6 +5,7 @@ import { Appointment, Todo } from 'src/app/interfaces';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 @Component({
   selector: 'app-calendar',
@@ -12,21 +13,26 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./month-overview.component.scss']
 })
 export class MonthOverviewComponent implements OnInit {
+
+  // Global functions
+  getWeekNumber = this.globalfunctions.getWeekNumber
+  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
+  formatTime = this.globalfunctions.getFormattedTime;
+  // Global functions
+
   monthView: { weeknumber: number, days: CalendarDay[] }[] = []
   today: Date = new Date();
 
-  constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog) { }
+  constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog, private globalfunctions: GlobalfunctionsService) { }
 
   ngOnInit(): void {
     this.getMonthView();
-    //this.getTodoTasks();
-    this.getMonthAppointments();
   }
 
-  getMonthView(): void {
+  getMonthView(monthNr?: number): void {
     const now = new Date();
-    let flatMonthView = this.calendarService.getMonthView(now.getFullYear(), now.getMonth());
-    // Transform flat array into weeks for easier management in template
+    let flatMonthView = this.calendarService.getMonthView(now.getFullYear(), monthNr ? monthNr : now.getMonth());
+
     this.monthView = [];
     for (let i = 0; i < flatMonthView.length; i += 7) {
       this.monthView.push({
@@ -34,13 +40,8 @@ export class MonthOverviewComponent implements OnInit {
         days: flatMonthView.slice(i, i + 7)
       })
     }
-    console.log(this.monthView);
-  }
 
-  getWeekNumber(date: Date): number {
-    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
-    const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+    this.getMonthAppointments();
   }
 
   getMonthAppointments() {
@@ -48,15 +49,23 @@ export class MonthOverviewComponent implements OnInit {
       monthData.forEach(day => {
         let findday = this.findDayInMonthView(new Date(day.date))
         if (findday) {
-          if (!findday.events) {
-            findday.events = [];
+          if (!findday.appointments) {
+            findday.appointments = [];
           }
           day.appointments.forEach(appointment => {
-            if (findday) findday.events.push(appointment);
+            if (!findday) return;
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
+            findday.appointments.push(appointment);
           })
         }
       })
-
     })
   }
 
@@ -100,22 +109,19 @@ export class MonthOverviewComponent implements OnInit {
     }, []);
   }
 
-  openCardInfo(event: Appointment) {
-    var dialog = this._dialog.open(CardpopupComponent, {
-      data: event
-    })
-  }
-
   newAppointment(appointmentId: number) {
     console.log(appointmentId)
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
       const date = new Date(appointment.date);
       const calendarDay = this.findDayInMonthView(date);
       if (!calendarDay) return;
-      if (!calendarDay.events) {
-        calendarDay.events = [];
-      }
-      calendarDay.events.push(appointment);
+      if (!calendarDay.appointments) calendarDay.appointments = [];
+      calendarDay.appointments.push(appointment);
     })
+  }
+
+  monthSelected(date: string) {
+    let monthNr = new Date(date).getMonth();
+    this.getMonthView(monthNr);
   }
 }

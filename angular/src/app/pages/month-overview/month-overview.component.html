@@ -1,4 +1,5 @@
-<app-header-overview (newAppointmentId)="newAppointment($event)"></app-header-overview>
+<app-header-overview (newAppointmentId)="newAppointment($event)"
+  (monthSelected)="monthSelected($event)"></app-header-overview>
 
 <div class="calendar">
   <!-- Static header for day names -->
@@ -14,19 +15,33 @@
 
 
   <ng-container *ngFor="let week of monthView; let weekIndex = index">
+
     <div class="calendar-week-number">{{ week.weeknumber }}</div>
+
     <ng-container *ngFor="let day of week.days; let dayIndex = index">
+
       <div class="calendar-day" [id]="'week'+ weekIndex + 'day'+ dayIndex" cdkDropList
-        [ngClass]="{ 'today': day.date.toDateString() === today.toDateString() }"
-        [cdkDropListData]="day.events || []" [cdkDropListConnectedTo]="getConnectedList(monthView)"
+        [ngClass]="{
+           'today': day.date.toDateString() === today.toDateString(),
+           'InSelectedMonth': day.isInSelectedMonth,
+           'NotInSelectedMonth': !day.isInSelectedMonth
+           }"
+        [cdkDropListData]="day.appointments || []"
+        [cdkDropListConnectedTo]="getConnectedList(monthView)"
         (cdkDropListDropped)="drop($event, weekIndex, dayIndex)">
+
         <div class="date-indicator">{{ day.date | date: 'd' }}</div>
-        <div class="events-container" *ngIf="day.events">
-          <div *ngFor="let event of day.events" cdkDrag class="event" (click)="openCardInfo(event)">
-            <div class="event-title">{{ event.id }} - <strong>{{ event.title }}</strong></div>
+
+        <div class="events-container" *ngIf="day.appointments">
+          <div *ngFor="let appointment of day.appointments" cdkDrag class="event" (click)="openAppointmentDetails(appointment)">
+            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
+            <div class="eventContent">{{formatTime(appointment.starttime)}} - {{ appointment.title }}</div>
           </div>
         </div>
+
       </div>
+
     </ng-container>
+
   </ng-container>
 </div>

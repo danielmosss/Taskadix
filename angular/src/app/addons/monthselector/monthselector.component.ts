@@ -1,6 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { MatDatepicker } from '@angular/material/datepicker';
 import { Moment } from 'moment';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-monthselector',
@@ -12,6 +13,6 @@ export class MonthselectorComponent {
   chosenMonthHandler(event: Moment, datepicker: MatDatepicker<Moment>) {
     datepicker.select(event);
     datepicker.close();
-    this.onDateSelected.emit(event.format('YYYY-MM-DD'));
+    this.onDateSelected.emit(moment(event).format('YYYY-MM-DD'));
   }
 }

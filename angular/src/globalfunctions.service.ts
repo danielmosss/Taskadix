@@ -28,4 +28,11 @@ export class GlobalfunctionsService {
       data: appointment
     })
   }
+
+  getWeekNumber(date?: Date): number {
+    date = date ? date : new Date();
+    const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
+    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  }
 }
