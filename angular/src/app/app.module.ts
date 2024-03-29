@@ -53,21 +53,27 @@ import { DayOverviewComponent } from './pages/day-overview/day-overview.componen
 import { HomeComponent } from './pages/home/home.component';
 import { DayselectorComponent } from './addons/dayselector/dayselector.component';
 import { AppointmentComponent } from './popups/appointment/appointment.component';
+import { SettingsComponent } from './pages/settings/settings.component';
 
 const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   {
     path: '',
     component: HomeComponent,
     canActivate: [AuthGuardService]
   },
   {
-    path: 'todos',
-    component: OverviewComponent,
+    path: 'settings',
+    component: SettingsComponent,
     canActivate: [AuthGuardService]
   },
   {
-    path: 'login',
-    component: LoginComponent
+    path: 'todos',
+    component: OverviewComponent,
+    canActivate: [AuthGuardService]
   },
   {
     path: 'overview/month',
@@ -106,7 +112,8 @@ const routes: Routes = [
     DayOverviewComponent,
     HomeComponent,
     DayselectorComponent,
-    AppointmentComponent
+    AppointmentComponent,
+    SettingsComponent
   ],
   imports: [
     BrowserModule,
