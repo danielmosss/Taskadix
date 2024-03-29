@@ -46,7 +46,6 @@ func main() {
 	securedRoutes.HandleFunc("/PostCheckTodoTask", POST.PostCheckTodoTask).Methods("POST")
 	securedRoutes.HandleFunc("/PostWebcallUrl", POST.PostWebcallUrl).Methods("POST")
 	securedRoutes.HandleFunc("/GetWebcallSync", GET.GetWebcallSync).Methods("GET")
-	securedRoutes.HandleFunc("/PutBGcolor", PUT.PutBGcolor).Methods("PUT")
 
 	securedRoutes.HandleFunc("/v2/GetCategories", handlersv2.GetCategories).Methods("GET")
 	securedRoutes.HandleFunc("/v2/CreateAppointment", handlersv2.CreateAppointment).Methods("POST")

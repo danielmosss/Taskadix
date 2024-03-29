@@ -15,7 +15,9 @@ export class AccountComponent implements OnInit {
   public setWebcallurl: string;
   public webcallurlSet: boolean = false;
 
-  public backgroundColor: string;
+  public oldPassword: string;
+  public newPassword: string;
+  public newRepeatPassword: string;
 
   constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 
@@ -67,5 +69,9 @@ export class AccountComponent implements OnInit {
     this._dataservice.getUserDataReturn().subscribe((data: any) => {
       this.userdata = data;
     })
+  }
+
+  changePassword() {
+    console.log(this.oldPassword, this.newPassword, this.newRepeatPassword);
   }
 }

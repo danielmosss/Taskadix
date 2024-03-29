@@ -42,7 +42,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     ac.term,
     ac.color
     FROM appointments a
-         	  INNER JOIN tododashboard.appointment_category ac on a.categoryid = ac.id
+         	  INNER JOIN appointment_category ac on a.categoryid = ac.id
 			  WHERE a.userid = ?
 			  AND date >= ? AND date <= ?`
 	result, err := dbConnection.Query(query, userId, beginDate, endDate)

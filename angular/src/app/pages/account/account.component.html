@@ -37,6 +37,26 @@
     </div>
   </div>
 
+  <div class="item">
+    <h2 class="changePassword">Change Password</h2>
+    <mat-form-field>
+      <mat-label>Old Password</mat-label>
+      <input matInput type="password" [(ngModel)]="oldPassword" minlength="1" maxlength="64" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>New Password</mat-label>
+      <input matInput type="password" [(ngModel)]="newPassword" minlength="1" maxlength="64" required>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Repeat New Password</mat-label>
+      <input matInput type="password" [(ngModel)]="newRepeatPassword" minlength="1" maxlength="64" required>
+    </mat-form-field>
+    <button mat-button class="mat-button pos" (click)="changePassword()">
+      <i class="fa-solid fa-key"></i>
+      Change Password
+    </button>
+  </div>
+
   <div class="buttons right">
     <button mat-button class="mat-button pos" (click)="logout()">
       <i class="fa-solid fa-right-from-bracket"></i>
