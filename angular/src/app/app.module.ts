@@ -33,7 +33,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
-import { OverviewComponent } from './pages/overview/overview.component';
+import { TodosComponent } from './pages/todos/todos.component';
 
 import { CreateTodoComponent } from './popups/create-todo/create-todo.component';
 import { UploadjsonComponent } from './popups/uploadjson/uploadjson.component';
@@ -72,7 +72,7 @@ const routes: Routes = [
   },
   {
     path: 'todos',
-    component: OverviewComponent,
+    component: TodosComponent,
     canActivate: [AuthGuardService]
   },
   {
@@ -95,7 +95,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     AppComponent,
-    OverviewComponent,
+    TodosComponent,
     CardpopupComponent,
     CreateTodoComponent,
     WeekselectorComponent,

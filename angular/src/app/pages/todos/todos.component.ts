@@ -19,11 +19,11 @@ import { UploadicsComponent } from 'src/app/popups/uploadics/uploadics.component
 
 
 @Component({
-  selector: 'app-overview',
-  templateUrl: './overview.component.html',
-  styleUrls: ['./overview.component.scss']
+  selector: 'app-todos',
+  templateUrl: './todos.component.html',
+  styleUrls: ['./todos.component.scss']
 })
-export class OverviewComponent implements OnInit {
+export class TodosComponent implements OnInit {
   public connectedLists: any[] = [];
   public Todolist: DayTodo[] = [];
   public updatedList: Todo[] = [];
