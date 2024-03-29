@@ -54,6 +54,7 @@ import { HomeComponent } from './pages/home/home.component';
 import { DayselectorComponent } from './addons/dayselector/dayselector.component';
 import { AppointmentComponent } from './popups/appointment/appointment.component';
 import { SettingsComponent } from './pages/settings/settings.component';
+import { FamilyComponent } from './pages/family/family.component';
 
 const routes: Routes = [
   {
@@ -73,6 +74,11 @@ const routes: Routes = [
   {
     path: 'todos',
     component: TodosComponent,
+    canActivate: [AuthGuardService]
+  },
+  {
+    path: 'family',
+    component: FamilyComponent,
     canActivate: [AuthGuardService]
   },
   {
@@ -113,7 +119,8 @@ const routes: Routes = [
     HomeComponent,
     DayselectorComponent,
     AppointmentComponent,
-    SettingsComponent
+    SettingsComponent,
+    FamilyComponent
   ],
   imports: [
     BrowserModule,
