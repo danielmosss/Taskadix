@@ -55,6 +55,7 @@ import { DayselectorComponent } from './addons/dayselector/dayselector.component
 import { AppointmentComponent } from './popups/appointment/appointment.component';
 import { SettingsComponent } from './pages/settings/settings.component';
 import { FamilyComponent } from './pages/family/family.component';
+import { MonthselectorComponent } from './addons/monthselector/monthselector.component';
 
 const routes: Routes = [
   {
@@ -120,7 +121,8 @@ const routes: Routes = [
     DayselectorComponent,
     AppointmentComponent,
     SettingsComponent,
-    FamilyComponent
+    FamilyComponent,
+    MonthselectorComponent
   ],
   imports: [
     BrowserModule,

@@ -2,8 +2,8 @@
   <div class="datepicker">
     <app-weekselector class="header-datepicker" (onDateSelected)="handleDateRangeSelection($event)"
       *ngIf="isActiveView('/week')"></app-weekselector>
-    <app-weekselector class="header-datepicker" (onDateSelected)="handleDateRangeSelection($event)"
-      *ngIf="isActiveView('/month')"></app-weekselector>
+    <app-monthselector class="header-datepicker" (onDateSelected)="handleMonthSelection($event)"
+      *ngIf="isActiveView('/month')"></app-monthselector>
     <app-dayselector class="header-datepicker" (onDateSelected)="handleDateSelection($event)"
       *ngIf="isActiveView('/day')"></app-dayselector>
   </div>

@@ -54,6 +54,10 @@ export class HeaderOverviewComponent implements OnInit {
     this.dateRange.emit(dateRange)
   }
 
+  handleMonthSelection(month: any) {
+    console.log(month)
+  }
+
   handleDateSelection(date: string) {
     this.dayDateSelected.emit(date)
   }
