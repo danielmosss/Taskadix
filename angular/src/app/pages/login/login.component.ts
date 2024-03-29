@@ -27,10 +27,10 @@ export class LoginComponent {
       this._snackbar.open("Make sure you have entered a username and password", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       return;
     }
-    await this._dataService.login(this.username, this.password)
-    if (this._dataService.isLoggedIn()) {
+    if(await this._dataService.login(this.username, this.password)){
       this._router.navigate(["/"]);
-    } else {
+    }
+    else{
       this._snackbar.open("Invalid username or password", "OK", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
     }
   }

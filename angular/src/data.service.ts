@@ -97,18 +97,24 @@ export class DataService {
     );
   }
 
-  public login(username: string, password: string): boolean {
-    this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
-      (res) => {
-        this._jsonwebtoken = res.jsonwebtoken;
-        this.validJwtToken = true;
-        this.userLoggedIn = true;
-        this.getUserDataOnLoad();
-        return true
-      }
-    );
-    return false;
+  public login(username: string, password: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).subscribe(
+        (res) => {
+          this._jsonwebtoken = res.jsonwebtoken;
+          this.validJwtToken = true;
+          this.userLoggedIn = true;
+          this.getUserDataOnLoad();
+          resolve(true);
+        },
+        (error) => {
+          console.error('Login error', error);
+          resolve(false);
+        }
+      );
+    });
   }
+
   public logout() {
     this.userdata = null;
     localStorage.removeItem('jsonwebtoken');
