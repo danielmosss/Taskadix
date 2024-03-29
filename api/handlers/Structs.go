@@ -28,10 +28,6 @@ type RegisterRequest struct {
 	Email    string `json:"email"`
 }
 
-type BackgroundColor struct {
-	BackgroundColor string `json:"backgroundColor"`
-}
-
 type Url struct {
 	Url string `json:"url"`
 }
@@ -50,7 +46,6 @@ type UserData struct {
 	Email             string `json:"email"`
 	Webcallurl        string `json:"webcallurl"`
 	Webcalllastsynced string `json:"webcalllastsynced"`
-	BackgroundColor   string `json:"backgroundcolor"`
 }
 
 type DateRange struct {

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Appointment } from './app/interfaces';
 import { AppointmentComponent } from './app/popups/appointment/appointment.component';

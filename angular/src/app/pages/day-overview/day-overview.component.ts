@@ -1,4 +1,5 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
@@ -26,7 +27,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
   public times: string[] = [];
 
-  constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService) { }
+  constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService, private _dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.times = this.generateTimes();
