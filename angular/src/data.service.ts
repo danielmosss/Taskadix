@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Appointment, DayTodo, NewAppointment, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, Weather, appointmentCategory, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -153,7 +153,7 @@ export class DataService {
   }
 
   public getCategories() {
-    return this.http.get<{ id: number, term: string }[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
+    return this.http.get<appointmentCategory[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
   }
 
   public createAppointment(appointment: NewAppointment) {

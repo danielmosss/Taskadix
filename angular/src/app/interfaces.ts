@@ -196,3 +196,12 @@ export interface Appointment {
   width?: number,
   left?: number,
 }
+
+
+export interface appointmentCategory{
+  id: number,
+  term: string,
+  color: string,
+  userid?: number
+  isdefault: boolean
+}

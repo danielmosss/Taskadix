@@ -1,9 +1,11 @@
 package handlersv2
 
 type Category struct {
-	ID    int    `json:"id"`
-	Term  string `json:"term"`
-	Color string `json:"color"`
+	ID        int    `json:"id"`
+	Term      string `json:"term"`
+	Color     string `json:"color"`
+	UserId    int    `json:"userid"`
+	IsDefault bool   `json:"isdefault"`
 }
 
 type NewAppointment struct {

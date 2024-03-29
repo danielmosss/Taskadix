@@ -8,6 +8,15 @@
         Account
       </h2>
     </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Categories)"
+      [ngClass]="{'active': isActive(SettingsTabs.Categories)}">
+      <div class="icon">
+        <i class="fa-solid fa-2x fa-layer-group"></i>
+      </div>
+      <h2 class="text">
+        Categories
+      </h2>
+    </div>
     <div class="item" (click)="changeTab(SettingsTabs.Family)" [ngClass]="{'active': isActive(SettingsTabs.Family)}">
       <div class="icon">
         <i class="fa-solid fa-2x fa-house-user"></i>
@@ -36,6 +45,35 @@
   <div class="content">
     <ng-container *ngIf="activeTab == SettingsTabs.Account">
       <app-account></app-account>
+    </ng-container>
+    <ng-container *ngIf="activeTab == SettingsTabs.Categories">
+
+      <div class="categories">
+        <div class="category" *ngFor="let category of categories">
+
+          <h2>{{category.term}}</h2>
+
+          <div class="selector-wrapper">
+            <div class="colorInfo">
+              <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+                [disabled]="category.isdefault">
+              </ngx-colors>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="createnewcategory">
+        <h2>Create new category</h2>
+        <div class="category">
+          <div class="selector-wrapper">
+            <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="newCategoryColor"></ngx-colors>
+          </div>
+          <input class="input" type="text" [(ngModel)]="newCategoryName" required>
+          <button mat-button class="mat-button pos" (click)="addCategory()">Add</button>
+        </div>
+      </div>
+
     </ng-container>
     <ng-container *ngIf="activeTab == SettingsTabs.Family">
       Family not yet implemented
