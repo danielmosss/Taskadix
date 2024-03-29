@@ -21,10 +21,9 @@
       border-radius: 15px;
       height: 25px;
       cursor: pointer;
-      background-color: var(--gray);
-      transition: background-color 0.3s;
+      background-color: var(--mediumgray);
 
-      &:hover{
+      &:hover:not(.active){
         background-color: var(--gray);
       }
 
@@ -40,14 +39,14 @@
         display: flex;
         justify-content: center;
       }
-
-      .text{
-        color: white;
-      }
+    }
+    .active{
+      background-color: var(--aquablue);
     }
   }
 
   .content{
     margin: 20px;
+    padding: 0 15px;
   }
 }

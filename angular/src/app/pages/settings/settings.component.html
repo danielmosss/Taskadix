@@ -1,32 +1,32 @@
 <div class="settings">
   <div class="menu">
-    <div class="item">
+    <div class="item" (click)="changeTab(SettingsTabs.Account)" [ngClass]="{'active': isActive(SettingsTabs.Account)}">
       <div class="icon">
-        <i class="fa-regular fa-2x fa-circle-user fa-color-white"></i>
+        <i class="fa-regular fa-2x fa-circle-user"></i>
       </div>
       <h2 class="text">
         Account
       </h2>
     </div>
-    <div class="item">
+    <div class="item" (click)="changeTab(SettingsTabs.Family)" [ngClass]="{'active': isActive(SettingsTabs.Family)}">
       <div class="icon">
-        <i class="fa-solid fa-2x fa-house-user fa-color-white"></i>
+        <i class="fa-solid fa-2x fa-house-user"></i>
       </div>
       <h2 class="text">
         Family
       </h2>
     </div>
-    <div class="item">
+    <div class="item" (click)="changeTab(SettingsTabs.Backup)" [ngClass]="{'active': isActive(SettingsTabs.Backup)}">
       <div class="icon">
-        <i class="fa-solid fa-2x fa-bell fa-color-white"></i>
+        <i class="fa-solid fa-2x fa-cloud-arrow-down"></i>
       </div>
       <h2 class="text">
-        Notifications
+        Backup
       </h2>
     </div>
-    <div class="item">
+    <div class="item" (click)="changeTab(SettingsTabs.Help)" [ngClass]="{'active': isActive(SettingsTabs.Help)}">
       <div class="icon">
-        <i class="fa-solid fa-2x fa-circle-question fa-color-white"></i>
+        <i class="fa-solid fa-2x fa-circle-question"></i>
       </div>
       <h2 class="text">
         Help
@@ -34,6 +34,8 @@
     </div>
   </div>
   <div class="content">
-
+    <ng-container *ngIf="activeTab == SettingsTabs.Account">
+      <app-account></app-account>
+    </ng-container>
   </div>
 </div>

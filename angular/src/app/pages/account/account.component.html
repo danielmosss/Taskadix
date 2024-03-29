@@ -1,80 +1,47 @@
-<div class="gridContainer">
-  <div class="empty"></div>
-
-  <div class="content">
-    <!-- 3 textareas
-      use angular material
-      1. username (readonly)
-      2. email (readonly)
-      3. webcallurl (editable only if empty)
-         button (Sync webcall)
-    -->
-
-    <div class="username">
-      <mat-form-field>
-        <mat-label>Username</mat-label>
-        <input matInput placeholder="Username" [value]="userdata?.username" readonly>
-      </mat-form-field>
-    </div>
-
-    <div class="email">
-      <mat-form-field>
-        <mat-label>Email</mat-label>
-        <input matInput placeholder="Email" [value]="userdata?.email" readonly>
-      </mat-form-field>
-    </div>
-
-    <div class="selector-wrapper">
-      <div class="colorInfo">
-        <ngx-colors ngx-colors-trigger
-        (change)="updateBackgroundcolor()"
-        style="float: left"
-          [(ngModel)]="backgroundColor">
-        </ngx-colors>
-        <div class="color">{{ backgroundColor }}</div>
-      </div>
-      <button mat-button class="mat-button neg" (click)="saveBackgroundcolor()">
-        <i class="fa-solid fa-cloud-arrow-up"></i>
-        Save color
-      </button>
-    </div>
-
-    <div class="webcallurl">
-      <mat-form-field *ngIf="userdata?.webcallurl != ''" class="webcallForm">
-        <mat-label>Webcall URL</mat-label>
-        <input matInput [value]="userdata?.webcallurl" readonly>
-      </mat-form-field>
-
-      <mat-form-field *ngIf="userdata?.webcallurl == '' || webcallurlSet">
-        <mat-label>Webcall URL</mat-label>
-        <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
-          [(ngModel)]="setWebcallurl">
-      </mat-form-field>
-
-
-      <div class="buttons">
-        <button mat-button class="mat-button pos" (click)="syncWebcall()" [disabled]="!canSyncWebcall()">
-          <i class="fa-solid fa-sync"></i>
-          Sync webcall
-        </button>
-        <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
-          Last sync: {{userdata?.webcalllastsynced}}
-        </button>
-        <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
-          <i class="fa-solid fa-cloud-arrow-up"></i>
-          Save webcallurl
-        </button>
-      </div>
-    </div>
-
-    <div class="buttons right">
-      <button mat-button class="mat-button pos" (click)="logout()">
-        <i class="fa-solid fa-right-from-bracket"></i>
-        Logout
-      </button>
-    </div>
-
+<div class="content">
+  <div class="item">
+    <h2>Username</h2>
+    <p>{{userdata?.username}}</p>
   </div>
 
-  <div class="empty"></div>
+  <div class="item">
+    <h2>Email</h2>
+    <p>{{userdata?.email}}</p>
+  </div>
+
+  <div class="item webcallurl">
+    <ng-container *ngIf="userdata?.webcallurl != ''">
+      <h2>Webcall URL</h2>
+      <p>{{userdata?.webcallurl}}</p>
+    </ng-container>
+
+    <mat-form-field *ngIf="userdata?.webcallurl == '' || webcallurlSet">
+      <mat-label>Webcall URL</mat-label>
+      <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
+        [(ngModel)]="setWebcallurl">
+    </mat-form-field>
+
+
+    <div class="buttons">
+      <button mat-button class="mat-button pos" (click)="syncWebcall()" [disabled]="!canSyncWebcall()">
+        <i class="fa-solid fa-sync"></i>
+        Sync webcall
+      </button>
+      <button mat-button class="mat-button info" disabled *ngIf="userdata?.webcalllastsynced">
+        Last sync: {{userdata?.webcalllastsynced}}
+      </button>
+      <button mat-button class="mat-button pos" *ngIf="userdata?.webcallurl == ''" (click)="setwebcallurl()">
+        <i class="fa-solid fa-cloud-arrow-up"></i>
+        Save webcallurl
+      </button>
+    </div>
+  </div>
+
+  <div class="buttons right">
+    <button mat-button class="mat-button pos" (click)="logout()">
+      <i class="fa-solid fa-right-from-bracket"></i>
+      Logout
+    </button>
+  </div>
+
 </div>

@@ -21,12 +21,6 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.setUserData();
-    if (this.userdata?.backgroundcolor) {
-      this.backgroundColor = this.userdata.backgroundcolor;
-      this.updateBackgroundcolor();
-    } else {
-      this.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
-    }
   }
 
   logout() {
@@ -72,21 +66,6 @@ export class AccountComponent implements OnInit {
   setUserData() {
     this._dataservice.getUserDataReturn().subscribe((data: any) => {
       this.userdata = data;
-    })
-  }
-
-  updateBackgroundcolor() {
-    document.documentElement.style.setProperty('--background-color', this.backgroundColor);
-  }
-
-  saveBackgroundcolor() {
-    this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
-      if (data.status == 'success') {
-        this._snackbar.open('Background color has been saved.', '', { duration: 2000, horizontalPosition: 'left', verticalPosition: 'bottom', });
-        if (this.userdata) {
-          this.userdata.backgroundcolor = this.backgroundColor;
-        }
-      }
     })
   }
 }
