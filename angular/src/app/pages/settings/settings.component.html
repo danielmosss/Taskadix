@@ -58,7 +58,7 @@
       <div class="categories">
         <div class="category" *ngFor="let category of categories">
 
-          <h2>{{category.term}}</h2>
+
 
           <div class="selector-wrapper">
             <div class="colorInfo">
@@ -69,6 +69,17 @@
             </div>
           </div>
 
+          <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
+          <mat-form-field *ngIf="editCategory && editCategory.id == category.id">
+            <mat-label>Category name</mat-label>
+            <input matInput [(ngModel)]="category.term">
+          </mat-form-field>
+
+          <ng-container *ngIf="!category.isdefault">
+              <i class="fa-solid fa-pen" (click)="selectEditCategory(category)" *ngIf="!editCategory || editCategory.id != category.id"></i>
+              <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)" *ngIf="editCategory && editCategory.id == category.id"></i>
+              <i class="fa-solid fa-trash" (click)="deleteCategory(category)"></i>
+          </ng-container>
         </div>
       </div>
 

@@ -22,6 +22,7 @@ export class SettingsComponent implements OnInit {
   public activeTab: SettingsTabs = SettingsTabs.Account;
 
   public categories: appointmentCategory[] = [];
+  public editCategory: appointmentCategory | null = null;
 
   constructor(private _dataservice: DataService, private _dialog: MatDialog) { }
 
@@ -50,7 +51,19 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  // changedCategoryColor(category: appointmentCategory) {
-  //   this._dataservice.updateCategory(category)
-  // }
+  selectEditCategory(category: appointmentCategory) {
+    this.editCategory = category;
+  }
+
+  saveCategory(category: appointmentCategory) {
+    this._dataservice.updateCategory(category).subscribe(() => {
+      this.editCategory = null;
+    });
+  }
+
+  deleteCategory(category: appointmentCategory) {
+    this._dataservice.deleteCategory(category).subscribe(() => {
+      this.categories = this.categories.filter((c) => c.id !== category.id);
+    });
+  }
 }

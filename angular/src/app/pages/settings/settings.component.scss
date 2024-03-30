@@ -1,4 +1,4 @@
-.settings{
+.settings {
   margin: 2rem 1rem;
   border-radius: 20px;
   background-color: var(--gray);
@@ -7,7 +7,7 @@
   display: grid;
   grid-template-columns: 1fr 4fr;
 
-  .menu{
+  .menu {
     background-color: var(--lightgray);
     border-radius: 20px;
     padding: 20px;
@@ -16,14 +16,14 @@
     flex-direction: column;
     gap: 15px;
 
-    .item{
+    .item {
       padding: 10px;
       border-radius: 15px;
       height: 25px;
       cursor: pointer;
       background-color: var(--mediumgray);
 
-      &:hover:not(.active){
+      &:hover:not(.active) {
         background-color: var(--gray);
       }
 
@@ -34,57 +34,59 @@
       justify-items: start;
       gap: 20px;
 
-      .icon{
+      .icon {
         width: 40px;
         display: flex;
         justify-content: center;
       }
     }
-    .active{
+
+    .active {
       background-color: var(--aquablue);
     }
   }
 
-  .content{
+  .content {
     margin: 20px;
     padding: 0 15px;
   }
 }
 
 
-.categories{
+.categories {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
   overflow-y: scroll;
   scrollbar-width: none;
 
-  .category{
+  .category {
     border-radius: 20px;
     background-color: var(--mediumgray);
-    padding: 0 10px;
+    padding: 0 12px;
 
     display: flex;
     align-items: center;
+    gap: 8px;
 
-    .selector-wrapper {
-      padding: 12px 10px 12px 12px;
+    i {
+      cursor: pointer;
     }
   }
 }
 
-.createnewcategory{
+.createnewcategory {
   border-radius: 20px;
   background-color: var(--mediumgray);
   padding: 0 10px;
   margin-top: 10px;
   display: grid;
 
-  h2{
+  h2 {
     margin-left: 12px;
   }
 
-  .category{
+  .category {
     display: flex;
     align-items: center;
 
@@ -92,15 +94,14 @@
       padding: 12px;
     }
 
-    .mat-button{
+    .mat-button {
       margin-left: 12px;
     }
 
-    .input{
+    .input {
       color: var(--white);
       font-size: 1rem;
       padding: 10px;
     }
   }
-
 }

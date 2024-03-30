@@ -164,6 +164,10 @@ export class DataService {
     return this.http.put<appointmentCategory>(this._SecureApi + "/v2/PutCategory", category, { headers: this.getCustomHeaders() });
   }
 
+  public deleteCategory(category: appointmentCategory){
+    return this.http.delete(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
+  }
+
   public createAppointment(appointment: NewAppointment) {
     return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
   }
