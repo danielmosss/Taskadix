@@ -55,32 +55,6 @@
         </button>
       </div>
 
-      <!-- <div class="categories">
-        <div class="category" *ngFor="let category of categories">
-
-          <div class="selector-wrapper">
-            <div class="colorInfo">
-              <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
-                [disabled]="category.isdefault"
-                [matTooltip]="category.isdefault ? 'This is a default category and cannot be changed' : ''">
-              </ngx-colors>
-            </div>
-          </div>
-
-          <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
-          <mat-form-field *ngIf="editCategory && editCategory.id == category.id">
-            <mat-label>Category name</mat-label>
-            <input matInput [(ngModel)]="category.term">
-          </mat-form-field>
-
-          <ng-container *ngIf="!category.isdefault">
-              <i class="fa-solid fa-pen" (click)="selectEditCategory(category)" *ngIf="!editCategory || editCategory.id != category.id"></i>
-              <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)" *ngIf="editCategory && editCategory.id == category.id"></i>
-              <i class="fa-solid fa-trash" (click)="deleteCategory(category)"></i>
-          </ng-container>
-        </div>
-      </div> -->
-
       <div class="categories">
         <div class="default-categories">
           <h2>
@@ -89,17 +63,17 @@
           <ng-container *ngFor="let category of categories">
             <ng-container *ngIf="category.isdefault">
               <div class="category">
-              <div class="selector-wrapper">
-                <div class="colorInfo">
-                  <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
-                    [disabled]="category.isdefault"
-                    [matTooltip]="category.isdefault ? 'This is a default category and cannot be changed' : ''">
-                  </ngx-colors>
+                <div class="selector-wrapper">
+                  <div class="colorInfo">
+                    <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+                      [disabled]="category.isdefault"
+                      [matTooltip]="category.isdefault ? 'This is a default category and cannot be changed' : ''">
+                    </ngx-colors>
+                  </div>
                 </div>
-              </div>
 
-              <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
-            </div>
+                <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
+              </div>
             </ng-container>
           </ng-container>
         </div>
@@ -111,28 +85,27 @@
           <ng-container *ngFor="let category of categories">
             <ng-container *ngIf="!category.isdefault">
               <div class="category">
-              <div class="selector-wrapper">
-                <div class="colorInfo">
-                  <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
-                    [disabled]="editCategory?.id !== category.id"
-                    [matTooltip]="editCategory?.id !== category.id ? 'Click the edit icon to change.' : ''">
-                    'This is a default category and cannot be changed' : ''">
-                  </ngx-colors>
+                <div class="selector-wrapper">
+                  <div class="colorInfo">
+                    <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+                      [disabled]="editCategory?.id !== category.id"
+                      [matTooltip]="editCategory?.id !== category.id ? 'Click the edit icon to change.' : ''">
+                    </ngx-colors>
+                  </div>
                 </div>
-              </div>
 
-              <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
-              <mat-form-field *ngIf="editCategory && editCategory.id == category.id">
-                <mat-label>Category name</mat-label>
-                <input matInput [(ngModel)]="category.term">
-              </mat-form-field>
+                <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
+                <mat-form-field *ngIf="editCategory && editCategory.id == category.id">
+                  <mat-label>Category name</mat-label>
+                  <input matInput [(ngModel)]="category.term">
+                </mat-form-field>
 
-              <ng-container *ngIf="!category.isdefault">
+                <ng-container *ngIf="!category.isdefault">
                   <i class="fa-solid fa-pen" (click)="selectEditCategory(category)" *ngIf="!editCategory || editCategory.id != category.id"></i>
                   <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)" *ngIf="editCategory && editCategory.id == category.id"></i>
                   <i class="fa-solid fa-trash" (click)="deleteCategory(category)"></i>
-              </ng-container>
-            </div>
+                </ng-container>
+              </div>
             </ng-container>
           </ng-container>
         </div>
