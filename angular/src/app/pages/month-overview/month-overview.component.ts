@@ -45,7 +45,7 @@ export class MonthOverviewComponent implements OnInit {
   }
 
   getMonthAppointments() {
-    this._dataservice.getAppointments(this.monthView[0].days[0].momentDate, this.monthView[5].days[6].momentDate).subscribe(monthData => {
+    this._dataservice.getAppointments(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate).subscribe(monthData => {
       monthData.forEach(day => {
         let findday = this.findDayInMonthView(new Date(day.date))
         if (findday) {
@@ -54,14 +54,6 @@ export class MonthOverviewComponent implements OnInit {
           }
           day.appointments.forEach(appointment => {
             if (!findday) return;
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
-            findday.appointments.push(appointment);
             findday.appointments.push(appointment);
           })
         }

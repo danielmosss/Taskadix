@@ -18,7 +18,7 @@ export class HeaderOverviewComponent implements OnInit {
   @Input() type: Type = Type.month;
   // emit a new appointmentid to the parent component
   @Output() newAppointmentId: EventEmitter<number> = new EventEmitter<number>();
-  @Output() dateRange: EventEmitter<{ start: string, end: string }> = new EventEmitter<{ start: string, end: string }>();
+  @Output() weekSelected: EventEmitter<{ start: string, end: string }> = new EventEmitter<{ start: string, end: string }>();
   @Output() dayDateSelected: EventEmitter<string> = new EventEmitter<string>();
   @Output() monthSelected: EventEmitter<string> = new EventEmitter<string>();
 
@@ -52,7 +52,7 @@ export class HeaderOverviewComponent implements OnInit {
   }
 
   handleDateRangeSelection(dateRange: { start: string, end: string }) {
-    this.dateRange.emit(dateRange)
+    this.weekSelected.emit(dateRange)
   }
 
   handleMonthSelection(month: string) {

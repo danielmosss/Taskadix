@@ -1,7 +1,8 @@
-package handlersv2
+package New
 
 import (
 	"api/functions"
+	"api/handlers"
 	"database/sql"
 	"encoding/json"
 	"net/http"
@@ -20,7 +21,7 @@ func CreateCategory(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var newCategory Category
+	var newCategory handlers.Category
 	err = json.NewDecoder(req.Body).Decode(&newCategory)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusBadRequest)
@@ -41,7 +42,7 @@ func CreateCategory(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var createdCategory Category
+	var createdCategory handlers.Category
 	querySelect := "SELECT * FROM appointment_category WHERE id = ?;"
 	row := dbConnection.QueryRow(querySelect, lastInsertedId)
 	err = row.Scan(&createdCategory.ID, &createdCategory.Term, &createdCategory.Color, &createdCategory.UserId, &createdCategory.IsDefault)
@@ -73,14 +74,14 @@ func PutCategory(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var updatedCategory Category
+	var updatedCategory handlers.Category
 	err = json.NewDecoder(req.Body).Decode(&updatedCategory)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusBadRequest)
 		return
 	}
 
-	var selectFromDB Category
+	var selectFromDB handlers.Category
 	querySelect := "SELECT * FROM appointment_category WHERE id = ? AND userid = ?;"
 	row := dbConnection.QueryRow(querySelect, updatedCategory.ID, userId)
 	err = row.Scan(&selectFromDB.ID, &selectFromDB.Term, &selectFromDB.Color, &selectFromDB.UserId, &selectFromDB.IsDefault)
@@ -133,10 +134,10 @@ func GetCategories(res http.ResponseWriter, req *http.Request) {
 	defer rows.Close()
 	defer dbConnection.Close()
 
-	var categories []Category
+	var categories []handlers.Category
 	for rows.Next() {
 		var userId sql.NullInt64
-		var category Category
+		var category handlers.Category
 		err := rows.Scan(&category.ID, &category.Term, &category.Color, &userId, &category.IsDefault)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)

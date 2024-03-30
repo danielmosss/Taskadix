@@ -1,7 +1,8 @@
-package handlersv2
+package New
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
@@ -27,7 +28,7 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	var newAppointment NewAppointment
+	var newAppointment handlers.NewAppointment
 	if err := json.Unmarshal(body, &newAppointment); err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

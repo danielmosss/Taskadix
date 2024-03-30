@@ -64,6 +64,12 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return this.days.find(day => day.date === moment(date).format('YYYY-MM-DD'));
   }
 
+  weekSelected(dateRange: { start: string, end: string }) {
+    this.days = this.generateCustomWeek(new Date(dateRange.start));
+    this.weeknumber = moment(dateRange.start).week();
+    this.getAppointments(dateRange.start, dateRange.end);
+  }
+
   getAppointments(beginDate: string, endDate: string) {
     this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
       data.forEach(element => {
@@ -82,6 +88,24 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       times.push(`${hour.toString().padStart(2, '0')}:00`);
     }
     return times;
+  }
+
+  generateCustomWeek(startDate: Date): day[] {
+    const days: day[] = [];
+    const today = new Date(startDate);
+    const endDay = new Date(today);
+    endDay.setDate(today.getDate() + 6); // Set endDay to 6 days after today
+
+    for (let d = new Date(today); d <= endDay; d.setDate(d.getDate() + 1)) {
+      days.push({
+        date: moment(d).format('YYYY-MM-DD'),
+        day: d.toLocaleString('en-us', { weekday: 'long' }),
+        istoday: moment(d).isSame(moment(), 'day'),
+        appointments: []
+      });
+    }
+
+    return days;
   }
 
   generateDays(): day[] {

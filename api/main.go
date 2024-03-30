@@ -4,9 +4,9 @@ import (
 	"api/functions"
 	"api/handlers/DELETE"
 	"api/handlers/GET"
+	"api/handlers/New"
 	"api/handlers/POST"
 	"api/handlers/PUT"
-	"api/handlersv2"
 	"fmt"
 	"log"
 	"net/http"
@@ -47,13 +47,13 @@ func main() {
 	securedRoutes.HandleFunc("/PostWebcallUrl", POST.PostWebcallUrl).Methods("POST")
 	securedRoutes.HandleFunc("/GetWebcallSync", GET.GetWebcallSync).Methods("GET")
 
-	securedRoutes.HandleFunc("/v2/GetCategories", handlersv2.GetCategories).Methods("GET")
-	securedRoutes.HandleFunc("/v2/CreateAppointment", handlersv2.CreateAppointment).Methods("POST")
-	securedRoutes.HandleFunc("/v2/GetAppointments", handlersv2.GetAppointments).Methods("GET")
-	securedRoutes.HandleFunc("/v2/GetAppointment", handlersv2.GetAppointment).Methods("GET")
-	securedRoutes.HandleFunc("/v2/CreateCategory", handlersv2.CreateCategory).Methods("POST")
-	securedRoutes.HandleFunc("/v2/PutCategory", handlersv2.PutCategory).Methods("PUT")
-	securedRoutes.HandleFunc("/v2/DeleteCategory", handlersv2.DeleteCategory).Methods("DELETE")
+	securedRoutes.HandleFunc("/v2/GetCategories", New.GetCategories).Methods("GET")
+	securedRoutes.HandleFunc("/v2/CreateAppointment", New.CreateAppointment).Methods("POST")
+	securedRoutes.HandleFunc("/v2/GetAppointments", New.GetAppointments).Methods("GET")
+	securedRoutes.HandleFunc("/v2/GetAppointment", New.GetAppointment).Methods("GET")
+	securedRoutes.HandleFunc("/v2/CreateCategory", New.CreateCategory).Methods("POST")
+	securedRoutes.HandleFunc("/v2/PutCategory", New.PutCategory).Methods("PUT")
+	securedRoutes.HandleFunc("/v2/DeleteCategory", New.DeleteCategory).Methods("DELETE")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

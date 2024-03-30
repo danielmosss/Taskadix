@@ -1,32 +1,25 @@
-package handlersv2
+package New
 
 import (
 	"api/functions"
+	"api/handlers"
 	"encoding/json"
 	"net/http"
 )
 
-type responseAppointment struct {
-	Date         string        `json:"date"`
-	Appointments []Appointment `json:"appointments"`
-}
-
-func GetAppointments(res http.ResponseWriter, req *http.Request) {
+func GetAppointment(res http.ResponseWriter, req *http.Request) {
+	id := req.URL.Query().Get("id")
 	userId, err := functions.GetUserID(req)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusUnauthorized)
 		return
 	}
 
-	beginDate := req.URL.Query().Get("start")
-	endDate := req.URL.Query().Get("end")
-
 	dbConnection, err := functions.GetDatabaseConnection()
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	defer dbConnection.Close()
 
 	query := `SELECT 
     a.id,
@@ -43,18 +36,17 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     ac.color
     FROM appointments a
          	  INNER JOIN appointment_category ac on a.categoryid = ac.id
-			  WHERE a.userid = ?
-			  AND date >= ? AND date <= ?`
-	result, err := dbConnection.Query(query, userId, beginDate, endDate)
+			  WHERE a.userid = ? AND a.id = ?`
+
+	result, err := dbConnection.Query(query, userId, id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer result.Close()
 
-	appointmentMap := make(map[string][]Appointment)
+	var appointment handlers.Appointment
 	for result.Next() {
-		var appointment Appointment
 		err := result.Scan(
 			&appointment.Id,
 			&appointment.Userid,
@@ -73,24 +65,13 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
-		appointmentMap[appointment.Date] = append(appointmentMap[appointment.Date], appointment)
 	}
-
-	var appointmentArray []responseAppointment
-	for i, appointments := range appointmentMap {
-		appointmentArray = append(appointmentArray, responseAppointment{
-			Date:         i,
-			Appointments: appointments,
-		})
-	}
-
-	JSON, err := json.Marshal(appointmentArray)
+	json, err := json.Marshal(appointment)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
 	res.Header().Set("Content-Type", "application/json")
-	res.WriteHeader(http.StatusOK)
-	res.Write(JSON)
+	res.Write(json)
 }

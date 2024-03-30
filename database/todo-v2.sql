@@ -94,6 +94,7 @@ INSERT INTO appointment_category (term, color, isdefault) VALUES ('Work', '#ff00
 INSERT INTO appointment_category (term, color, isdefault) VALUES ('Private', '#00ff00', 1);
 INSERT INTO appointment_category (term, color, isdefault) VALUES ('Family', '#0000ff', 1);
 INSERT INTO appointment_category (term, color, isdefault) VALUES ('School', '#ffff00', 1);
+INSERT INTO appointment_category (term, color, isdefault) VALUES ('ICS Import', '#ff00ff', 1);
 
 create table appointments
 (
