@@ -58,6 +58,7 @@ import { AppointmentComponent } from './popups/appointment/appointment.component
 import { SettingsComponent } from './pages/settings/settings.component';
 import { FamilyComponent } from './pages/family/family.component';
 import { MonthselectorComponent } from './addons/monthselector/monthselector.component';
+import { CreateCategoryComponent } from './popups/create-category/create-category.component';
 
 const routes: Routes = [
   {
@@ -124,7 +125,8 @@ const routes: Routes = [
     AppointmentComponent,
     SettingsComponent,
     FamilyComponent,
-    MonthselectorComponent
+    MonthselectorComponent,
+    CreateCategoryComponent
   ],
   imports: [
     BrowserModule,

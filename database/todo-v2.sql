@@ -84,7 +84,7 @@ create table appointment_category
     term  varchar(255) NOT NULL,
     color varchar(255) NOT NULL,
     userid int null,
-    isdefault tinyint(1) not null,
+    isdefault tinyint(1) not null default 0,
     FOREIGN KEY (userid) REFERENCES users (id),
     CONSTRAINT isdefaultOrUserid CHECK (isdefault = 1 OR userid IS NOT NULL),
     CONSTRAINT term_unique UNIQUE (term, userid)

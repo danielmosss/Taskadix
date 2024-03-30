@@ -156,6 +156,14 @@ export class DataService {
     return this.http.get<appointmentCategory[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
   }
 
+  public createCategory(categoryName: string, categoryColor: string){
+    return this.http.post<appointmentCategory>(this._SecureApi + "/v2/CreateCategory", {term: categoryName, color: categoryColor}, { headers: this.getCustomHeaders() });
+  }
+
+  public updateCategory(category: appointmentCategory){
+    return this.http.put<appointmentCategory>(this._SecureApi + "/v2/PutCategory", category, { headers: this.getCustomHeaders() });
+  }
+
   public createAppointment(appointment: NewAppointment) {
     return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
   }

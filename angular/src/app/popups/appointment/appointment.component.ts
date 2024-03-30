@@ -8,13 +8,9 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.scss']
 })
-export class AppointmentComponent implements OnInit{
+export class AppointmentComponent{
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
 
   constructor(private dialogRef: MatDialogRef<AppointmentComponent>, @Inject(MAT_DIALOG_DATA) public appointment: Appointment, private globalfunctions: GlobalfunctionsService) { }
-
-  ngOnInit(): void {
-    console.log(this.appointment);
-  }
 }

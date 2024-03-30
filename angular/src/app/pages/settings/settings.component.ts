@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { appointmentCategory } from 'src/app/interfaces';
+import { CreateCategoryComponent } from 'src/app/popups/create-category/create-category.component';
 import { DataService } from 'src/data.service';
 
 enum SettingsTabs {
@@ -15,15 +17,13 @@ enum SettingsTabs {
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss']
 })
-export class SettingsComponent implements OnInit{
+export class SettingsComponent implements OnInit {
   SettingsTabs = SettingsTabs;
   public activeTab: SettingsTabs = SettingsTabs.Account;
 
   public categories: appointmentCategory[] = [];
-  public newCategoryName: string = "";
-  public newCategoryColor: string = "#000000";
 
-  constructor(private _dataservice: DataService) {}
+  constructor(private _dataservice: DataService, private _dialog: MatDialog) { }
 
   ngOnInit() {
   }
@@ -41,19 +41,16 @@ export class SettingsComponent implements OnInit{
     return this.activeTab === tab;
   }
 
-  addCategory() {
-    //make database call
-
-    // add to categories
-    this.categories.push({
-      id: 0,
-      term: this.newCategoryName,
-      color: this.newCategoryColor,
-      userid: 0,
-      isdefault: false
+  createCategory() {
+    let dialog = this._dialog.open(CreateCategoryComponent)
+    dialog.afterClosed().subscribe((category) => {
+      if (category) {
+        this.categories.push(category);
+      }
     });
-    this.newCategoryName = "";
-    this.newCategoryColor = "#000000";
   }
 
+  // changedCategoryColor(category: appointmentCategory) {
+  //   this._dataservice.updateCategory(category)
+  // }
 }

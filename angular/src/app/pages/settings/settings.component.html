@@ -48,6 +48,13 @@
     </ng-container>
     <ng-container *ngIf="activeTab == SettingsTabs.Categories">
 
+      <div class="buttons">
+        <button mat-button class="mat-button pos" (click)="createCategory()">
+          <i class="fa-solid fa-plus"></i>
+          Add category
+        </button>
+      </div>
+
       <div class="categories">
         <div class="category" *ngFor="let category of categories">
 
@@ -56,23 +63,15 @@
           <div class="selector-wrapper">
             <div class="colorInfo">
               <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
-                [disabled]="category.isdefault">
+                [disabled]="category.isdefault"
+                [matTooltip]="category.isdefault ? 'This is a default category and cannot be changed' : ''">
               </ngx-colors>
             </div>
           </div>
 
         </div>
       </div>
-      <div class="createnewcategory">
-        <h2>Create new category</h2>
-        <div class="category">
-          <div class="selector-wrapper">
-            <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="newCategoryColor"></ngx-colors>
-          </div>
-          <input class="input" type="text" [(ngModel)]="newCategoryName" required>
-          <button mat-button class="mat-button pos" (click)="addCategory()">Add</button>
-        </div>
-      </div>
+
 
     </ng-container>
     <ng-container *ngIf="activeTab == SettingsTabs.Family">
