@@ -115,8 +115,14 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
 	}
 	defer dbConnection.Close()
 
-	query := "SELECT COUNT(*) FROM appointments WHERE title = ? AND description = ? AND date = ? AND userId = ? AND categoryid = (select id from appointment_category where isdefault = 1 and term = 'School');"
-	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, userId)
+	query := `SELECT COUNT(*) FROM appointments WHERE title = ? 
+                                    AND description = ? 
+                                    AND date = ? 
+                                    AND starttime = ?
+                                    AND endtime = ?
+                                    AND userId = ? 
+                                    AND categoryid = (select id from appointment_category where isdefault = 1 and term = 'School');`
+	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
 	}

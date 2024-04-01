@@ -34,6 +34,17 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	// check if appointment endtime is 00:00 then set it to 23:59
+	if newAppointment.EndTime == "00:00" {
+		newAppointment.EndTime = "23:59"
+	}
+
+	// check if endtime is after starttime
+	if newAppointment.EndTime < newAppointment.StartTime {
+		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+		return
+	}
+
 	query := `INSERT INTO appointments 
 			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid) 
 			  VALUES 
