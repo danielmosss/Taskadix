@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit, inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Appointment } from 'src/app/interfaces';
 import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
@@ -8,9 +9,27 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
   templateUrl: './appointment.component.html',
   styleUrls: ['./appointment.component.scss']
 })
-export class AppointmentComponent{
+export class AppointmentComponent {
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
 
-  constructor(private dialogRef: MatDialogRef<AppointmentComponent>, @Inject(MAT_DIALOG_DATA) public appointment: Appointment, private globalfunctions: GlobalfunctionsService) { }
+  constructor(private dialogRef: MatDialogRef<AppointmentComponent>, @Inject(MAT_DIALOG_DATA) public appointment: Appointment, private globalfunctions: GlobalfunctionsService,
+    private _router: Router) { }
+
+  navigate(url: string, blank: boolean = false) {
+    if (blank) {
+      window.open(url, '_blank');
+    }
+    else {
+      this._router.navigate([url]);
+    }
+  }
+
+  editAppointment(appointment: Appointment) {
+    // close this one and open a new one to edit this.
+  }
+
+  deleteAppointment(appointment: Appointment) {
+    // delete the appointment
+  }
 }

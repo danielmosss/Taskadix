@@ -13,7 +13,6 @@
 
   .cardContent {
     padding: 15px 12px 3px 10px;
-    cursor: pointer;
 
     .titlerow {
       display: flex;
@@ -47,28 +46,30 @@
       }
     }
 
+    .actions{
+      display: flex;
+      flex-direction: row;
+      gap: 10px;
 
-    .time {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 16px;
+      i{
+        cursor: pointer;
+      }
     }
 
     .description{
-      margin: 0;
-      font-size: 17px;
-      font-weight: 400;
-      line-height: 16px;
-
       white-space: pre-line;
     }
 
-    .location {
+    .text{
       margin: 0;
-      font-size: 17px;
+      font-size: 18px;
       font-weight: 400;
       line-height: 16px;
     }
   }
+}
+
+
+.fa-23 {
+  font-size: 23px;
 }

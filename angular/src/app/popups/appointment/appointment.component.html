@@ -16,24 +16,35 @@
 
 
       <div class="Item">
-        <i class="fa-solid fa-clock"></i>
-        <p class="time">
+        <i class="fa-solid fa-clock fa-23"></i>
+        <p class="text time">
           {{getDateName(appointment.date)}} {{formatTime(appointment.starttime)}} - {{formatTime(appointment.endtime)}}
         </p>
       </div>
 
       <div class="Item">
-        <i class="fa-solid fa-location-dot"></i>
-        <p class="location">
+        <i class="fa-solid fa-location-dot fa-23"></i>
+        <p class="text">
           {{appointment.location == "" ? "Geen locatie" : appointment.location}}
         </p>
       </div>
 
       <div class="Item NoAlignCenter">
-        <i class="fa-solid fa-clipboard"></i>
-        <p class="description">
+        <i class="fa-solid fa-clipboard fa-23"></i>
+        <p class="text description">
           {{appointment.description == "" ? "Geen beschrijving" : appointment.description}}
         </p>
+      </div>
+
+      <div class="Item">
+        <div class="actions">
+          <i class="fa-solid fa-map-location-dot fa-23"
+            (click)="navigate('https://www.google.com/maps/search/?api=1&query=' + appointment.location, true)"
+            target="_blank">
+          </i>
+          <i class="fa-solid fa-pen-to-square fa-23" (click)="editAppointment(appointment)"></i>
+          <i class="fa-solid fa-trash-can fa-23" (click)="deleteAppointment(appointment)"></i>
+        </div>
       </div>
     </div>
   </div>
