@@ -2,6 +2,7 @@ import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, 
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
+import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { DataService } from 'src/data.service';
 import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
@@ -13,7 +14,6 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
 export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   // Global functions
-  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
   // Global functions
 
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
@@ -173,5 +173,16 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   dayDateSelected(date: string) {
     this.day = { date: date, datename: this.getDateName(date), day: moment(date).format('dddd'), appointments: [] };
     this.getAppointments(date, date);
+  }
+
+  openAppointmentDetails(appointment: Appointment) {
+    let dialog = this._dialog.open(AppointmentComponent, {
+      data: appointment
+    })
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result);
+      }
+    })
   }
 }

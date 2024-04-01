@@ -24,8 +24,13 @@ export class GlobalfunctionsService {
   }
 
   openAppointmentDetails(appointment: Appointment) {
-    this._dialog.open(AppointmentComponent, {
+    let dialog = this._dialog.open(AppointmentComponent, {
       data: appointment
+    })
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+
+      }
     })
   }
 

@@ -5,6 +5,7 @@ import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/cr
 import * as moment from 'moment';
 import { DataService } from 'src/data.service';
 import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 
 interface day {
   date: string,
@@ -21,7 +22,6 @@ interface day {
 export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   // Global functions
-  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
   // Global functions
 
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
@@ -232,5 +232,20 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
     const position = (parseInt(currentHour, 10) + parseInt(currentMinute, 10) / 60) * this.heightPerHour;
     return position.toString()
+  }
+
+  openAppointmentDetails(appointment: Appointment) {
+    let dialog = this._dialog.open(AppointmentComponent, {
+      data: appointment
+    })
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.days.forEach(day => {
+          if (day.appointments) {
+            day.appointments = day.appointments.filter(appointment => appointment.id !== result);
+          }
+        })
+      }
+    })
   }
 }

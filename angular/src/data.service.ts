@@ -179,4 +179,8 @@ export class DataService {
   public getAppointments(beginDate: string, endDate: string) {
     return this.http.get<{date: string, appointments: Appointment[]}[]>(this._SecureApi + `/v2/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
   }
+
+  public deleteAppointment(appointment: Appointment) {
+    return this.http.delete<{status: string}>(this._SecureApi + `/v2/DeleteAppointment?id=${appointment.id}`, { headers: this.getCustomHeaders() });
+  }
 }

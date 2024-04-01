@@ -2,6 +2,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Appointment, Todo } from 'src/app/interfaces';
+import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
@@ -16,7 +17,6 @@ export class MonthOverviewComponent implements OnInit {
 
   // Global functions
   getWeekNumber = this.globalfunctions.getWeekNumber
-  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
   formatTime = this.globalfunctions.getFormattedTime;
   // Global functions
 
@@ -115,5 +115,22 @@ export class MonthOverviewComponent implements OnInit {
   monthSelected(date: string) {
     let monthNr = new Date(date).getMonth();
     this.getMonthView(monthNr);
+  }
+
+  openAppointmentDetails(appointment: Appointment) {
+    let dialog = this._dialog.open(AppointmentComponent, {
+      data: appointment
+    })
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.monthView.forEach(week => {
+          week.days.forEach(day => {
+            if (day.appointments) {
+              day.appointments = day.appointments.filter(appointment => appointment.id !== result);
+            }
+          })
+        })
+      }
+    })
   }
 }

@@ -54,6 +54,7 @@ func main() {
 	securedRoutes.HandleFunc("/v2/CreateCategory", New.CreateCategory).Methods("POST")
 	securedRoutes.HandleFunc("/v2/PutCategory", New.PutCategory).Methods("PUT")
 	securedRoutes.HandleFunc("/v2/DeleteCategory", New.DeleteCategory).Methods("DELETE")
+	securedRoutes.HandleFunc("/v2/DeleteAppointment", New.DeleteAppointment).Methods("DELETE")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

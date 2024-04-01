@@ -16,7 +16,6 @@ export class HomeComponent implements OnInit {
   // Global functions
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
-  openAppointmentDetails = this.globalfunctions.openAppointmentDetails;
   getWeekNumber = this.globalfunctions.getWeekNumber;
   // Global functions
 
@@ -55,5 +54,16 @@ export class HomeComponent implements OnInit {
 
   checkTodo(isChecked: boolean, todo: Todo) {
     todo.checked = isChecked;
+  }
+
+  openAppointmentDetails(appointment: Appointment) {
+    let dialog = this._dialog.open(AppointmentComponent, {
+      data: appointment
+    })
+    dialog.afterClosed().subscribe(result => {
+      if (result) {
+        this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result);
+      }
+    })
   }
 }

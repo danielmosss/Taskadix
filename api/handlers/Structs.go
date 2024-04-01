@@ -84,3 +84,8 @@ type Appointment struct {
 	Location    string   `json:"location"`
 	Category    Category `json:"category"`
 }
+
+type ResponseAppointment struct {
+	Date         string        `json:"date"`
+	Appointments []Appointment `json:"appointments"`
+}
