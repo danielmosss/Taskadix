@@ -100,19 +100,22 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     a.userid,
     a.title,
     a.description,
-    a.date,
+    a.date, 
     a.isallday,
     a.starttime,
     a.endtime,
     a.location,
     a.categoryid,
     ac.term,
-    ac.color
+    ac.color,
+    a.isWebCall
     FROM appointments a
          	  INNER JOIN appointment_category ac on a.categoryid = ac.id
+       		  LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
 			  WHERE a.userid = ?
+			  AND ia.appointmentid IS NULL
 			  AND date >= ? AND date <= ?`
-	result, err := dbConnection.Query(query, userId, beginDate, endDate)
+	result, err := dbConnection.Query(query, userId, userId, beginDate, endDate)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -135,6 +138,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 			&appointment.Category.ID,
 			&appointment.Category.Term,
 			&appointment.Category.Color,
+			&appointment.IsWebCall,
 		)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
@@ -238,11 +242,37 @@ func DeleteAppointment(res http.ResponseWriter, req *http.Request) {
 	}
 
 	id := req.URL.Query().Get("id")
-	query := `DELETE FROM appointments WHERE userid = ? AND id = ?;`
-	_, err = dbConnection.Exec(query, userId, id)
+	querySelectIsWebCall := `SELECT isWebCall FROM appointments WHERE userid = ? AND id = ?;`
+	result, err := dbConnection.Query(querySelectIsWebCall, userId, id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
+	}
+	defer result.Close()
+
+	var isWebCall int
+	for result.Next() {
+		err := result.Scan(&isWebCall)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
+
+	if isWebCall == 1 {
+		query := `INSERT INTO inrelevantappointments (userid, appointmentid) VALUES (?, ?);`
+		_, err = dbConnection.Exec(query, userId, id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	} else {
+		query := `DELETE FROM appointments WHERE userid = ? AND id = ?;`
+		_, err = dbConnection.Exec(query, userId, id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
 	}
 
 	res.Header().Set("Content-Type", "application/json")

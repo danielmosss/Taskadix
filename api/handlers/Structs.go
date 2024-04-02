@@ -83,6 +83,7 @@ type Appointment struct {
 	EndTime     string   `json:"endtime"`
 	Location    string   `json:"location"`
 	Category    Category `json:"category"`
+	IsWebCall   bool     `json:"iswebcall"`
 }
 
 type ResponseAppointment struct {

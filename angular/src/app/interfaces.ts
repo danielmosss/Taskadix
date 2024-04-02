@@ -193,6 +193,7 @@ export interface Appointment {
   endtime: string,
   location: string,
   category: Category,
+  iswebcall: boolean,
   width?: number,
   left?: number,
 }

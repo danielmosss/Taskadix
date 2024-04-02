@@ -121,6 +121,7 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
                                     AND starttime = ?
                                     AND endtime = ?
                                     AND userId = ? 
+                                    AND isWebCall = 1
                                     AND categoryid = (select id from appointment_category where isdefault = 1 and term = 'School');`
 	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
@@ -146,9 +147,9 @@ func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int)
 	}
 
 	query := `INSERT INTO appointments
-			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid)
+			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, isWebCall)
 			  VALUES
-			      (?,?,?,?,?,?,?,?,(select id from appointment_category where isdefault = 1 and term = 'School'));`
+			      (?,?,?,?,?,?,?,?,(select id from appointment_category where isdefault = 1 and term = 'School'), 1);`
 
 	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location)
 	if err != nil {

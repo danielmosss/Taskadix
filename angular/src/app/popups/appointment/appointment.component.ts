@@ -20,7 +20,7 @@ export class AppointmentComponent {
     private globalfunctions: GlobalfunctionsService,
     private _router: Router,
     private _dataservice: DataService
-    ) { }
+  ) { }
 
   navigate(url: string, blank: boolean = false) {
     if (blank) {
@@ -32,7 +32,7 @@ export class AppointmentComponent {
   }
 
   editAppointment(appointment: Appointment) {
-  // close this one and open a new one to edit this.
+    // close this one and open a new one to edit this.
   }
 
   deleteAppointment(appointment: Appointment) {
@@ -41,6 +41,6 @@ export class AppointmentComponent {
       if (data.status == "success") {
         this.dialogRef.close(appointment.id);
       }
-  })
+    })
   }
 }

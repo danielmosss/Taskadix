@@ -39,7 +39,6 @@ func main() {
 	securedRoutes.HandleFunc("/PostTodoTask", POST.PostTodoTask).Methods("POST")
 	securedRoutes.HandleFunc("/PutTodoTaskInfo", PUT.PutTodoTaskInfo).Methods("PUT")
 	securedRoutes.HandleFunc("/DeleteTodoTask", DELETE.DeleteTodoTask).Methods("DELETE")
-	securedRoutes.HandleFunc("/PostMarkAsIrrelevant", POST.PostMarkAsIrrelevant).Methods("POST")
 	securedRoutes.HandleFunc("/GetTodoTasksByDateRange", GET.GetTodoByDateRange).Methods("GET")
 	securedRoutes.HandleFunc("/GetUserData", GET.GetUserData).Methods("GET")
 	securedRoutes.HandleFunc("/UploadBulkTodo", POST.UploadBulkTodo).Methods("POST")

@@ -33,35 +33,6 @@ BEGIN
 END $$
 DELIMITER ;
 
-
-drop table if exists irrelevantAgendaTodos;
-create table irrelevantAgendaTodos (
-    id int not null auto_increment,
-    todoId int not null,
-    primary key (id),
-    constraint fk_todoId foreign key (todoId) references todos(id) on delete cascade,
-    constraint uq_todoId unique (todoId)
-);
-
-drop procedure if exists insertAnIrrelevantAgendaTodo;
-DELIMITER $$
-CREATE PROCEDURE insertAnIrrelevantAgendaTodo (IN todoId INT, IN user_id INT)
-BEGIN
-    DECLARE isCHEAgendaBool BOOLEAN;
-    DECLARE isusersTodo BOOLEAN;
-    SELECT isCHEAgenda INTO isCHEAgendaBool FROM todos WHERE id = todoId AND userId = user_id;
-    SELECT 1 INTO isusersTodo FROM todos WHERE id = todoId AND userId = user_id;
-    IF isCHEAgendaBool = 1 AND isusersTodo = 1 THEN
-        INSERT INTO irrelevantagendatodos (todoId) VALUES (todoId);
-        SELECT last_insert_id() as id;
-    END IF;
-
-    IF isusersTodo = 0 THEN
-        select 0 as id;
-    END IF;
-END $$
-DELIMITER ;
-
 create table users (
     id int not null auto_increment,
     username varchar(255) not null,
@@ -108,10 +79,20 @@ create table appointments
     endtime     time,
     location    varchar(255),
     categoryid  int          NOT NULL,
+    iswebcall   tinyint(1)   NOT NULL default 0,
     FOREIGN KEY (userid) REFERENCES users (id),
     FOREIGN KEY (categoryid) REFERENCES appointment_category (id),
     CONSTRAINT title_non_empty CHECK (title <> ''),
     CONSTRAINT if_allday_starttime_endtime_null CHECK (isallday = 1 OR (starttime IS NOT NULL AND endtime IS NOT NULL AND starttime < endtime))
+);
+
+create table inrelevantappointments
+(
+    id            int auto_increment primary key,
+    appointmentid int NOT NULL,
+    userid        int NOT NULL,
+    FOREIGN KEY (appointmentid) REFERENCES appointments (id),
+    FOREIGN KEY (userid) REFERENCES users (id)
 );
 
 create table families
