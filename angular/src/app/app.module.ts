@@ -59,6 +59,7 @@ import { SettingsComponent } from './pages/settings/settings.component';
 import { FamilyComponent } from './pages/family/family.component';
 import { MonthselectorComponent } from './addons/monthselector/monthselector.component';
 import { CreateCategoryComponent } from './popups/create-category/create-category.component';
+import { NotfoundpageComponent } from './addons/notfoundpage/notfoundpage.component';
 
 const routes: Routes = [
   {
@@ -126,7 +127,8 @@ const routes: Routes = [
     SettingsComponent,
     FamilyComponent,
     MonthselectorComponent,
-    CreateCategoryComponent
+    CreateCategoryComponent,
+    NotfoundpageComponent
   ],
   imports: [
     BrowserModule,
