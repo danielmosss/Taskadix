@@ -40,11 +40,11 @@
     scrollbar-width: none;
 
     &.NotInSelectedMonth {
-      background: var(--darkgray);
+      background: var(--gray-dark);
     }
 
     &.InSelectedMonth {
-      background: var(--lightgray);
+      background: var(--gray-light);
     }
 
     &.today {

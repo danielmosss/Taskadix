@@ -1,5 +1,5 @@
 <div class="popup2">
-  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton"></i>
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton" matTooltip="Sluiten"></i>
 
   <div class="appointmentTime">
     <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
@@ -38,12 +38,18 @@
 
       <div class="Item">
         <div class="actions">
-          <i class="fa-solid fa-map-location-dot fa-23"
+          <button mat-button class="mat-button lgray" matTooltip="Google maps">
+            <i class="fa-solid fa-map-location-dot fa-23"
             (click)="navigate('https://www.google.com/maps/search/?api=1&query=' + appointment.location, true)"
             target="_blank">
           </i>
-          <i class="fa-solid fa-pen-to-square fa-23" (click)="editAppointment(appointment)"></i>
-          <i class="fa-solid fa-trash-can fa-23" (click)="deleteAppointment(appointment)"></i>
+          </button>
+          <button mat-button class="mat-button lgray" matTooltip="Bewerken">
+            <i class="fa-solid fa-pen-to-square fa-23" (click)="editAppointment(appointment)"></i>
+          </button>
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen">
+            <i class="fa-solid fa-trash-can fa-23" (click)="deleteAppointment(appointment)"></i>
+          </button>
         </div>
       </div>
     </div>

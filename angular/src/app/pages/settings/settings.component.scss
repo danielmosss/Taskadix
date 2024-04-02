@@ -8,7 +8,7 @@
   grid-template-columns: 1fr 4fr;
 
   .menu {
-    background-color: var(--lightgray);
+    background-color: var(--gray-light);
     border-radius: 20px;
     padding: 20px;
 
@@ -21,7 +21,7 @@
       border-radius: 15px;
       height: 25px;
       cursor: pointer;
-      background-color: var(--mediumgray);
+      background-color: var(--gray-medium);
 
       &:hover:not(.active) {
         background-color: var(--gray);
@@ -69,7 +69,7 @@
 
     .category {
       border-radius: 20px;
-      background-color: var(--mediumgray);
+      background-color: var(--gray-medium);
       padding: 0 12px;
 
       display: flex;

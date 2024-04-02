@@ -3,10 +3,11 @@
 :root {
   --background-color: #2b2d31;
   --gray: #252525;
-  --darkgray: #303030;
-  --mediumgray: #333333;
-  --lightgray: #424242;
-  --verylightgray: #686868;
+  --gray-dark: #303030;
+  --gray-medium: #333333;
+  --gray-light: #424242;
+  --gray-lighter: #606060;
+  --gray-lightest: #686868;
   --primary-color: #b22234;
   --secondary-color: #f3f3f3;
   --aquablue: #00C9C8;
@@ -126,6 +127,11 @@ mat-dialog-container {
     color: #333333;
   }
 
+  &.lgray{
+    background-color: var(--gray-lightest);
+    color: #333333;
+  }
+
   &.info {
     background-color: #3c082a;
     color: #ffffff !important;
@@ -133,7 +139,7 @@ mat-dialog-container {
 }
 
 .greyedoutTodo {
-  background-color: var(--mediumgray) !important;
+  background-color: var(--gray-medium) !important;
 }
 
 .withsubtitle {

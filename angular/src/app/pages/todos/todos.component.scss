@@ -62,7 +62,7 @@
       padding: 6px 0px;
       min-width: 100px;
       text-align: center;
-      background-color: var(--lightgray);
+      background-color: var(--gray-light);
       color: white;
 
       .name {
@@ -83,7 +83,7 @@
 
     .todo {
       .card {
-        background: var(--lightgray);
+        background: var(--gray-light);
         cursor: pointer;
         padding: 7px 8px;
         border-radius: 4px;
