@@ -1,0 +1,24 @@
+<div class="popup">
+
+  <mat-form-field class="full-width">
+    <mat-label>Category name</mat-label>
+    <input matInput [(ngModel)]="newCategoryName">
+
+  </mat-form-field>
+
+  <div class="selector-wrapper">
+    <h2>
+      Category color
+    </h2>
+    <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="newCategoryColor"></ngx-colors>
+  </div>
+
+  <div class="footer buttons right">
+    <button mat-button class="mat-button neg" type="button" (click)="cancel()">
+      <i class="fa-solid fa-xmark fa-xl"></i>
+    </button>
+    <button mat-button class="mat-button pos" type="submit" (click)="save()">
+      <i class="fa-solid fa-check fa-xl"></i>
+    </button>
+  </div>
+</div>

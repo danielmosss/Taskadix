@@ -1,0 +1,50 @@
+<div class="header">
+  <div class="datepicker">
+    <app-weekselector class="header-datepicker" (onDateSelected)="handleDateRangeSelection($event)"
+      *ngIf="isActiveView('/week')"></app-weekselector>
+    <app-monthselector class="header-datepicker" (onDateSelected)="handleMonthSelection($event)"
+      *ngIf="isActiveView('/month')"></app-monthselector>
+    <app-dayselector class="header-datepicker" (onDateSelected)="handleDateSelection($event)"
+      *ngIf="isActiveView('/day')"></app-dayselector>
+  </div>
+  <div class="other">
+    <div class="switchDayWeekMonth">
+      <div class="option" (click)="navigateTo('/overview/day')">
+        <div class="text"> DAY </div>
+        <div class="underlineActive" [ngStyle]="{'background-color': isActiveView('/day') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
+      <div class="divider">
+      </div>
+      <div class="option" (click)="navigateTo('/overview/week')">
+        <div class="text"> WEEK </div>
+        <div class="underlineActive"
+          [ngStyle]="{'background-color': isActiveView('/week') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
+      <div class="divider">
+      </div>
+      <div class="option" (click)="navigateTo('/overview/month')">
+        <div class="text"> MONTH </div>
+        <div class="underlineActive"
+          [ngStyle]="{'background-color': isActiveView('/month') ? '#00C9C8' : 'transparent'}">
+        </div>
+      </div>
+    </div>
+    <div class="createAppointment" (click)="openCreateAppointment()">
+      <div class="icontainer">
+        <div class="icon">
+          <i class="fa-regular fa-circle fa-2x"></i>
+          <i class="fa-solid fa-plus plus"></i>
+        </div>
+      </div>
+      <div class="text"> APPOINTMENT </div>
+    </div>
+
+    <div class="filterCategory">
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,91 @@
+<!-- <div class="grid">
+
+    <button mat-button class="mat-button pos" (click)="openJsonuploader()">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      Upload JSON
+    </button>
+    <button mat-button class="mat-button pos" (click)="openICSuploader()">
+      <i class="fa-solid fa-file-arrow-up"></i>
+      Upload ICS
+    </button>
+
+</div> -->
+
+<div class="header">
+  <div class="datepicker">
+    <app-weekselector class="header-datepicker"(onDateSelected)="handleDateSelection($event)"></app-weekselector>
+  </div>
+  <div class="other">
+    <div class="actionButton" (click)="openCreateTodo()">
+      <div class="icontainer">
+        <div class="icon">
+          <i class="fa-regular fa-circle fa-2x"></i>
+          <i class="fa-solid fa-plus plus"></i>
+        </div>
+      </div>
+      <div class="text"> TODO </div>
+    </div>
+    <div class="actionButton" (click)="showCheckedItems = !showCheckedItems">
+      <div class="icontainer">
+        <div class="icon">
+          <i class="fa-solid fa-eye" *ngIf="!showCheckedItems"></i>
+          <i class="fa-solid fa-eye-slash" *ngIf="showCheckedItems"></i>
+        </div>
+      </div>
+      <div class="text">
+        <span *ngIf="!showCheckedItems">SHOW</span>
+        <span *ngIf="showCheckedItems">HIDE</span>
+        CHECKED ITEMS
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<ng-container *ngIf="!viewAccountSettings">
+<div class="container">
+  <div class="todoRow">
+    <div *ngFor="let day of Todolist; let i = index"
+      class="dayTasks"
+      [id]="day.day + 'List'"
+      cdkDropList
+      [cdkDropListData]="day.tasks"
+      [cdkDropListConnectedTo]="connectedLists"
+      (cdkDropListDropped)="drop($event)">
+
+      <div class="day">
+        <div class="name withsubtitle">
+          {{day.day}} {{getDate(day)}}
+        </div>
+
+        <p *ngIf="!showCheckedItems && getCheckItemsForDay(day) > 0" class="checkedCount">
+          {{getCheckItemsForDay(day)}} checked items.
+        </p>
+      </div>
+
+      <ng-container *ngFor="let task of day.tasks">
+        <div class="todo" cdkDrag [cdkDragDisabled]="isMobile()">
+
+          <div class="card" (click)="openCardInfo(task)" [ngClass]="{'greyedoutTodo': task.checked}" *ngIf="showCheckedItems || (!showCheckedItems && !task.checked)">
+            <div class="title">
+              <h3>{{task.title}}</h3>
+            </div>
+            <div class="description">
+              <p>{{task.description}}</p>
+            </div>
+          </div>
+
+          <div class="card" *ngIf="!showCheckedItems && task.checked" [ngClass]="{'greyedoutTodo': task.checked}">
+            <div class="title">
+              <h3 class="removeMargins">{{task.title}}</h3>
+            </div>
+          </div>
+
+          <div class="placeholder" *cdkDragPlaceholder></div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</div>
+</ng-container>

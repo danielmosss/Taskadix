@@ -2,6 +2,17 @@
 
 :root {
   --background-color: #2b2d31;
+  --gray: #252525;
+  --gray-dark: #303030;
+  --gray-medium: #333333;
+  --gray-light: #424242;
+  --gray-lighter: #606060;
+  --gray-lightest: #686868;
+  --primary-color: #b22234;
+  --secondary-color: #f3f3f3;
+  --aquablue: #00C9C8;
+  --blue: #007bff;
+  --grayedout: #b3b3b3;
 }
 
 html,
@@ -9,13 +20,15 @@ body {
   height: 100%;
 }
 
+.header-datepicker .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 body {
-  //background: radial-gradient(circle at bottom left, rgb(41 186 255), #0019fca8);
   background: var(--background-color);
   background-size: cover;
   background-repeat: no-repeat;
@@ -32,17 +45,56 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
-.full-width{
+.full-width {
   width: 100%;
+}
+
+mat-dialog-container {
+  padding: 15px;
+}
+
+.mat-mdc-dialog-surface {
+  overflow: visible !important;
+  border-radius: 20px !important;
+}
+
+.mat-mdc-dialog-surface:has(.popup) {
+  overflow: visible;
 }
 
 .popup {
   background-color: #757575;
-  position: relative;
-  min-width: 70vw;
+  min-width: 450px;
   height: 100%;
   max-height: 90vh;
+  overflow-y: auto;
   padding: 15px;
+
+  .closedialogbutton {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: -30px;
+    -webkit-text-stroke: 1px #f3f3f3;
+  }
+}
+
+.popup2 {
+  background-color: #757575;
+  min-width: 600px;
+  height: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  padding: 15px;
+  border-radius: 15px;
+
+  .closedialogbutton {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: -30px;
+    -webkit-text-stroke: 1px #f3f3f3;
+  }
 }
 
 .buttons {
@@ -75,6 +127,11 @@ body {
     color: #333333;
   }
 
+  &.lgray{
+    background-color: var(--gray-lightest);
+    color: #333333;
+  }
+
   &.info {
     background-color: #3c082a;
     color: #ffffff !important;
@@ -82,15 +139,58 @@ body {
 }
 
 .greyedoutTodo {
-  background-color: #888888 !important;
+  background-color: var(--gray-medium) !important;
 }
 
 .withsubtitle {
   margin-bottom: 0;
 }
 
+.issubtitle{
+  margin-top: 0;
+}
+
 @media (min-width: 1000px) {
   .popup {
     min-width: 450px;
+  }
+}
+
+.timepicker-backdrop-overlay,
+.timepicker-overlay {
+  z-index: 1001 !important;
+}
+
+.timepicker__customCSS {
+  .timepicker__header {
+    border-top-right-radius: 12px;
+    border-top-left-radius: 12px;
+    background-color: var(--background-color) !important;
+
+    display: grid;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .timepicker-dial__container {
+    display: block !important;
+    height: 60px;
+  }
+
+  .clock-face__clock-hand::before,
+  .clock-face__clock-hand::after,
+  .clock-face__clock-hand {
+    background-color: var(--background-color) !important;
+    border-color: var(--background-color) !important;
+  }
+
+  .clock-face__container {
+    .active {
+      background-color: var(--background-color) !important;
+    }
+  }
+
+  .timepicker-button {
+    color: var(--background-color) !important;
   }
 }

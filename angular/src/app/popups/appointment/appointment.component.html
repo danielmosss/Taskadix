@@ -1,0 +1,60 @@
+<div class="popup2">
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton" matTooltip="Sluiten"></i>
+
+  <div class="appointmentTime">
+    <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+    </div>
+    <div class="cardContent">
+      <div class="titlerow">
+        <h2 class="title">
+          {{ appointment.title }}
+        </h2>
+        <div class="category" [ngStyle]="{'color': appointment.category.color}">
+          {{ appointment.category.term }}
+        </div>
+      </div>
+
+
+      <div class="Item">
+        <i class="fa-solid fa-clock fa-23"></i>
+        <p class="text time">
+          {{getDateName(appointment.date)}} {{formatTime(appointment.starttime)}} - {{formatTime(appointment.endtime)}}
+        </p>
+      </div>
+
+      <div class="Item">
+        <i class="fa-solid fa-location-dot fa-23"></i>
+        <p class="text">
+          {{appointment.location == "" ? "Geen locatie" : appointment.location}}
+        </p>
+      </div>
+
+      <div class="Item NoAlignCenter">
+        <i class="fa-solid fa-clipboard fa-23"></i>
+        <p class="text description">
+          {{appointment.description == "" ? "Geen beschrijving" : appointment.description}}
+        </p>
+      </div>
+
+      <div class="Item">
+        <div class="actions">
+          <button mat-button class="mat-button lgray" matTooltip="Google maps">
+            <i class="fa-solid fa-map-location-dot fa-23"
+            (click)="navigate('https://www.google.com/maps/search/?api=1&query=' + appointment.location, true)"
+            target="_blank">
+          </i>
+          </button>
+          <button mat-button class="mat-button lgray" matTooltip="Bewerken">
+            <i class="fa-solid fa-pen-to-square fa-23" (click)="editAppointment(appointment)"></i>
+          </button>
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.iswebcall">
+            <i class="fa-regular fa-calendar-xmark fa-23" (click)="deleteAppointment(appointment)"></i>
+          </button>
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="!appointment.iswebcall">
+            <i class="fa-solid fa-trash-can fa-23" (click)="deleteAppointment(appointment)"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

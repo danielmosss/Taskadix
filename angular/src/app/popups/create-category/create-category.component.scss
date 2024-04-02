@@ -1,0 +1,15 @@
+.popup{
+  background: var(--gray-light);
+  border-radius: 15px;
+}
+
+.selector-wrapper{
+  display: flex;
+  align-items: center;
+  gap:10px;
+
+  h2{
+    margin: 0;
+    font-weight: 500;
+  }
+}

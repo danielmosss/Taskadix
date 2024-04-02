@@ -1,6 +1,7 @@
 package functions
 
 import (
+	"api/handlers"
 	"fmt"
 	ics "github.com/arran4/golang-ical"
 	"net/http"
@@ -8,12 +9,6 @@ import (
 	"time"
 	_ "time/tzdata"
 )
-
-type Task struct {
-	Title       string `json:"title"`
-	Description string `json:"description"`
-	Date        string `json:"date"`
-}
 
 func ProcessCalanderData(userid int) {
 	dbconnection, err := GetDatabaseConnection()
@@ -37,16 +32,16 @@ func ProcessCalanderData(userid int) {
 
 	defer result.Close()
 
-	tasks, err := fetchCalendarData(webcallurl)
+	appointments, err := fetchCalendarData(webcallurl)
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
 
-	for _, task := range tasks {
-		fmt.Println(task)
-		if !taskExistsInDB(task, userid) {
-			insertTaskIntoDB(task, userid)
+	for _, appointment := range appointments {
+		fmt.Println(appointment)
+		if !taskExistsInDB(appointment, userid) {
+			insertAppointmentIntoDB(appointment, userid)
 		}
 	}
 
@@ -59,7 +54,7 @@ func ProcessCalanderData(userid int) {
 	defer dbconnection.Close()
 }
 
-func fetchCalendarData(webcallurl string) ([]Task, error) {
+func fetchCalendarData(webcallurl string) ([]handlers.NewAppointment, error) {
 	url := strings.Replace(webcallurl, "webcal", "https", 1)
 
 	resp, err := http.Get(url)
@@ -74,7 +69,7 @@ func fetchCalendarData(webcallurl string) ([]Task, error) {
 		return nil, err
 	}
 
-	var tasks []Task
+	var appointments []handlers.NewAppointment
 	loc, error := time.LoadLocation("Europe/Amsterdam")
 	if error != nil {
 		return nil, error
@@ -87,31 +82,48 @@ func fetchCalendarData(webcallurl string) ([]Task, error) {
 		title = strings.Replace(title, "\\", "", -1)
 		title = strings.Split(title, ",")[0]
 
-		description := start.Format("15:04") + " - " + end.Format("15:04")
 		location := event.GetProperty(ics.ComponentPropertyLocation).Value
 		location = strings.Replace(location, "@", "", -1)
 		location = strings.Replace(location, "\\", "", -1)
-		description = description + "\n" + location
 
-		tasks = append(tasks, Task{
+		description := getICSproperty(event, ics.ComponentPropertyDescription)
+		description = strings.Replace(description, "\\", "", -1)
+
+		// check if endtime is before starttime
+		if end.Before(start) {
+			end = start.Add(1 * time.Hour)
+		}
+
+		appointments = append(appointments, handlers.NewAppointment{
 			Title:       title,
 			Description: description,
 			Date:        start.Format("2006-01-02"),
+			IsAllDay:    false,
+			StartTime:   start.Format("15:04"),
+			EndTime:     end.Format("15:04"),
+			Location:    location,
 		})
 	}
 
-	return tasks, nil
+	return appointments, nil
 }
 
-func taskExistsInDB(task Task, userId int) bool {
+func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 	defer dbConnection.Close()
 
-	query := "SELECT COUNT(*) FROM todos WHERE title = ? AND description = ? AND date = ? AND userId = ? AND isCHEagenda = true;"
-	result, err := dbConnection.Query(query, task.Title, task.Description, task.Date, userId)
+	query := `SELECT COUNT(*) FROM appointments WHERE title = ? 
+                                    AND description = ? 
+                                    AND date = ? 
+                                    AND starttime = ?
+                                    AND endtime = ?
+                                    AND userId = ? 
+                                    AND isWebCall = 1
+                                    AND categoryid = (select id from appointment_category where isdefault = 1 and term = 'School');`
+	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -128,16 +140,31 @@ func taskExistsInDB(task Task, userId int) bool {
 	return count > 0
 }
 
-func insertTaskIntoDB(task Task, userId int) {
+func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int) {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	queryInsert := "call insertAtodoTask(?, ?, ?, true, ?);"
-	_, err = dbConnection.Query(queryInsert, task.Title, task.Description, task.Date, userId)
+	query := `INSERT INTO appointments
+			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, isWebCall)
+			  VALUES
+			      (?,?,?,?,?,?,?,?,(select id from appointment_category where isdefault = 1 and term = 'School'), 1);`
+
+	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer dbConnection.Close()
+}
+
+func getICSproperty(event *ics.VEvent, property ics.ComponentProperty) string {
+	result := event.GetProperty(property)
+	if result == nil {
+		return ""
+	}
+	if result.Value != "" {
+		return result.Value
+	}
+	return ""
 }

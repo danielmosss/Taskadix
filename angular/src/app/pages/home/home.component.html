@@ -1,0 +1,79 @@
+<div class="homegrid">
+  <div class="dateAndWeek">
+    <h2 class="date withsubtitle">
+      {{ getDateName() }}
+    </h2>
+    <p class="weeknumber issubtitle">
+      Week {{ getWeekNumber() }}
+    </p>
+  </div>
+
+  <div class="overview">
+    <div class="card">
+      <div class="appointments">
+        <div class="appointment" *ngFor="let appointment of this.day.appointments">
+          <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
+          <div class="cardContent" (click)="openAppointmentDetails(appointment)">
+            <div class="appointHeader">
+              <h2 class="title">
+                {{ appointment.title }}
+              </h2>
+              <div class="category">
+                {{ appointment.category.term }}
+              </div>
+            </div>
+            <div class="time">
+              {{ formatTime(appointment.starttime) }} - {{ formatTime(appointment.endtime) }}
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="this.day.appointments.length === 0">
+          <div class="appointment">
+            <div class="categoryColor" [ngStyle]="{'background-color': '#96ED93'}"></div>
+            <div class="cardContent">
+              <div class="appointHeader">
+                <h2 class="title">
+                  Geen afspraken
+                </h2>
+                <div class="category"></div>
+              </div>
+              <div class="time">
+                Je hebt geen afspraken vandaag.
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="card todocard">
+      <div class="day" *ngFor="let day of upcomingSevenDaysTodos">
+        <div class="dayinfo">
+          <h2 class="date noMargin">
+            {{ getDateName(day.date) }}
+          </h2>
+          <div class="progress-loader">
+            <div class="progress" [ngStyle]="{'width': getPercentTaskedChecked(day.tasks) + '%'}"></div>
+          </div>
+        </div>
+        <div class="todos">
+          <div class="todo" *ngFor="let todo of day.tasks">
+            <div class="checked" [ngStyle]="{
+              'background-color': !todo.checked ? 'var(--gray-light)' : '#96ED93',
+              'border-right': !todo.checked ? '3px dotted var(--gray)' : 'none'
+              }" (click)="checkTodo(!todo.checked, todo)"></div>
+            <div class="cardContent">
+              <div class="title">
+                {{ todo.title }}
+              </div>
+              <p class="description noMargin">
+                {{ todo.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

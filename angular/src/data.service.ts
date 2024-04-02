@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { DayTodo, Todo, Weather, newTodoRequirements, userdata } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, Weather, appointmentCategory, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +21,7 @@ export class DataService {
     return window.innerWidth <= 1000;
   }
 
-  constructor(private http: HttpClient, private _snackbar: MatSnackBar) { }
+  constructor(private http: HttpClient, private _snackbar: MatSnackBar, private _router: Router) { }
 
   public getWeather() {
     return this.http.get<Weather>(this._SecureApi + "/GetWeather", { headers: this.getCustomHeaders() });
@@ -38,53 +39,49 @@ export class DataService {
     return this.http.put<Array<DayTodo>>(this._SecureApi + "/PutTodoTasks", todo, { headers: this.getCustomHeaders() });
   }
 
-  public putTodoInfo(todoCard: Todo){
+  public putTodoInfo(todoCard: Todo) {
     return this.http.put<Todo>(this._SecureApi + "/PutTodoTaskInfo", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public deleteTodoTask(todoCard: Todo){
-    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", {body: todoCard, headers: this.getCustomHeaders()});
+  public deleteTodoTask(todoCard: Todo) {
+    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
   }
 
-  public postTodoInfo(todoCard: newTodoRequirements){
+  public postTodoInfo(todoCard: newTodoRequirements) {
     return this.http.post<Todo>(this._SecureApi + "/PostTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public markAsIrrelevant(todoCard: Todo){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostMarkAsIrrelevant", todoCard, { headers: this.getCustomHeaders() });
+  public checkTodoTask(todoCard: Todo) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public checkTodoTask(todoCard: Todo){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
+  public saveWebcallUrl(url: string) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostWebcallUrl", { url: url }, { headers: this.getCustomHeaders() });
   }
 
-  public saveWebcallUrl(url: string){
-    return this.http.post<{status: string}>(this._SecureApi + "/PostWebcallUrl", {url: url}, { headers: this.getCustomHeaders() });
+  public syncWebcall() {
+    return this.http.get<{ status: string }>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
   }
 
-  public syncWebcall(){
-    return this.http.get<{status: string}>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
+  public putBackgroundcolor(color: string) {
+    return this.http.put<{ status: string }>(this._SecureApi + "/PutBGcolor", { backgroundColor: color }, { headers: this.getCustomHeaders() });
   }
 
-  public putBackgroundcolor(color: string){
-    return this.http.put<{status: string}>(this._SecureApi + "/PutBGcolor", {backgroundColor: color}, { headers: this.getCustomHeaders() });
-  }
-
-  public getUserDataOnLoad(){
+  public getUserDataOnLoad() {
     this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
       this.validJwtToken = true;
       this.userdata = data;
-      if(this.userdata?.backgroundcolor && this.userdata.backgroundcolor != ""){
+      if (this.userdata?.backgroundcolor && this.userdata.backgroundcolor != "") {
         this.updateBackgroundcolor(this.userdata.backgroundcolor);
       }
     })
   }
 
-  public getUserDataReturn(){
+  public getUserDataReturn() {
     return this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
-  public uploadBulkTodos(todoCards: newTodoRequirements[]){
+  public uploadBulkTodos(todoCards: newTodoRequirements[]) {
     return this.http.post<Todo[]>(this._SecureApi + "/UploadBulkTodo", todoCards, { headers: this.getCustomHeaders() });
   }
 
@@ -96,20 +93,28 @@ export class DataService {
     );
   }
 
-  public login(username: string, password: string) {
-    this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).pipe().subscribe(
-      (res) => {
-        this._jsonwebtoken = res.jsonwebtoken;
-        this.validJwtToken = true;
-        this.userLoggedIn = true;
-        this.getUserDataOnLoad();
-      }
-    );
+  public login(username: string, password: string): Promise<boolean> {
+    return new Promise<boolean>((resolve, reject) => {
+      this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).subscribe(
+        (res) => {
+          this._jsonwebtoken = res.jsonwebtoken;
+          this.validJwtToken = true;
+          this.userLoggedIn = true;
+          this.getUserDataOnLoad();
+          resolve(true);
+        },
+        (error) => {
+          console.error('Login error', error);
+          resolve(false);
+        }
+      );
+    });
   }
+
   public logout() {
     this.userdata = null;
     localStorage.removeItem('jsonwebtoken');
-    this._snackbar.open("Logged out", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
+    this._router.navigate(['/login']);
   }
 
   public isLoggedIn(): boolean {
@@ -141,5 +146,37 @@ export class DataService {
       headers = headers.set('Authorization', "Bearer " + this._jsonwebtoken);
     }
     return headers;
+  }
+
+  public getCategories() {
+    return this.http.get<appointmentCategory[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
+  }
+
+  public createCategory(categoryName: string, categoryColor: string){
+    return this.http.post<appointmentCategory>(this._SecureApi + "/v2/CreateCategory", {term: categoryName, color: categoryColor}, { headers: this.getCustomHeaders() });
+  }
+
+  public updateCategory(category: appointmentCategory){
+    return this.http.put<appointmentCategory>(this._SecureApi + "/v2/PutCategory", category, { headers: this.getCustomHeaders() });
+  }
+
+  public deleteCategory(category: appointmentCategory){
+    return this.http.delete(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
+  }
+
+  public createAppointment(appointment: NewAppointment) {
+    return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
+  }
+
+  public getAppointment(appointmentId: number){
+    return this.http.get<Appointment>(this._SecureApi + `/v2/GetAppointment?id=${appointmentId}`, { headers: this.getCustomHeaders() });
+  }
+
+  public getAppointments(beginDate: string, endDate: string) {
+    return this.http.get<{date: string, appointments: Appointment[]}[]>(this._SecureApi + `/v2/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
+  }
+
+  public deleteAppointment(appointment: Appointment) {
+    return this.http.delete<{status: string}>(this._SecureApi + `/v2/DeleteAppointment?id=${appointment.id}`, { headers: this.getCustomHeaders() });
   }
 }

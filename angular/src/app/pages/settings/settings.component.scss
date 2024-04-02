@@ -1,0 +1,84 @@
+.settings {
+  margin: 2rem 1rem;
+  border-radius: 20px;
+  background-color: var(--gray);
+  height: 93.5vh;
+
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+
+  .menu {
+    background-color: var(--gray-light);
+    border-radius: 20px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    .item {
+      padding: 10px;
+      border-radius: 15px;
+      height: 25px;
+      cursor: pointer;
+      background-color: var(--gray-medium);
+
+      &:hover:not(.active) {
+        background-color: var(--gray);
+      }
+
+      display: grid;
+      grid-template-columns: 1fr 9fr;
+      align-content: center;
+      align-items: center;
+      justify-items: start;
+      gap: 20px;
+
+      .icon {
+        width: 40px;
+        display: flex;
+        justify-content: center;
+      }
+    }
+
+    .active {
+      background-color: var(--aquablue);
+    }
+  }
+
+  .content {
+    margin: 20px;
+    padding: 0 15px;
+  }
+}
+
+.categories {
+  h2{
+    margin-bottom: 0;
+  }
+
+  .user-categories,
+  .default-categories {
+    display: grid;
+    gap: 10px;
+    overflow-y: scroll;
+    scrollbar-width: none;
+
+    width: fit-content;
+    min-width: 250px;
+
+    .category {
+      border-radius: 20px;
+      background-color: var(--gray-medium);
+      padding: 0 12px;
+
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      i {
+        cursor: pointer;
+      }
+    }
+  }
+}

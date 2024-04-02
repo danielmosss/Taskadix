@@ -15,18 +15,14 @@ export class AccountComponent implements OnInit {
   public setWebcallurl: string;
   public webcallurlSet: boolean = false;
 
-  public backgroundColor: string;
+  public oldPassword: string;
+  public newPassword: string;
+  public newRepeatPassword: string;
 
   constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.setUserData();
-    if (this.userdata?.backgroundcolor) {
-      this.backgroundColor = this.userdata.backgroundcolor;
-      this.updateBackgroundcolor();
-    } else {
-      this.backgroundColor = getComputedStyle(document.documentElement).getPropertyValue('--background-color');
-    }
   }
 
   logout() {
@@ -75,18 +71,7 @@ export class AccountComponent implements OnInit {
     })
   }
 
-  updateBackgroundcolor() {
-    document.documentElement.style.setProperty('--background-color', this.backgroundColor);
-  }
-
-  saveBackgroundcolor() {
-    this._dataservice.putBackgroundcolor(this.backgroundColor).subscribe((data: any) => {
-      if (data.status == 'success') {
-        this._snackbar.open('Background color has been saved.', '', { duration: 2000, horizontalPosition: 'left', verticalPosition: 'bottom', });
-        if (this.userdata) {
-          this.userdata.backgroundcolor = this.backgroundColor;
-        }
-      }
-    })
+  changePassword() {
+    console.log(this.oldPassword, this.newPassword, this.newRepeatPassword);
   }
 }

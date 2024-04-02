@@ -62,22 +62,6 @@ export class CardpopupComponent implements OnInit {
     }
   }
 
-  markAsIrrelevant(todoCard: Todo) {
-    this._dataService.markAsIrrelevant(todoCard).subscribe(data => {
-      if(data.status == "success"){
-        this.todoCard.deleted = true;
-        this.dialogRef.close(this.todoCard);
-        return;
-      }
-      this._snackBar.open("Could not mark as irrelevant", "Close", {
-        duration: 2000,
-        horizontalPosition: 'left',
-        verticalPosition: 'bottom',
-      })
-      this.dialogRef.close();
-    })
-  }
-
   checkTodo(todoCard: Todo){
     todoCard.checked = !todoCard.checked;
     this._dataService.checkTodoTask(todoCard).subscribe(data => {

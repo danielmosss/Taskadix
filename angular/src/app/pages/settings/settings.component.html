@@ -1,0 +1,125 @@
+<div class="settings">
+  <div class="menu">
+    <div class="item" (click)="changeTab(SettingsTabs.Account)" [ngClass]="{'active': isActive(SettingsTabs.Account)}">
+      <div class="icon">
+        <i class="fa-regular fa-2x fa-circle-user"></i>
+      </div>
+      <h2 class="text">
+        Account
+      </h2>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Categories)"
+      [ngClass]="{'active': isActive(SettingsTabs.Categories)}">
+      <div class="icon">
+        <i class="fa-solid fa-2x fa-layer-group"></i>
+      </div>
+      <h2 class="text">
+        Categories
+      </h2>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Family)" [ngClass]="{'active': isActive(SettingsTabs.Family)}">
+      <div class="icon">
+        <i class="fa-solid fa-2x fa-house-user"></i>
+      </div>
+      <h2 class="text">
+        Family
+      </h2>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Backup)" [ngClass]="{'active': isActive(SettingsTabs.Backup)}">
+      <div class="icon">
+        <i class="fa-solid fa-2x fa-cloud-arrow-down"></i>
+      </div>
+      <h2 class="text">
+        Backup
+      </h2>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Help)" [ngClass]="{'active': isActive(SettingsTabs.Help)}">
+      <div class="icon">
+        <i class="fa-solid fa-2x fa-circle-question"></i>
+      </div>
+      <h2 class="text">
+        Help
+      </h2>
+    </div>
+  </div>
+  <div class="content">
+    <ng-container *ngIf="activeTab == SettingsTabs.Account">
+      <app-account></app-account>
+    </ng-container>
+    <ng-container *ngIf="activeTab == SettingsTabs.Categories">
+
+      <div class="buttons">
+        <button mat-button class="mat-button pos" (click)="createCategory()">
+          <i class="fa-solid fa-plus"></i>
+          Add category
+        </button>
+      </div>
+
+      <div class="categories">
+        <div class="default-categories">
+          <h2>
+            Default categories
+          </h2>
+          <ng-container *ngFor="let category of categories">
+            <ng-container *ngIf="category.isdefault">
+              <div class="category">
+                <div class="selector-wrapper">
+                  <div class="colorInfo">
+                    <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+                      [disabled]="category.isdefault"
+                      [matTooltip]="category.isdefault ? 'This is a default category and cannot be changed' : ''">
+                    </ngx-colors>
+                  </div>
+                </div>
+
+                <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+
+        <div class="user-categories">
+          <h2>
+            User categories
+          </h2>
+          <ng-container *ngFor="let category of categories">
+            <ng-container *ngIf="!category.isdefault">
+              <div class="category">
+                <div class="selector-wrapper">
+                  <div class="colorInfo">
+                    <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+                      [disabled]="editCategory?.id !== category.id"
+                      [matTooltip]="editCategory?.id !== category.id ? 'Click the edit icon to change.' : ''">
+                    </ngx-colors>
+                  </div>
+                </div>
+
+                <p *ngIf="!editCategory || editCategory.id != category.id">{{category.term}}</p>
+                <mat-form-field *ngIf="editCategory && editCategory.id == category.id">
+                  <mat-label>Category name</mat-label>
+                  <input matInput [(ngModel)]="category.term">
+                </mat-form-field>
+
+                <ng-container *ngIf="!category.isdefault">
+                  <i class="fa-solid fa-pen" (click)="selectEditCategory(category)" *ngIf="!editCategory || editCategory.id != category.id"></i>
+                  <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)" *ngIf="editCategory && editCategory.id == category.id"></i>
+                  <i class="fa-solid fa-trash" (click)="deleteCategory(category)"></i>
+                </ng-container>
+              </div>
+            </ng-container>
+          </ng-container>
+        </div>
+      </div>
+
+    </ng-container>
+    <ng-container *ngIf="activeTab == SettingsTabs.Family">
+      <app-notfoundpage></app-notfoundpage>
+    </ng-container>
+    <ng-container *ngIf="activeTab == SettingsTabs.Backup">
+      <app-notfoundpage></app-notfoundpage>
+    </ng-container>
+    <ng-container *ngIf="activeTab == SettingsTabs.Help">
+      <app-notfoundpage></app-notfoundpage>
+    </ng-container>
+  </div>
+</div>
