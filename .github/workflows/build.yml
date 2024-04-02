@@ -60,6 +60,7 @@ jobs:
       run: |
         mkdir -p output/angularProd
         cp -r angular/dist/dashboard output/angularProd/
+        cp angular/.htaccess output/angularProd/dashboard/
 
     ## Build Go App
     - name: Set up Go

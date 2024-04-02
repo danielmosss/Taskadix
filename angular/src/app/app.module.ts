@@ -101,6 +101,10 @@ const routes: Routes = [
     component: DayOverviewComponent,
     canActivate: [AuthGuardService]
   },
+  {
+    path: '**',
+    redirectTo: ''
+  }
 ]
 
 @NgModule({
