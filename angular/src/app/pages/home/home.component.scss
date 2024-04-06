@@ -155,3 +155,20 @@
 .noMargin {
   margin: 0;
 }
+
+
+@media (max-width: 1000px) {
+  .homegrid {
+    margin: 0;
+  }
+
+  .overview {
+    grid-template-columns: 1fr !important;
+    row-gap: 20px;
+
+    .card{
+      height: unset !important;
+    }
+  }
+
+}
