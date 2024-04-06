@@ -1,0 +1,27 @@
+.dates{
+  display: flex;
+  overflow-x: scroll; // Enable horizontal scrolling
+  overflow-y: hidden; // Disable vertical scrolling
+  gap: 10px;
+  scrollbar-width: none;
+  .date{
+    background-color: var(--black);
+    color: white;
+    border-radius: 15px;
+
+
+    .day{
+      display: flex;
+
+
+      width: 60px; /* Fixed width for each date block */
+      //height: 60px; /* Fixed height for each date block */
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+  }
+}
+

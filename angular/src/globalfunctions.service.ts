@@ -23,6 +23,10 @@ export class GlobalfunctionsService {
     return dateName;
   }
 
+  getDateNumber(date: string): string {
+    return moment(date).format('DD');
+  }
+
   openAppointmentDetails(appointment: Appointment) {
     let dialog = this._dialog.open(AppointmentComponent, {
       data: appointment
@@ -39,5 +43,9 @@ export class GlobalfunctionsService {
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
     const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
     return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  }
+
+  isMobile(): boolean {
+    return window.innerWidth < 600;
   }
 }

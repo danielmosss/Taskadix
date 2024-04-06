@@ -3,7 +3,7 @@
   border-radius: 15px;
   height: 82vh;
   padding: 5px 20px;
-  overflow-y: auto;
+  overflow: auto;
   scrollbar-width: none;
 
   .week-grid-header {
@@ -38,7 +38,6 @@
 
   .week-grid {
     display: grid;
-    overflow-y: scroll;
     height: 75vh;
     scrollbar-width: none;
 

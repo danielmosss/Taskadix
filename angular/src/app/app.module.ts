@@ -60,6 +60,7 @@ import { FamilyComponent } from './pages/family/family.component';
 import { MonthselectorComponent } from './addons/monthselector/monthselector.component';
 import { CreateCategoryComponent } from './popups/create-category/create-category.component';
 import { NotfoundpageComponent } from './addons/notfoundpage/notfoundpage.component';
+import { WeekMobileViewComponent } from './pages/week-overview/week-mobile-view/week-mobile-view.component';
 
 const routes: Routes = [
   {
@@ -132,7 +133,8 @@ const routes: Routes = [
     FamilyComponent,
     MonthselectorComponent,
     CreateCategoryComponent,
-    NotfoundpageComponent
+    NotfoundpageComponent,
+    WeekMobileViewComponent
   ],
   imports: [
     BrowserModule,
