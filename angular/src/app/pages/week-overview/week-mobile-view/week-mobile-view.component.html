@@ -1,65 +1,73 @@
-<!-- day of today minus 14 days and plus 14 days. create little boxes with the date and underneath the dayname. aling them with display flex row and let them overflow-x left and right. auto scroll to today. -->
-<div class="dates" #dateScroll>
-  <div class="date" *ngFor="let day of days">
-    <div class="day" [ngClass]="{ 'today': day.date === today }" (click)="selectOtherDay(day.date)">
-      <h3 class="dateNumber withsubtitle">{{ getDateNumber(day.date) }}</h3>
-      <p class="issubtitle">{{ day.day }}</p>
-      <div class="underlineActive" [ngStyle]="{'background-color': this.day.date == activeDate ? '#00C9C8' : 'transparent'}">
+<div class="container">
+  <div class="wrapperDates">
+    <div class="dates" #dateScroll>
+      <div class="date" *ngFor="let day of days">
+        <div class="day" [ngClass]="{ 'today': day.date === today }" (click)="selectOtherDay(day.date)">
+          <h3 class="dateNumber withsubtitle">{{ getDateNumber(day.date) }}</h3>
+          <p class="issubtitle">{{ day.day }}</p>
+          <div class="underlineActive"
+            [ngStyle]="{'background-color': this.day.date == activeDate ? '#00C9C8' : 'transparent'}">
+          </div>
+        </div>
       </div>
     </div>
   </div>
-</div>
 
 
-<div #daygridScroll class="day-grid"
-[ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
+  <div class="wrapper">
+    <div #daygridScroll class="day-grid"
+      [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
 
-  <div class="timeColumn">
-    <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour}">
-      <div class="time"> {{ time }}</div>
-      <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
-      <div class="longDivider" [ngStyle]="{'height.px': dividerHeight}"></div>
-      <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
-    </div>
-  </div>
-  <div class="day-cell">
-    <div *ngFor="let time of times; let i = index; let isLast=last" class="daylines">
-      <div class="lines" [ngStyle]="{'top.px': (i) * heightPerHour, 'width.px': widthPerDay }">
+      <div class="timeColumn">
+        <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour}">
+          <div class="time"> {{ time }}</div>
+          <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
+          <div class="longDivider" [ngStyle]="{'height.px': dividerHeight}"></div>
+          <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
+        </div>
       </div>
-      <div class="active" [ngStyle]="{'top.px': getActivePosition(), 'width.px': widthPerDay}">
-      </div>
-    </div>
+      <div class="day-cell">
+        <div *ngFor="let time of times; let i = index; let isLast=last; let isFirst=first" class="daylines">
+          <div class="lines" [ngStyle]="{'top.px': (i) * heightPerHour, 'width.px': widthPerDay}">
+          </div>
+          <div class="active" [ngStyle]="{'top.px': getActivePosition(), 'width.px': widthPerDay}">
+          </div>
+        </div>
 
-    <div class="appointments">
-      <div *ngFor="let appointment of this.day?.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment">
-        <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
-          <div class="appointmentTime">
-            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
-            </div>
-            <div class="cardContent" (click)="openAppointmentDetails(appointment)">
-              <div class="category" [ngStyle]="{'color': appointment.category.color}" *ngIf="ShowCategory(appointment)">
-                {{ appointment.category.term }}
+        <div class="appointments">
+          <div *ngFor="let appointment of this.day?.appointments" [ngStyle]="getTaskStyle(appointment)"
+            class="appointment">
+            <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
+              <div class="appointmentTime">
+                <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                </div>
+                <div class="cardContent" (click)="openAppointmentDetails(appointment)">
+                  <div class="category" [ngStyle]="{'color': appointment.category.color}"
+                    *ngIf="ShowCategory(appointment)">
+                    {{ appointment.category.term }}
+                  </div>
+                  <div class="title">
+                    {{ appointment.title }}
+                  </div>
+                  <div class="time">
+                    {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
+                  </div>
+                </div>
               </div>
-              <div class="title">
-                {{ appointment.title }}
+            </ng-container>
+            <ng-container *ngIf="appointment.date === day.date && appointment.isAllDay">
+              <div class="appointmentWholeDay">
+                <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                </div>
+                <div class="cardContent" (click)="openAppointmentDetails(appointment)">
+                  <div class="title">
+                    {{ appointment.title }}
+                  </div>
+                </div>
               </div>
-              <div class="time">
-                {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
-              </div>
-            </div>
+            </ng-container>
           </div>
-        </ng-container>
-        <ng-container *ngIf="appointment.date === day.date && appointment.isAllDay">
-          <div class="appointmentWholeDay">
-            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
-            </div>
-            <div class="cardContent" (click)="openAppointmentDetails(appointment)">
-              <div class="title">
-                {{ appointment.title }}
-              </div>
-            </div>
-          </div>
-        </ng-container>
+        </div>
       </div>
     </div>
   </div>
