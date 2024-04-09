@@ -5,6 +5,9 @@ import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
+import { CreateTodoComponent } from 'src/app/popups/create-todo/create-todo.component';
+import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 
 @Component({
   selector: 'app-home',
@@ -17,6 +20,7 @@ export class HomeComponent implements OnInit {
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
   getWeekNumber = this.globalfunctions.getWeekNumber;
+  isMobile = this.globalfunctions.isMobile;
   // Global functions
 
 
@@ -67,4 +71,51 @@ export class HomeComponent implements OnInit {
       }
     })
   }
+
+  openTodoDetails(todo: Todo) {
+    var dialog = this._dialog.open(CardpopupComponent, {
+      data: todo
+    })
+    dialog.afterClosed().subscribe((data?: Todo) => {
+      if (!data) return;
+      if (data.deleted) {
+        this.upcomingSevenDaysTodos.forEach(day => {
+          day.tasks = day.tasks.filter(task => task.id !== data.id);
+        })
+      }
+      else if (!data.deleted) {
+        this.upcomingSevenDaysTodos.forEach(day => {
+          day.tasks.forEach(task => {
+            if (task.id === data.id) {
+              task = data;
+            }
+          })
+        })
+      }
+    })
+  }
+
+  openCreateAppointment() {
+    let dialog = this._dialog.open(CreateAppointmentComponent)
+    dialog.afterClosed().subscribe((result: {id: number}) => {
+      this._dataservice.getAppointment(result.id).subscribe(appointment => {
+        if (appointment.date !== this.day.date) return;
+        this.day.appointments.push(appointment);
+        this.day.appointments = this.day.appointments.sort((a, b) => a.starttime.localeCompare(b.starttime));
+      })
+    })
+  }
+
+  openCreateTodo() {
+    var dialog = this._dialog.open(CreateTodoComponent)
+    dialog.afterClosed().subscribe((data?: Todo) => {
+      if (!data) return;
+      this.upcomingSevenDaysTodos.forEach(day => {
+        if (day.date === data.date) {
+          day.tasks.push(data);
+        }
+      })
+    })
+  }
+
 }

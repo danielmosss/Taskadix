@@ -6,7 +6,30 @@
     <p class="weeknumber issubtitle">
       Week {{ getWeekNumber() }}
     </p>
+
+    <div class="buttons" *ngIf="isMobile()">
+      <div class="createAppointment" (click)="openCreateTodo()">
+        <div class="icontainer">
+          <div class="icon">
+            <i class="fa-regular fa-circle fa-2x"></i>
+            <i class="fa-solid fa-plus plus"></i>
+          </div>
+        </div>
+        <div class="text"> TODO </div>
+      </div>
+      <div class="createAppointment" (click)="openCreateAppointment()">
+        <div class="icontainer">
+          <div class="icon">
+            <i class="fa-regular fa-circle fa-2x"></i>
+            <i class="fa-solid fa-plus plus"></i>
+          </div>
+        </div>
+        <div class="text"> APPOINTMENT </div>
+      </div>
+    </div>
   </div>
+
+
 
   <div class="overview">
     <div class="card">
@@ -63,7 +86,7 @@
               'background-color': !todo.checked ? 'var(--gray-light)' : '#96ED93',
               'border-right': !todo.checked ? '3px dotted var(--gray)' : 'none'
               }" (click)="checkTodo(!todo.checked, todo)"></div>
-            <div class="cardContent">
+            <div class="cardContent" (click)="openTodoDetails(todo)">
               <div class="title">
                 {{ todo.title }}
               </div>

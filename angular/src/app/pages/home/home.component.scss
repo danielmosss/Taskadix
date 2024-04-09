@@ -14,6 +14,42 @@
       font-size: xx-large;
       font-weight: bold;
     }
+
+    .buttons{
+      margin-top: 10px;
+      .createAppointment {
+        background-color: var(--gray);
+        height: 49px;
+        border-radius: 10px;
+        cursor: pointer;
+
+        column-gap: 15px;
+        padding: 0 15px;
+
+        display: flex;
+        align-items: center;
+
+        .icon {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          i {
+            color: var(--aquablue);
+          }
+
+          .plus {
+            font-size: 20px;
+            position: absolute;
+          }
+        }
+
+        .text {
+          font-weight: 500;
+          color: white;
+        }
+      }
+    }
   }
 
   .overview {
@@ -133,6 +169,7 @@
 
             .cardContent {
               padding: 10px;
+              cursor: pointer;
 
               .title {
                 color: black;

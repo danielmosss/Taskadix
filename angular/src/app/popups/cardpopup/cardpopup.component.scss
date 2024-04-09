@@ -14,3 +14,68 @@
   display: grid;
   grid-template-columns: 1fr 1fr;
 }
+
+
+.cardContent {
+  .titlerow {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 10px;
+
+    .category {
+      font-size: 17px;
+      font-weight: 400;
+      line-height: 16px;
+    }
+
+    .title {
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-size: 20px;
+      font-weight: 500;
+      line-height: 16px;
+    }
+  }
+
+  .Item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    column-gap: 10px;
+    margin-bottom: 12px;
+
+    .icon{
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 23px;
+    }
+
+  }
+
+  .actions{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+
+    i{
+      cursor: pointer;
+    }
+  }
+
+  .description{
+    white-space: pre-line;
+  }
+
+  .text{
+    margin: 0;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 16px;
+  }
+}
+
+.fa-23 {
+  font-size: 23px;
+}
