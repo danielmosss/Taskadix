@@ -1,5 +1,5 @@
 <div class="settings">
-  <div class="menu">
+  <div class="menu" *ngIf="!isMobile()">
     <div class="item" (click)="changeTab(SettingsTabs.Account)" [ngClass]="{'active': isActive(SettingsTabs.Account)}">
       <div class="icon">
         <i class="fa-regular fa-2x fa-circle-user"></i>
@@ -40,6 +40,23 @@
       <h2 class="text">
         Help
       </h2>
+    </div>
+  </div>
+  <div class="mobilemenu" *ngIf="isMobile()">
+    <div class="item first" (click)="changeTab(SettingsTabs.Account)" [ngClass]="{'active': isActive(SettingsTabs.Account)}">
+      <i class="fa-regular fa-2x fa-circle-user"></i>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Categories)" [ngClass]="{'active': isActive(SettingsTabs.Categories)}">
+      <i class="fa-solid fa-2x fa-layer-group"></i>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Family)" [ngClass]="{'active': isActive(SettingsTabs.Family)}">
+      <i class="fa-solid fa-2x fa-house-user"></i>
+    </div>
+    <div class="item" (click)="changeTab(SettingsTabs.Backup)" [ngClass]="{'active': isActive(SettingsTabs.Backup)}">
+      <i class="fa-solid fa-2x fa-cloud-arrow-down"></i>
+    </div>
+    <div class="item last" (click)="changeTab(SettingsTabs.Help)" [ngClass]="{'active': isActive(SettingsTabs.Help)}">
+      <i class="fa-solid fa-2x fa-circle-question"></i>
     </div>
   </div>
   <div class="content">
@@ -101,8 +118,10 @@
                 </mat-form-field>
 
                 <ng-container *ngIf="!category.isdefault">
-                  <i class="fa-solid fa-pen" (click)="selectEditCategory(category)" *ngIf="!editCategory || editCategory.id != category.id"></i>
-                  <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)" *ngIf="editCategory && editCategory.id == category.id"></i>
+                  <i class="fa-solid fa-pen" (click)="selectEditCategory(category)"
+                    *ngIf="!editCategory || editCategory.id != category.id"></i>
+                  <i class="fa-solid fa-floppy-disk" (click)="saveCategory(category)"
+                    *ngIf="editCategory && editCategory.id == category.id"></i>
                   <i class="fa-solid fa-trash" (click)="deleteCategory(category)"></i>
                 </ng-container>
               </div>
