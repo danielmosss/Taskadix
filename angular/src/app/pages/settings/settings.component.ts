@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { appointmentCategory } from 'src/app/interfaces';
 import { CreateCategoryComponent } from 'src/app/popups/create-category/create-category.component';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 enum SettingsTabs {
   Account,
@@ -24,7 +25,11 @@ export class SettingsComponent implements OnInit {
   public categories: appointmentCategory[] = [];
   public editCategory: appointmentCategory | null = null;
 
-  constructor(private _dataservice: DataService, private _dialog: MatDialog) { }
+  constructor(private _dataservice: DataService, private _dialog: MatDialog, private globalfunctions: GlobalfunctionsService) { }
+
+  isMobile(){
+    return this.globalfunctions.isMobile();
+  }
 
   ngOnInit() {
   }
