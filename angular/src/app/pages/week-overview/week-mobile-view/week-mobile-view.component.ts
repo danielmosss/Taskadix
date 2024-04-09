@@ -39,6 +39,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
 
   public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
   public today: string = moment().format('YYYY-MM-DD');
+  public activeDate: string = moment().format('YYYY-MM-DD');
   public days: day[] = [];
   public times: string[] = [];
 
@@ -109,4 +110,11 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
       });
     });
   }
+
+  selectOtherDay(date: string) {
+    this.day = { date: date, datename: this.getDateName(date), day: moment(date).format('dddd'), appointments: [] };
+    this.getAppointments(date, date);
+    this.activeDate = moment(date).format('YYYY-MM-DD');
+  }
+
 }

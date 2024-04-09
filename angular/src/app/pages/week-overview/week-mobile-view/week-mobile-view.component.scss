@@ -20,13 +20,23 @@
 
     .day {
       width: 57px;
+      height: 76.5px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
       align-items: center;
       text-align: center;
 
       cursor: pointer;
+
+      p{
+        margin: 0;
+      }
+
+      .underlineActive {
+        margin-top: 2px;
+        height: 3px;
+        width: 50%;
+      }
     }
   }
 }

@@ -1,9 +1,11 @@
 <!-- day of today minus 14 days and plus 14 days. create little boxes with the date and underneath the dayname. aling them with display flex row and let them overflow-x left and right. auto scroll to today. -->
 <div class="dates" #dateScroll>
   <div class="date" *ngFor="let day of days">
-    <div class="day" [ngClass]="{ 'today': day.date === today }">
+    <div class="day" [ngClass]="{ 'today': day.date === today }" (click)="selectOtherDay(day.date)">
       <h3 class="dateNumber withsubtitle">{{ getDateNumber(day.date) }}</h3>
-      <p class="day issubtitle">{{ day.day }}</p>
+      <p class="issubtitle">{{ day.day }}</p>
+      <div class="underlineActive" [ngStyle]="{'background-color': this.day.date == activeDate ? '#00C9C8' : 'transparent'}">
+      </div>
     </div>
   </div>
 </div>
