@@ -1,5 +1,6 @@
 .container {
   --heightHeaderDates: 100px;
+  --heightPerHour: 60px;
 
   .wrapperDates {
     height: var(--heightHeaderDates);
@@ -57,7 +58,7 @@
     .day-grid {
       display: grid;
       overflow-y: scroll;
-      height: calc(100vh - var(--heightHeaderDates) - 15px);
+      height: calc(100vh - var(--heightHeaderDates) - 15px - var(--heightPerHour));
       scrollbar-width: none;
 
       .timeColumn {
