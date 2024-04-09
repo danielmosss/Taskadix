@@ -16,7 +16,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: vm20-56
+    runs-on: wsdmm
 
     steps:
     - name: Checkout Repository
