@@ -16,7 +16,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   @ViewChild('dateScroll') dateScroll: ElementRef;
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
 
-  public heightPerHour: number = 60;
+  public heightPerHour: number = 60; // also in week-mobile-view.component.scss (line 3 set variable --heightPerHour: 60px;)
   public widthPerDay: number = 280;
   public widthTimeColumn: number = 50;
   public dividerHeight: number = 3;
