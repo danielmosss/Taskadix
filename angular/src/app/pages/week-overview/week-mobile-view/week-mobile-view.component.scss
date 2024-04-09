@@ -1,27 +1,152 @@
-.dates{
+.dates {
+  margin-top: 1rem;
+
   display: flex;
   overflow-x: scroll; // Enable horizontal scrolling
   overflow-y: hidden; // Disable vertical scrolling
   gap: 10px;
   scrollbar-width: none;
-  .date{
+
+  .date {
     background-color: var(--black);
     color: white;
     border-radius: 15px;
 
+    .today {
+      background-color: var(--blue);
+      border-radius: 15px;
+    }
 
-    .day{
-      display: flex;
 
-
-      width: 60px; /* Fixed width for each date block */
-      //height: 60px; /* Fixed height for each date block */
+    .day {
+      width: 57px;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
       text-align: center;
+
+      cursor: pointer;
     }
   }
 }
 
+.day-grid {
+  margin-top: 1rem;
+  display: grid;
+  overflow-y: scroll;
+  scrollbar-width: none;
+  height: 87vh;
+
+  .timeColumn {
+    grid-column: 1;
+
+    .time-cell {
+      display: grid;
+      grid-template-rows: 1fr 1fr 1fr 1fr;
+      justify-content: center;
+
+      .divider {
+        width: 50%;
+        background-color: var(--aquablue);
+        border-radius: 20px;
+      }
+
+      .longDivider {
+        width: 100%;
+        background-color: var(--aquablue);
+        border-radius: 20px;
+      }
+    }
+  }
+
+  .day-cell {
+    .daylines {
+      position: relative;
+
+      .lines {
+        background-color: var(--background-color);
+        position: absolute;
+        height: 3px;
+      }
+
+      .active {
+        background-color: var(--aquablue);
+        position: absolute;
+        height: 2px;
+        z-index: 1;
+      }
+    }
+
+    .appointments {
+      position: relative;
+
+      .appointment {
+        position: absolute;
+        box-sizing: border-box;
+        padding: 0px 2px;
+        z-index: 2;
+
+        .appointmentTime {
+          color: black;
+          background-color: #d6d6d6;
+          border-top-right-radius: 10px;
+          border-bottom-right-radius: 10px;
+          border-top-left-radius: 6px;
+          border-bottom-left-radius: 6px;
+          height: 100%;
+          display: grid;
+          grid-template-columns: minmax(5px, 10px) 1fr;
+          overflow: scroll;
+          scrollbar-width: none;
+
+          .cardContent {
+            padding: 5px;
+            cursor: pointer;
+
+            .category {
+              font-size: 17px;
+              font-weight: 400;
+              line-height: 16px;
+            }
+
+            .title {
+              font-size: 20px;
+              font-weight: 500;
+              line-height: 16px;
+            }
+
+            .time {
+              font-size: 17px;
+              font-weight: 400;
+              line-height: 16px;
+            }
+
+          }
+        }
+
+        .appointmentWholeDay {
+          color: black;
+          background-color: #d6d6d6;
+          border-top-right-radius: 5px;
+          border-bottom-right-radius: 10px;
+          border-top-left-radius: 5px;
+          border-bottom-left-radius: 10px;
+          display: grid;
+          grid-template-rows: 1fr 4fr;
+
+          .cardContent {
+            padding: 5px;
+            cursor: pointer;
+
+            .title {
+              font-size: 15px;
+              font-weight: 500;
+              line-height: 16px;
+            }
+          }
+        }
+      }
+    }
+  }
+}

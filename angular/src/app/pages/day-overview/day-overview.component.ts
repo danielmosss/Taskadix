@@ -12,10 +12,6 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
   styleUrls: ['./day-overview.component.scss']
 })
 export class DayOverviewComponent implements OnInit, AfterViewInit {
-
-  // Global functions
-  // Global functions
-
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
 
   public heightPerHour: number = 60;
@@ -29,8 +25,18 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService, private _dialog: MatDialog) { }
 
+    // Global functions
+    getCurrentTime = this.globalfunctions.getCurrentTime;
+    getActivePosition(){
+      return this.globalfunctions.getActivePosition(this.heightPerHour);
+    }
+    calculateOverlaps(appointments: Appointment[]){
+      return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
+    }
+    // Global functions
+
   ngOnInit(): void {
-    this.times = this.generateTimes();
+    this.times = this.globalfunctions.generateTimes();
     this.getAppointments(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
   }
 
@@ -53,71 +59,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   }
 
   getTaskStyle(appointment: Appointment): any {
-    if (appointment.isAllDay) {
-      let top = 30;
-      const wholeDayAppointments = this.day.appointments.filter(appointment => appointment.isAllDay);
-      if (wholeDayAppointments) {
-        top = (wholeDayAppointments.indexOf(appointment) * (top + 10));
-      }
-      return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
-    }
-
-    const startHour = parseInt(appointment.starttime.split(':')[0], 10);
-    const startMinute = parseInt(appointment.starttime.split(':')[1], 10);
-    const endHour = parseInt(appointment.endtime.split(':')[0], 10);
-    const endMinute = parseInt(appointment.endtime.split(':')[1], 10);
-
-    const startPosition = (startHour + startMinute / 60) * this.heightPerHour; // Bijvoorbeeld, 9.30 wordt 570 (9*60 + 30)
-    const endPosition = (endHour + endMinute / 60) * this.heightPerHour;
-
-    const height = endPosition - startPosition;
-
-    return {
-      top: `${startPosition}px`,
-      height: `${height}px`,
-      width: `${appointment.width}px`,
-      left: `${appointment.left}px`
-    };
-  }
-
-  calculateOverlaps(tasks: Appointment[]): Appointment[] {
-    // Sort tasks by start time
-    const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
-    const result = [];
-
-    let i = 0;
-    while (i < sortedTasks.length) {
-      const currentTask = sortedTasks[i];
-      let overlaps = [currentTask];
-
-      // Find all tasks that overlap with the current or any overlapping task
-      let maxEndTime = currentTask.endtime;
-      for (let j = i + 1; j < sortedTasks.length; j++) {
-        const nextTask = sortedTasks[j];
-        if (nextTask.starttime < maxEndTime) {
-          overlaps.push(nextTask);
-          if (nextTask.endtime > maxEndTime) {
-            maxEndTime = nextTask.endtime;
-          }
-        } else {
-          break;
-        }
-      }
-
-      // Calculate width and left for overlapping tasks
-      const width = this.widthPerDay / overlaps.length;
-      overlaps.forEach((task, index) => {
-        task.width = width;
-        task.left = index * width
-      });
-
-      // Add processed tasks to the result array
-      result.push(...overlaps);
-
-      // Skip over the processed tasks
-      i += overlaps.length;
-    }
-    return result;
+    this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
   }
 
   getAppointments(beginDate: string, endDate: string) {
@@ -149,25 +91,6 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   getFormattedTime(time: string): string {
     return moment(time, 'HH:mm').format('HH:mm');
-  }
-
-  generateTimes(): string[] {
-    const times = [];
-    for (let hour = 0; hour < 24; hour++) {
-      times.push(`${hour.toString().padStart(2, '0')}:00`);
-    }
-    return times;
-  }
-
-  getCurrentTime(): { hour: string, minute: string } {
-    const currentTime = moment().format('HH:mm');
-    return { hour: currentTime.split(':')[0], minute: currentTime.split(':')[1] };
-  }
-
-  getActivePosition(): string {
-    const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
-    const position = (parseInt(currentHour, 10) + parseInt(currentMinute, 10) / 60) * this.heightPerHour;
-    return position.toString()
   }
 
   dayDateSelected(date: string) {
