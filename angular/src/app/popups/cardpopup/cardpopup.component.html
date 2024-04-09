@@ -1,4 +1,5 @@
 <div class="popup" *ngIf="editMode">
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton" matTooltip="Sluiten"></i>
   <div class="content">
     <div class="header">
       <mat-form-field class="full-width">
@@ -9,7 +10,8 @@
     <div class="body">
       <mat-form-field class="full-width">
         <mat-label>Description</mat-label>
-        <textarea matInput [value]="todoCard.description" (change)="changedProperty(todoCardProperty.description, $event)">
+        <textarea matInput [value]="todoCard.description"
+          (change)="changedProperty(todoCardProperty.description, $event)">
         </textarea>
       </mat-form-field>
 
@@ -31,25 +33,45 @@
   </div>
 </div>
 
-<div class="popup" *ngIf="!editMode">
-  <div class="content">
-    <div class="header">
-      <h1>{{todoCard.title}}</h1>
+<div class="popupTodoDetails" *ngIf="!editMode">
+  <i mat-dialog-close class="fas fa-2x fa-times closedialogbutton" matTooltip="Sluiten"></i>
+  <div class="cardContent">
+    <div class="titlerow">
+      <h2 class="title">
+        {{ todoCard.title }}
+      </h2>
     </div>
-    <div class="body">
-      <p>{{todoCard.description}}</p>
+
+    <div class="Item">
+      <div class="icon">
+        <i class="fa-solid fa-clock fa-23"></i>
+      </div>
+      <p class="text time">
+        {{getDateName(todoCard.date)}}
+      </p>
     </div>
-    <div class="footer buttons right">
-        <button mat-button class="mat-button pos" (click)="checkTodo(todoCard)">
+
+    <div class="Item">
+      <div class="icon">
+        <i class="fa-solid fa-clipboard fa-23"></i>
+      </div>
+      <p class="text description">
+        {{todoCard.description == "" ? "Geen beschrijving" : todoCard.description}}
+      </p>
+    </div>
+
+    <div class="Item">
+      <div class="actions">
+        <button mat-button class="mat-button lgray" matTooltip="Check" (click)="checkTodo(todoCard)">
           <i class="fa-solid fa-check fa-lg"></i>
         </button>
-        <button mat-button class="mat-button pos" (click)="editCard()">
-          <i class="fa-solid fa-pencil fa-lg"></i>
+        <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editCard()">
+          <i class="fa-solid fa-pen-to-square fa-23"></i>
         </button>
-        <button mat-button class="mat-button pos" (click)="deleteCard(todoCard)">
-          <i class="fa-solid fa-trash-can fa-lg"></i>
+        <button mat-button class="mat-button lgray" matTooltip="Verwijderen" (click)="deleteCard(todoCard)">
+          <i class="fa-solid fa-trash-can fa-23"></i>
         </button>
+      </div>
     </div>
   </div>
 </div>
-

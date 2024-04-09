@@ -5,6 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import * as moment from 'moment';
 import { Todo } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 enum todoCardProperty {
   title = "title",
@@ -23,7 +24,10 @@ export class CardpopupComponent implements OnInit {
   todoCardProperty = todoCardProperty;
   public formattedDate?: string = undefined;
 
-  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: Todo, private _dataService: DataService, private _snackBar: MatSnackBar) { }
+  constructor(private dialogRef: MatDialogRef<CardpopupComponent>, @Inject(MAT_DIALOG_DATA) public data: Todo, private _dataService: DataService, private _snackBar: MatSnackBar, private globalfunctions: GlobalfunctionsService) { }
+
+  getDateName = this.globalfunctions.getDateName;
+
   ngOnInit(): void {
 
   }
