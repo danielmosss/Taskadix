@@ -64,7 +64,7 @@
             .title {
               font-size: x-large;
               font-weight: 500;
-              line-height: 16px;
+              line-height: 22px;
               margin-top: 5px;
               margin-bottom: 5px;
             }
@@ -157,18 +157,29 @@
 }
 
 
-@media (max-width: 1000px) {
+@media (max-width: 600px) {
   .homegrid {
     margin: 0;
   }
 
-  .overview {
-    grid-template-columns: 1fr !important;
-    row-gap: 20px;
-
-    .card{
-      height: unset !important;
+  .dateAndWeek{
+    margin-left: 5px !important;
+    p{
+      margin-bottom: 0 !important;
     }
   }
 
+  .overview {
+    grid-template-columns: 1fr !important;
+    row-gap: 10px;
+
+    .card{
+      height: unset !important;
+      border: solid 10px var(--gray) !important;
+
+      .cardContent{
+        padding: 10px 10px 10px 6px !important;
+      }
+    }
+  }
 }
