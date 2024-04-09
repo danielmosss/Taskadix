@@ -3,7 +3,7 @@
   border-radius: 15px;
   height: 82vh;
   padding: 5px 20px;
-  overflow-y: auto;
+  overflow: auto;
   scrollbar-width: none;
 
   .week-grid-header {
@@ -38,7 +38,6 @@
 
   .week-grid {
     display: grid;
-    overflow-y: scroll;
     height: 75vh;
     scrollbar-width: none;
 
@@ -100,7 +99,7 @@
             border-bottom-left-radius: 5px;
             height: 100%;
             display: grid;
-            grid-template-columns: minmax(5px, 1fr) 17fr;
+            grid-template-columns: 8px 17fr;
             overflow: scroll;
             scrollbar-width: none;
 

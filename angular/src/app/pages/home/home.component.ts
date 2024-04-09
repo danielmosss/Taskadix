@@ -54,6 +54,7 @@ export class HomeComponent implements OnInit {
 
   checkTodo(isChecked: boolean, todo: Todo) {
     todo.checked = isChecked;
+    this._dataservice.checkTodoTask(todo).subscribe();
   }
 
   openAppointmentDetails(appointment: Appointment) {

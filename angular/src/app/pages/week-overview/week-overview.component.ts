@@ -7,7 +7,7 @@ import { DataService } from 'src/data.service';
 import { GlobalfunctionsService } from 'src/globalfunctions.service';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 
-interface day {
+export interface day {
   date: string,
   day: string,
   istoday: boolean,
@@ -22,6 +22,7 @@ interface day {
 export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   // Global functions
+  getDateNumber = this.globalfunctions.getDateNumber;
   // Global functions
 
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
@@ -224,10 +225,6 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return { hour: currentTime.split(':')[0], minute: currentTime.split(':')[1] };
   }
 
-  getDateNumber(date: string): string {
-    return moment(date).format('DD');
-  }
-
   GetActivePosition(): string {
     const { hour: currentHour, minute: currentMinute } = this.getCurrentTime();
     const position = (parseInt(currentHour, 10) + parseInt(currentMinute, 10) / 60) * this.heightPerHour;
@@ -247,5 +244,9 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         })
       }
     })
+  }
+
+  isMobile(): boolean {
+    return this.globalfunctions.isMobile();
   }
 }

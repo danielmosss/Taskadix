@@ -147,14 +147,3 @@
     }
   }
 }
-
-@media (max-width: 1000px) {
-  .todoRow {
-    flex-direction: column;
-    gap: 1rem;
-
-    .card {
-      max-width: none !important;
-    }
-  }
-}

@@ -1,6 +1,7 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
 :root {
+  --black: #17171a;
   --background-color: #2b2d31;
   --gray: #252525;
   --gray-dark: #303030;
@@ -69,6 +70,7 @@ mat-dialog-container {
   max-height: 90vh;
   overflow-y: auto;
   padding: 15px;
+  border-radius: 15px;
 
   .closedialogbutton {
     cursor: pointer;
@@ -95,6 +97,17 @@ mat-dialog-container {
     right: -30px;
     -webkit-text-stroke: 1px #f3f3f3;
   }
+}
+
+@media screen and (max-width: 600px) {
+  .popup2, .popup {
+    min-width: unset !important;
+  }
+}
+
+// rmeove .mat-mdc-dialog-container .mdc-dialog__surface background
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  background: none !important;
 }
 
 .buttons {
