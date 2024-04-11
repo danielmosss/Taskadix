@@ -4,6 +4,13 @@ import { Appointment } from './app/interfaces';
 import { AppointmentComponent } from './app/popups/appointment/appointment.component';
 import { MatDialog } from '@angular/material/dialog';
 
+export enum updateType {
+  ADD = 'add',
+  UPDATE = 'update',
+  DELETE = 'delete',
+  NONE = 'none'
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -27,15 +34,16 @@ export class GlobalfunctionsService {
     return moment(date).format('DD');
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
+  async openAppointmentDetails(appointment: Appointment): Promise<{ updateType: updateType, appointmentid: number }> {
+    const dialog = this._dialog.open(AppointmentComponent, {
       data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
+    });
 
-      }
-    })
+    const result = await dialog.afterClosed().toPromise();
+    if (result) {
+      return result;
+    }
+    return { updateType: updateType.NONE, appointmentid: 0 };
   }
 
   getWeekNumber(date?: Date): number {

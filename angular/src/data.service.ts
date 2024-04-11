@@ -165,7 +165,11 @@ export class DataService {
   }
 
   public createAppointment(appointment: NewAppointment) {
-    return this.http.post(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
+    return this.http.post<{id: string}>(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
+  }
+
+  public updateAppointment(appointment: Appointment) {
+    return this.http.put<{id: string}>(this._SecureApi + "/v2/PutAppointment", appointment, { headers: this.getCustomHeaders() });
   }
 
   public getAppointment(appointmentId: number){

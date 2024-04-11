@@ -4,7 +4,7 @@ import { Appointment } from 'src/app/interfaces';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 import * as moment from 'moment';
 import { DataService } from 'src/data.service';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 
 export interface day {
@@ -23,6 +23,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   // Global functions
   getDateNumber = this.globalfunctions.getDateNumber;
+  updateType = updateType;
   // Global functions
 
   @ViewChild('weekgridScroll') weekgridScroll: ElementRef;
@@ -231,19 +232,19 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     return position.toString()
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
-      data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.days.forEach(day => {
-          if (day.appointments) {
-            day.appointments = day.appointments.filter(appointment => appointment.id !== result);
-          }
-        })
-      }
-    })
+  async openDetails(appointment: Appointment) {
+    let result = await this.globalfunctions.openAppointmentDetails(appointment);
+    if (result.updateType === updateType.DELETE) {
+      this.days.forEach(day => {
+        if (day.appointments) {
+          day.appointments = day.appointments.filter(appointment => appointment.id !== result.appointmentid);
+          day.appointments = this.calculateOverlaps(day.appointments);
+        }
+      })
+    }
+    if (result.updateType === updateType.UPDATE) {
+      this.getAppointments(this.days[0].date, this.days[6].date);
+    }
   }
 
   isMobile(): boolean {

@@ -36,7 +36,7 @@
       <div class="appointments">
         <div class="appointment" *ngFor="let appointment of this.day.appointments">
           <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
-          <div class="cardContent" (click)="openAppointmentDetails(appointment)">
+          <div class="cardContent" (click)="openDetails(appointment)">
             <div class="appointHeader">
               <h2 class="title">
                 {{ appointment.title }}
@@ -45,8 +45,11 @@
                 {{ appointment.category.term }}
               </div>
             </div>
-            <div class="time">
+            <div class="time" *ngIf="!appointment.isAllDay">
               {{ formatTime(appointment.starttime) }} - {{ formatTime(appointment.endtime) }}
+            </div>
+            <div class="time" *ngIf="appointment.isAllDay">
+              Hele dag
             </div>
           </div>
         </div>

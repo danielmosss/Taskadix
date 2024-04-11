@@ -44,7 +44,7 @@
             target="_blank">
           </i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editAppointment(appointment)">
+          <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editAppointment(appointment)" *ngIf="!appointment.iswebcall">
             <i class="fa-solid fa-pen-to-square fa-23"></i>
           </button>
           <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.iswebcall" (click)="deleteAppointment(appointment)">

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 import { day } from '../week-overview.component';
 import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
@@ -35,6 +35,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   calculateOverlaps(appointments: Appointment[]){
     return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
   }
+  updateType = updateType;
   //GLOBAL FUNCTIONS
 
   public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
@@ -81,15 +82,14 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     return days;
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
-      data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result);
-      }
-    })
+  async openDetails(appointment: Appointment) {
+    let result = await this.globalfunctions.openAppointmentDetails(appointment);
+    if (result.updateType === updateType.DELETE) {
+      this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result.appointmentid);
+    }
+    if (result.updateType === updateType.UPDATE) {
+      this.getAppointments(this.day.date, this.day.date);
+    }
   }
 
   ShowCategory(appointment: Appointment): boolean {

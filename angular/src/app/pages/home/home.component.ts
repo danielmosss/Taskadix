@@ -4,7 +4,7 @@ import { DataService } from 'src/data.service';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 import { CreateTodoComponent } from 'src/app/popups/create-todo/create-todo.component';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   getDateName = this.globalfunctions.getDateName;
   getWeekNumber = this.globalfunctions.getWeekNumber;
   isMobile = this.globalfunctions.isMobile;
+  updateType = updateType;
   // Global functions
 
 
@@ -61,15 +62,15 @@ export class HomeComponent implements OnInit {
     this._dataservice.checkTodoTask(todo).subscribe();
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
-      data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result);
-      }
-    })
+  async openDetails(appointment: Appointment) {
+    let result = await this.globalfunctions.openAppointmentDetails(appointment);
+    if (result.updateType === updateType.DELETE) {
+      this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result.appointmentid);
+    }
+    if (result.updateType === updateType.UPDATE) {
+      // TODO: update only the appointment that was updated, not all appointments
+      this.getAppointments(this.day.date, this.day.date);
+    }
   }
 
   openTodoDetails(todo: Todo) {
@@ -97,8 +98,8 @@ export class HomeComponent implements OnInit {
 
   openCreateAppointment() {
     let dialog = this._dialog.open(CreateAppointmentComponent)
-    dialog.afterClosed().subscribe((result: {id: number}) => {
-      this._dataservice.getAppointment(result.id).subscribe(appointment => {
+    dialog.afterClosed().subscribe((newAppointmentId: number) => {
+      this._dataservice.getAppointment(newAppointmentId).subscribe(appointment => {
         if (appointment.date !== this.day.date) return;
         this.day.appointments.push(appointment);
         this.day.appointments = this.day.appointments.sort((a, b) => a.starttime.localeCompare(b.starttime));
