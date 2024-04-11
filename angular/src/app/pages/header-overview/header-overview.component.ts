@@ -30,8 +30,8 @@ export class HeaderOverviewComponent implements OnInit {
 
   openCreateAppointment() {
     let dialog = this._dialog.open(CreateAppointmentComponent)
-    dialog.afterClosed().subscribe((result: {id: number}) => {
-      this.newAppointmentId.emit(result.id)
+    dialog.afterClosed().subscribe((result: number) => {
+      this.newAppointmentId.emit(result)
     })
   }
 

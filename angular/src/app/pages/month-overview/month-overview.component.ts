@@ -6,7 +6,7 @@ import { AppointmentComponent } from 'src/app/popups/appointment/appointment.com
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
 import { DataService } from 'src/data.service';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 
 @Component({
   selector: 'app-calendar',
@@ -18,6 +18,7 @@ export class MonthOverviewComponent implements OnInit {
   // Global functions
   getWeekNumber = this.globalfunctions.getWeekNumber
   formatTime = this.globalfunctions.getFormattedTime;
+  updateType = updateType;
   // Global functions
 
   monthView: { weeknumber: number, days: CalendarDay[] }[] = []
@@ -52,9 +53,14 @@ export class MonthOverviewComponent implements OnInit {
           if (!findday.appointments) {
             findday.appointments = [];
           }
-          day.appointments.forEach(appointment => {
-            if (!findday) return;
-            findday.appointments.push(appointment);
+          findday.appointments = day.appointments;
+
+          // order: wholeday, then time based
+          findday.appointments = findday.appointments.sort((a, b) => {
+            if (a.isAllDay && !b.isAllDay) return -1;
+            if (!a.isAllDay && b.isAllDay) return 1;
+            if (a.isAllDay && b.isAllDay) return 0;
+            return a.starttime.localeCompare(b.starttime);
           })
         }
       })
@@ -76,31 +82,6 @@ export class MonthOverviewComponent implements OnInit {
     return JSON.stringify(obj);
   }
 
-  drop(event: CdkDragDrop<Appointment[], any>, weekIndex: number, dayIndex: number): void {
-    if (event.previousContainer === event.container) {
-      // Move the item within the same list
-      moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-      // Transfer the item to a different list
-      transferArrayItem(
-        event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex
-      );
-    }
-    // Implement any additional update logic here
-    console.log(this.monthView)
-  }
-
-  // Helper function to generate an array of connected drop lists
-  getConnectedList(monthView: any): string[] {
-    return monthView.reduce((previous: any, week: any, weekIndex: any) => {
-      const weekLists = week.days.map((day: any, dayIndex: any) => `week${weekIndex}day${dayIndex}`);
-      return previous.concat(weekLists);
-    }, []);
-  }
-
   newAppointment(appointmentId: number) {
     console.log(appointmentId)
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
@@ -117,20 +98,18 @@ export class MonthOverviewComponent implements OnInit {
     this.getMonthView(monthNr);
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
-      data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.monthView.forEach(week => {
-          week.days.forEach(day => {
-            if (day.appointments) {
-              day.appointments = day.appointments.filter(appointment => appointment.id !== result);
-            }
-          })
+  async openDetails(appointment: Appointment) {
+    let result = await this.globalfunctions.openAppointmentDetails(appointment);
+    if (result.updateType === updateType.DELETE) {
+      this.monthView.forEach(week => {
+        week.days.forEach(day => {
+          if (day.appointments) day.appointments = day.appointments.filter(appointment => appointment.id !== result.appointmentid);
         })
-      }
-    })
+      })
+    }
+    if (result.updateType === updateType.UPDATE) {
+      // TODO: update only the appointment itself, not the whole month
+      this.getMonthAppointments();
+    }
   }
 }

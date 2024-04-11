@@ -278,3 +278,53 @@ func DeleteAppointment(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"status": "success"}`))
 }
+
+func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	dbConnection, err := functions.GetDatabaseConnection()
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	body, err := ioutil.ReadAll(req.Body)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var upAppi handlers.Appointment
+	if err := json.Unmarshal(body, &upAppi); err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	// check if appointment endtime is 00:00 then set it to 23:59
+	if upAppi.EndTime == "00:00" {
+		upAppi.EndTime = "23:59"
+	}
+
+	// check if endtime is after starttime
+	if upAppi.EndTime < upAppi.StartTime {
+		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+		return
+	}
+
+	query := `UPDATE appointments 
+			  SET title = ?, description = ?, date = ?, isallday = ?, starttime = ?, endtime = ?, location = ?, categoryid = ? 
+			  WHERE userid = ? AND id = ?;`
+
+	_, err = dbConnection.Exec(query, upAppi.Title, upAppi.Description, upAppi.Date, upAppi.IsAllDay, upAppi.StartTime, upAppi.EndTime, upAppi.Location, upAppi.Category.ID, userId, upAppi.Id)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	res.Write([]byte(`{"id": "` + strconv.Itoa(upAppi.Id) + `"}`))
+}

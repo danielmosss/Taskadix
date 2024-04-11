@@ -20,22 +20,20 @@
 
     <ng-container *ngFor="let day of week.days; let dayIndex = index">
 
-      <div class="calendar-day" [id]="'week'+ weekIndex + 'day'+ dayIndex" cdkDropList
+      <div class="calendar-day" [id]="'week'+ weekIndex + 'day'+ dayIndex"
         [ngClass]="{
            'today': day.date.toDateString() === today.toDateString(),
            'InSelectedMonth': day.isInSelectedMonth,
            'NotInSelectedMonth': !day.isInSelectedMonth
-           }"
-        [cdkDropListData]="day.appointments || []"
-        [cdkDropListConnectedTo]="getConnectedList(monthView)"
-        (cdkDropListDropped)="drop($event, weekIndex, dayIndex)">
+           }">
 
         <div class="date-indicator">{{ day.date | date: 'd' }}</div>
 
         <div class="events-container" *ngIf="day.appointments">
-          <div *ngFor="let appointment of day.appointments" cdkDrag class="event" (click)="openAppointmentDetails(appointment)">
+          <div *ngFor="let appointment of day.appointments" class="event" (click)="openDetails(appointment)">
             <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
-            <div class="eventContent">{{formatTime(appointment.starttime)}} - {{ appointment.title }}</div>
+            <div class="eventContent" *ngIf="appointment.isAllDay">{{ appointment.title }}</div>
+            <div class="eventContent" *ngIf="!appointment.isAllDay">{{formatTime(appointment.starttime)}} - {{ appointment.title }}</div>
           </div>
         </div>
 

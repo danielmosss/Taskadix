@@ -176,8 +176,8 @@ export interface NewAppointment {
   description: string,
   date: string,
   isAllDay: boolean,
-  starttime?: string,
-  endtime?: string,
+  starttime: string,
+  endtime: string,
   location: string,
   category: { id: number, term: string }
 }

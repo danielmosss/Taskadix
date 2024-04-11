@@ -1,9 +1,10 @@
 import { Component, Inject, OnInit, inject } from '@angular/core';
-import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Appointment } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
+import { CreateAppointmentComponent } from '../create-appointment/create-appointment.component';
 
 @Component({
   selector: 'app-appointment',
@@ -13,13 +14,15 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
 export class AppointmentComponent {
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
+  updatetype = updateType;
 
   constructor(
     private dialogRef: MatDialogRef<AppointmentComponent>,
     @Inject(MAT_DIALOG_DATA) public appointment: Appointment,
     private globalfunctions: GlobalfunctionsService,
     private _router: Router,
-    private _dataservice: DataService
+    private _dataservice: DataService,
+    private _dialog: MatDialog
   ) { }
 
   navigate(url: string, blank: boolean = false) {
@@ -32,15 +35,19 @@ export class AppointmentComponent {
   }
 
   editAppointment(appointment: Appointment) {
-    // close this one and open a new one to edit this.
+    let dialog = this._dialog.open(CreateAppointmentComponent, { data: appointment })
+    dialog.afterClosed().subscribe((appointmentid) => {
+      if (appointmentid) this.closedialog(updateType.UPDATE, appointmentid);
+    })
   }
 
   deleteAppointment(appointment: Appointment) {
     this._dataservice.deleteAppointment(appointment).subscribe(data => {
-      console.log(data);
-      if (data.status == "success") {
-        this.dialogRef.close(appointment.id);
-      }
+      if (data.status == "success") this.closedialog(updateType.DELETE, appointment.id);
     })
+  }
+
+  closedialog(updatetype: updateType, appointmentid: number) {
+    this.dialogRef.close({ updateType: updatetype, appointmentid: appointmentid });
   }
 }

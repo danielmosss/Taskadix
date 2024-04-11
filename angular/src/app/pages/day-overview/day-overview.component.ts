@@ -4,7 +4,7 @@ import * as moment from 'moment';
 import { Appointment } from 'src/app/interfaces';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { DataService } from 'src/data.service';
-import { GlobalfunctionsService } from 'src/globalfunctions.service';
+import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 
 @Component({
   selector: 'app-day-overview',
@@ -13,6 +13,7 @@ import { GlobalfunctionsService } from 'src/globalfunctions.service';
 })
 export class DayOverviewComponent implements OnInit, AfterViewInit {
   @ViewChild('daygridScroll') daygridScroll: ElementRef;
+  updateType = updateType;
 
   public heightPerHour: number = 60;
   public widthPerDay: number = 1670;
@@ -25,15 +26,15 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService, private _dialog: MatDialog) { }
 
-    // Global functions
-    getCurrentTime = this.globalfunctions.getCurrentTime;
-    getActivePosition(){
-      return this.globalfunctions.getActivePosition(this.heightPerHour);
-    }
-    calculateOverlaps(appointments: Appointment[]){
-      return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
-    }
-    // Global functions
+  // Global functions
+  getCurrentTime = this.globalfunctions.getCurrentTime;
+  getActivePosition() {
+    return this.globalfunctions.getActivePosition(this.heightPerHour);
+  }
+  calculateOverlaps(appointments: Appointment[]) {
+    return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
+  }
+  // Global functions
 
   ngOnInit(): void {
     this.times = this.globalfunctions.generateTimes();
@@ -59,7 +60,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   }
 
   getTaskStyle(appointment: Appointment): any {
-    this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
+    return this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
   }
 
   getAppointments(beginDate: string, endDate: string) {
@@ -98,14 +99,13 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
     this.getAppointments(date, date);
   }
 
-  openAppointmentDetails(appointment: Appointment) {
-    let dialog = this._dialog.open(AppointmentComponent, {
-      data: appointment
-    })
-    dialog.afterClosed().subscribe(result => {
-      if (result) {
-        this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result);
-      }
-    })
+  async openDetails(appointment: Appointment) {
+    let result = await this.globalfunctions.openAppointmentDetails(appointment);
+    if (result.updateType === updateType.DELETE) {
+      this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result.appointmentid);
+    }
+    if (result.updateType === updateType.UPDATE) {
+      this.getAppointments(this.day.date, this.day.date);
+    }
   }
 }
