@@ -24,6 +24,12 @@ body {
 .header-datepicker .mat-mdc-form-field-subscript-wrapper {
   display: none;
 }
+
+.datepick .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -119,7 +125,10 @@ mat-dialog-container {
 }
 
 @media screen and (max-width: 600px) {
-  .popup2, .popup, .popupTodoDetails {
+
+  .popup2,
+  .popup,
+  .popupTodoDetails {
     min-width: unset !important;
     max-width: 100vw !important;
   }
@@ -160,7 +169,7 @@ mat-dialog-container {
     color: #333333;
   }
 
-  &.lgray{
+  &.lgray {
     background-color: var(--gray-lightest);
     color: #333333;
   }
@@ -179,7 +188,7 @@ mat-dialog-container {
   margin-bottom: 0;
 }
 
-.issubtitle{
+.issubtitle {
   margin-top: 0;
 }
 

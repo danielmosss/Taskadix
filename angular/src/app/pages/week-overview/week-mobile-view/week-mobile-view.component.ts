@@ -6,6 +6,7 @@ import { Appointment } from 'src/app/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { DataService } from 'src/data.service';
+import { MobilePickDayPopupComponent } from 'src/app/popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
 
 @Component({
   selector: 'app-week-mobile-view',
@@ -26,13 +27,13 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   getDateName = this.globalfunctions.getDateName
   getFormattedTime = this.globalfunctions.getFormattedTime
   getCurrentTime = this.globalfunctions.getCurrentTime;
-  getActivePosition(){
+  getActivePosition() {
     return this.globalfunctions.getActivePosition(this.heightPerHour);
   }
   getTaskStyle(appointment: Appointment): any {
     return this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
   }
-  calculateOverlaps(appointments: Appointment[]){
+  calculateOverlaps(appointments: Appointment[]) {
     return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
   }
   updateType = updateType;
@@ -53,7 +54,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dateScroll.nativeElement.scrollLeft = 12 * 67;
+    this.dateScroll.nativeElement.scrollLeft = 13 * 67;
     let hour = parseInt(this.getCurrentTime().hour, 10);
     let scrollHeight = 0;
     if (hour >= 0 && hour < 6) scrollHeight = 0;
@@ -63,10 +64,10 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     this.daygridScroll.nativeElement.scrollTop = scrollHeight;
   }
 
-  generateDays(): day[] {
+  generateDays(middleDate?: Date): day[] {
     let days: day[] = [];
 
-    let today = new Date();
+    let today = middleDate || new Date();
     let TwoWeeksAgo = new Date(today.setDate(today.getDate() - 14));
 
     for (let i = 0; i < 28; i++) {
@@ -117,4 +118,16 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     this.activeDate = moment(date).format('YYYY-MM-DD');
   }
 
+  handleDateSelection(date: string) {
+    this.days = this.generateDays(new Date(date));
+    this.selectOtherDay(date);
+    this.dateScroll.nativeElement.scrollLeft = 13 * 67;
+  }
+
+  openDayPicker() {
+    const dialog = this._dialog.open(MobilePickDayPopupComponent)
+    dialog.afterClosed().subscribe((date) => {
+      if (date) this.handleDateSelection(date);
+    });
+  }
 }
