@@ -48,3 +48,15 @@
     border-top: 1px solid #f3f3f3;
   }
 }
+
+@media (max-width: 600px) {
+  .timeinput{
+    display: flex !important;
+    flex-direction: column-reverse;
+    gap: 5px;
+  }
+
+  .popup{
+    padding: 10px 8px !important;
+  }
+}

@@ -21,6 +21,7 @@ export class HomeComponent implements OnInit {
   getDateName = this.globalfunctions.getDateName;
   getWeekNumber = this.globalfunctions.getWeekNumber;
   isMobile = this.globalfunctions.isMobile;
+  getDateWeekname = this.globalfunctions.getDateWeekname;
   updateType = updateType;
   // Global functions
 

@@ -76,8 +76,11 @@
     <div class="card todocard">
       <div class="day" *ngFor="let day of upcomingSevenDaysTodos">
         <div class="dayinfo">
-          <h2 class="date noMargin">
-            {{ getDateName(day.date) }}
+          <h2 class="date noMargin" *ngIf="!isMobile()">
+            {{getDateWeekname(day.date, true, 3, "en-US")}} - {{ getDateName(day.date) }}
+          </h2>
+          <h2 class="date noMargin" *ngIf="isMobile()">
+            {{getDateWeekname(day.date, true, 2, "nl-NL")}} - {{ getDateName(day.date) }}
           </h2>
           <div class="progress-loader">
             <div class="progress" [ngStyle]="{'width': getPercentTaskedChecked(day.tasks) + '%'}"></div>

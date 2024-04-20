@@ -34,6 +34,14 @@ export class GlobalfunctionsService {
     return moment(date).format('DD');
   }
 
+  getDateWeekname(date: string, capitalLetter: boolean = false, letters: number = 0, locale: string): string {
+    const dateObj = new Date(date);
+    let name =  dateObj.toLocaleString(locale, { weekday: 'long' })
+    if (letters > 0) name = name.slice(0, letters);
+    if(capitalLetter) name = name.charAt(0).toUpperCase() + name.slice(1);
+    return name;
+  }
+
   async openAppointmentDetails(appointment: Appointment): Promise<{ updateType: updateType, appointmentid: number }> {
     const dialog = this._dialog.open(AppointmentComponent, {
       data: appointment
