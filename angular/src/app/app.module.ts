@@ -61,6 +61,7 @@ import { MonthselectorComponent } from './addons/monthselector/monthselector.com
 import { CreateCategoryComponent } from './popups/create-category/create-category.component';
 import { NotfoundpageComponent } from './addons/notfoundpage/notfoundpage.component';
 import { WeekMobileViewComponent } from './pages/week-overview/week-mobile-view/week-mobile-view.component';
+import { MobilePickDayPopupComponent } from './popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
 
 const routes: Routes = [
   {
@@ -134,7 +135,8 @@ const routes: Routes = [
     MonthselectorComponent,
     CreateCategoryComponent,
     NotfoundpageComponent,
-    WeekMobileViewComponent
+    WeekMobileViewComponent,
+    MobilePickDayPopupComponent
   ],
   imports: [
     BrowserModule,
