@@ -27,6 +27,24 @@ jobs:
       with:
         node-version: '20.11.0'
 
+    ## version in version.txt file
+    - name: Set Version
+      id: set_version
+      run: echo "VERSION=$(cat version.txt)" >> $Env:GITHUB_ENV
+  
+    # check if version was already released
+    - name: Check if Release exists
+      id: check_release
+      uses: actions/github-script@0.9.0
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { data: releases } = await github.repos.listReleases({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+          });
+          core.setOutput('release_exists', releases.some(release => release.release_name === `${{ env.VERSION }}`));
+
     - name: Install Dependencies
       run: |
         cd angular
@@ -67,33 +85,13 @@ jobs:
       run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
       shell: powershell
 
-      
-    ## version in version.txt file
-    - name: Set Version
-      id: set_version
-      run: echo "VERSION=$(cat version.txt)" >> $Env:GITHUB_ENV
 
     ## Build Artifacts
     - name: Archive Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
-        path: output/
-
-    # check if version was already released
-    - name: Check if Release exists
-      id: check_release
-      uses: actions/github-script@0.9.0
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const { data: releases } = await github.repos.listReleases({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-          });
-          core.setOutput('release_exists', releases.some(release => release.release_name === `${{ env.VERSION }}`));
-
-    
+        path: output/   
     
     ## Create a Release with the pull request as name
     - name: Create Release after pull request
