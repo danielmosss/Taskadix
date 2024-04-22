@@ -32,19 +32,6 @@ jobs:
       id: set_version
       run: echo "VERSION=$(cat version.txt)" >> $Env:GITHUB_ENV
   
-    # check if version was already released
-    - name: Check if Release exists
-      id: check_release
-      uses: actions/github-script@0.9.0
-      with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
-        script: |
-          const { data: releases } = await github.repos.listReleases({
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-          });
-          core.setOutput('release_exists', releases.some(release => release.release_name === `${{ env.VERSION }}`));
-
     - name: Install Dependencies
       run: |
         cd angular
