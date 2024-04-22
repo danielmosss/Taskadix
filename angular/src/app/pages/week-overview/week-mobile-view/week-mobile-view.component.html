@@ -1,6 +1,14 @@
 <div class="container">
   <div class="wrapperDates">
     <div class="dates" #dateScroll>
+
+      <div class="date" (click)="openDayPicker()">
+        <div class="day">
+          <h3 class="dateNumber withsubtitle">Pick</h3>
+          <p class="issubtitle">Date</p>
+        </div>
+      </div>
+
       <div class="date" *ngFor="let day of days">
         <div class="day" [ngClass]="{ 'today': day.date === today }" (click)="selectOtherDay(day.date)">
           <h3 class="dateNumber withsubtitle">{{ getDateNumber(day.date) }}</h3>
