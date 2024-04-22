@@ -80,16 +80,6 @@ jobs:
         name: artifacts
         path: output/   
 
-    ## console log output github action -> output github event pull_request body and title
-    - name: Set Pull Request Info
-      id: set_pr_info
-      run: echo "PR_TITLE=$(echo ${{ github.event.pull_request.title }} | sed 's/[^a-zA-Z0-9]/_/g')" >> $Env:GITHUB_ENV
-      shell: bash
-
-    - name: Set Pull Request Info
-      run: echo "PR_BODY=$(echo ${{ github.event.pull_request.body }} | sed 's/[^a-zA-Z0-9]/_/g')" >> $Env:GITHUB_ENV
-      shell: bash
-
     ## Create a Release with the pull request as name
     - name: Create Release after pull request
       if: github.ref == 'refs/heads/main'
