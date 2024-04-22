@@ -67,6 +67,12 @@ jobs:
       run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
       shell: powershell
 
+      
+    ## version in version.txt file
+    - name: Set Version
+      id: set_version
+      run: echo "VERSION=$(cat version.txt)" >> $Env:GITHUB_ENV
+
     ## Build Artifacts
     - name: Archive Artifacts
       uses: actions/upload-artifact@v2
@@ -83,9 +89,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: release-${{ github.run_id }}
-        release_name: Release at ${{ env.DATETIME }} (UTC)
-        body : ${{ github.event.pull_request.title }}
+        tag_name: V${{ env.VERSION }}-pr${{ github.event.pull_request.number }}
+        release_name: V${{ env.VERSION }}
+        body :  Release at ${{ env.DATETIME }} \n PR#${{ github.event.pull_request.number }} \n (UTC) zn ${{ github.event.pull_request.title }}
         draft: false
         prerelease: false
 
