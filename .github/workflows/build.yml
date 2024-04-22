@@ -79,7 +79,7 @@ jobs:
       with:
         name: artifacts
         path: output/   
-    
+
     ## Create a Release with the pull request as name
     - name: Create Release after pull request
       if: github.ref == 'refs/heads/main'
@@ -88,9 +88,9 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ env.VERSION }}-pr${{ github.event.pull_request.number }}
+        tag_name: ${{ env.VERSION }}
         release_name: ${{ env.VERSION }}
-        body :  Release at ${{ env.DATETIME }} \n PR#${{ github.event.pull_request.number }} \n (UTC) zn ${{ github.event.pull_request.title }}
+        body:  Release at ${{ env.DATETIME }} (UTC) <br> Info ${{ github.event.pull_request.body }}
         draft: false
         prerelease: false
 
