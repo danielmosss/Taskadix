@@ -26,18 +26,12 @@ jobs:
       uses: actions/setup-node@v2
       with:
         node-version: '20.11.0'
-
-    ## version in version.txt file
-    - name: Set Version
-      id: set_version
-      run: echo "VERSION=$(cat version.txt)" >> $Env:GITHUB_ENV
   
     - name: Install Dependencies
       run: |
         cd angular
         npm install
         npm install -g @angular/cli
-
 
     # Create production angular webpack build
     - name: Build Angular Production App
@@ -67,32 +61,31 @@ jobs:
         cp api/api.exe output/
         cp api/.env-template output/
  
-    - name: Set Date and Time
-      id: set_datetime
-      run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
-      shell: powershell
-
-
     ## Build Artifacts
     - name: Archive Artifacts
       uses: actions/upload-artifact@v2
       with:
         name: artifacts
-        path: output/   
+        path: output/
+        
+    # - name: Set Date and Time
+    #   id: set_datetime
+    #   run: echo "DATETIME=$(Get-Date -Format 'HH:mm-dd-MM-yyyy')" >> $Env:GITHUB_ENV
+    #   shell: powershell
 
     ## Create a Release with the pull request as name
-    - name: Create Release after pull request
-      if: github.ref == 'refs/heads/main'
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ env.VERSION }}
-        release_name: ${{ env.VERSION }}
-        body:  Release at ${{ env.DATETIME }} (UTC) <br> Info ${{ github.event.pull_request.body }}
-        draft: false
-        prerelease: false
+    # - name: Create Release after pull request
+    #   if: github.ref == 'refs/heads/main'
+    #   id: create_release
+    #   uses: actions/create-release@v1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: ${{ env.VERSION }}
+    #     release_name: ${{ env.VERSION }}
+    #     body:  Release at ${{ env.DATETIME }} (UTC) <br> Info ${{ github.event.pull_request.body }}
+    #     draft: false
+    #     prerelease: false
 
     # Upload the angular production build to ftp server
     - name: FTP Deploy
