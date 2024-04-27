@@ -97,4 +97,4 @@ jobs:
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
         local-dir: output/angularProd/dashboard/
-        dangerous-clean-slate: true
+        dangerous-clean-slate: false
