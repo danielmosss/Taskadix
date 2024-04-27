@@ -1,9 +1,10 @@
 # DashboardTodo - Todolist(V1) and Agenda(V2) in one.
-<h3>
-Webapplication build with Angular, Golang and Mysql.<br>
-Dashboard with a quick overview of your events today and the tasks for the upcoming 7 days.<br>
-3 different agenda views: Day, Week and Month. Select a custom day, week or month with the angular datepicker.<br>
-</h3>
+<ul>
+  <li>Webapplication build with Angular, Golang and Mysql.</li>
+  <li>Dashboard with a quick overview of your events today and the tasks for the upcoming 7 days.</li>
+  <li>3 different agenda views: [day/week/month] </li>
+  <li>Select a [day/week/month] with the angular datepicker.</li>
+</ul>
 
 <p align="center">
   <img src="angular/src/assets/dashboardTodo.png" width="150">
