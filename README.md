@@ -1,16 +1,16 @@
-> [!CAUTION]
-> THIS README IS OUTDATED!!!
-> I will updated it soon.
-
-# dashboardTodo
+# DashboardTodo - Todolist(V1) and Agenda(V2) in one.
+<ul>
+  <li>Webapplication build with Angular, Golang and Mysql.</li>
+  <li>Dashboard with a quick overview of your events today and the tasks for the upcoming 7 days.</li>
+  <li>3 different agenda views: [day/week/month] </li>
+  <li>Select a [day/week/month] with the angular datepicker.</li>
+</ul>
 
 <p align="center">
-  <img src="angular/src/assets/dashboardTodo.png" width="350">
+  <img src="angular/src/assets/dashboardTodo.png" width="150">
 </p>
 
-<h3 align="center">A dashbaord with clean overview of all your tasks for the upcomming 7 days.</h3>
-
-<div align="center">
+<div align=center>
   <h3>
     <a href="#-features">Features</a>
     <span> | </span>
@@ -18,35 +18,38 @@
   </h3>
 </div>
 
-<p align="center">
+<!-- <p align="center">
   <img src="angular/src/assets/dashboard.png" width="800px">
   <img src="angular/src/assets/account.png" width="800px">
+</p> -->
+<p align="center">
+Screenshots are outdated. I will add new screenshots soon.
 </p>
 
 ## 🚀 Features
 > [!NOTE]  
-> I am working on many new features.<br>
-> Also, a new design will be brought along with it.
-* ✅ Dashboard with clean overview.
-* ✅ Overview
-      - 7 days (Default)
-      - Select week (Datepicker)
+> I'm working on new features.<br>
+> Not all features are listed below.
+* ✅ Dashboard with quick overview for desktop and mobile.
+* ✅ Agenda with 3 different views:<br>
+      - Day (Default: today)<br>
+      - Week (Default: this week from sunday to saturday) [Landing view]<br>
+      - Month (Default: this month)
 * ✅ Responsive UI (I did my best 😅 feel free to make a PR with improvements)
-* ✅ Upload Json (It works, not the best)
-* ✅ Upload ICS files (with 1 or more events)
-* ✅ (Un)check items
+* ✅ Standard TODO app features
 * ✅ Account settings
-* ✅ Change background color
+* ✅ Color categories for agenda events. 
 * ✅ Set webcall url (che.myx.nl supported)
 * ✅ Login
-* 🟧 Register - (Disabled endpoint) 
+* 🟧 Register (Disabled endpoint) 
+* 🟧 Upload Json (outdated)
+* 🟧 Upload ICS files (outdated)
 * ❌ Change username
-* ❌ Forgot password
+* ❌ Download backup of events and tasks
+* ❌ Import your backups.
 
 
 ## ⌨️ How to use?
-> [!CAUTION]
-> This guide may have inconsistencies because of its rapid development.
 
 ### Step 1: Clone the repo
   
@@ -64,21 +67,10 @@
 
 ### Step 3: Setup database
     
-  ```bash
-  cd database
-  mysql -u root -p
-  source todo.sql
-  ```
+Run the todo-v2.sql and the migrations in the migration-v2 folder. 
+Run the migrations from lowest to highest number.
 
-### Step 4: Run Migrations (From old to new)
-
-  ```bash
-  cd database/migrations
-  mysql -u root -p
-  -- Run for each file in the folder from lowest to highest number.
-  ```
-
-### Step 5: Copy the .env-template and rename it to: .env
+### Step 4: Copy the .env-template and rename it to: .env
   
   ```bash
   cd api
@@ -97,6 +89,7 @@
   * JWT_SECRET - Fill in your own secret for the JWT token. This is a random string from anywhere between 32-64 characters.
   * ngrokRequest - Fill in your own ngrok request url. **This is not used when running the app locally.**
 
+
 ### Step 5: Start the go restapi
 
   ```bash
@@ -104,14 +97,21 @@
   go run main.go
   ```
 
-### Step 6: Start the angular frontend
+### Step 6: Install the angular dependencies
+
+  ```bash
+  cd angular/src
+  npm install
+  ```
+
+### Step 7: Start the angular frontend
 
   ```bash
   cd angular/src
   ng serve --configuration development
   ```
 
-### Step 7: Visit the dashboard
+### Step 8: Visit the dashboard
 
   For this you need to use a google browser and disable web security. 
   Here is a guide on how to do that: [Guide](https://alfilatov.com/posts/run-chrome-without-cors/)
