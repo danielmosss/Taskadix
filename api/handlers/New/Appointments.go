@@ -202,6 +202,11 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	if newAppointment.IsAllDay == true {
+		newAppointment.StartTime = ""
+		newAppointment.EndTime = ""
+	}
+
 	query := `INSERT INTO appointments 
 			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid) 
 			  VALUES 
@@ -307,6 +312,11 @@ func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
 	// check if appointment endtime is 00:00 then set it to 23:59
 	if upAppi.EndTime == "00:00" {
 		upAppi.EndTime = "23:59"
+	}
+
+	if upAppi.IsAllDay == true {
+		upAppi.StartTime = ""
+		upAppi.EndTime = ""
 	}
 
 	// check if endtime is after starttime

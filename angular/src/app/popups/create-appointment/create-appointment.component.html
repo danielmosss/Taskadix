@@ -55,14 +55,14 @@
       <div class="timeinput">
         <div class="time">
           <div class="begintime">
-            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly (ngModelChange)="setEndtime($event)" [disabled]="NewAppointment.isAllDay"
+            <input placeholder="Begin" aria-label="Begin" [ngxTimepicker]="begin" [format]="24" readonly (ngModelChange)="changeTime($event, true)" [disabled]="NewAppointment.isAllDay"
               [(ngModel)]="NewAppointment.starttime">
             <ngx-material-timepicker
             [timepickerClass]="'timepicker__customCSS'"
             #begin></ngx-material-timepicker>
           </div>
           <div class="endtime">
-            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly [disabled]="NewAppointment.isAllDay"
+            <input placeholder="End" aria-label="End" [ngxTimepicker]="end" [format]="24" readonly (ngModelChange)="changeTime($event, false)" [disabled]="NewAppointment.isAllDay"
               [(ngModel)]="NewAppointment.endtime">
             <ngx-material-timepicker
             [timepickerClass]="'timepicker__customCSS'"

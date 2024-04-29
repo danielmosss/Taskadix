@@ -66,9 +66,16 @@ export class CreateAppointmentComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  setEndtime($event: string) {
-    if (!this.NewAppointment.endtime) {
+  changeTime($event: string, isStarttime: boolean) {
+    if (isStarttime && this.NewAppointment.endtime === "") {
       this.NewAppointment.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
+    }
+    let momentStart = moment(this.NewAppointment.starttime, "HH:mm");
+    let momentEnd = moment($event, "HH:mm");
+    if (!isStarttime && momentEnd.isBefore(momentStart)) {
+      setTimeout(() => {
+          this.NewAppointment.endtime = moment(this.NewAppointment.starttime, "HH:mm").add(1, "hour").format("HH:mm");
+      }, 0);
     }
   }
 
