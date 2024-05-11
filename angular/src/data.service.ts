@@ -44,7 +44,7 @@ export class DataService {
   }
 
   public deleteTodoTask(todoCard: Todo) {
-    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
+    return this.http.delete<{message: string}>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
   }
 
   public postTodoInfo(todoCard: newTodoRequirements) {
@@ -161,7 +161,7 @@ export class DataService {
   }
 
   public deleteCategory(category: appointmentCategory){
-    return this.http.delete(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
+    return this.http.delete<{message: string}>(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
   }
 
   public createAppointment(appointment: NewAppointment) {

@@ -45,7 +45,7 @@ export class CardpopupComponent implements OnInit {
   }
 
   deleteCard(todoCard: Todo) {
-    this._dataService.deleteTodoTask(todoCard).subscribe(data => {
+    this._dataService.deleteTodoTask(todoCard).subscribe((data: {message: string}) => {
       this.todoCard.deleted = true;
       this.dialogRef.close(this.todoCard);
     })
