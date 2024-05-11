@@ -39,6 +39,7 @@ export class HomeComponent implements OnInit {
 
   getAppointments(beginDate: string, endDate: string) {
     this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
+      if (!data) return;
       data.forEach(element => {
         const day = this.day;
         if (day && element.appointments.length > 0) {
@@ -89,7 +90,7 @@ export class HomeComponent implements OnInit {
         this.upcomingSevenDaysTodos.forEach(day => {
           day.tasks.forEach(task => {
             if (task.id === data.id) {
-              task = data;
+              Object.assign(task, data);
             }
           })
         })
