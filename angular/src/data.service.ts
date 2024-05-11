@@ -44,7 +44,7 @@ export class DataService {
   }
 
   public deleteTodoTask(todoCard: Todo) {
-    return this.http.delete<Todo>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
+    return this.http.delete<{ message: string }>(this._SecureApi + "/DeleteTodoTask", { body: todoCard, headers: this.getCustomHeaders() });
   }
 
   public postTodoInfo(todoCard: newTodoRequirements) {
@@ -68,17 +68,14 @@ export class DataService {
   }
 
   public getUserDataOnLoad() {
-    this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe(data => {
+    this.http.get<{ username: string, email: string, webcallurl: string, webcalllastsynced: string }>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe((data: { username: string, email: string, webcallurl: string, webcalllastsynced: string }) => {
       this.validJwtToken = true;
       this.userdata = data;
-      if (this.userdata?.backgroundcolor && this.userdata.backgroundcolor != "") {
-        this.updateBackgroundcolor(this.userdata.backgroundcolor);
-      }
     })
   }
 
   public getUserDataReturn() {
-    return this.http.get<any>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
+    return this.http.get<{ username: string, email: string, webcallurl: string, webcalllastsynced: string }>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
   public uploadBulkTodos(todoCards: newTodoRequirements[]) {
@@ -87,7 +84,7 @@ export class DataService {
 
   public register(username: string, password: string, email: string) {
     this.http.post<{ jsonwebtoken: string }>(this._hostname + "/register", { username, password, email }).pipe().subscribe(
-      (res) => {
+      (res: { jsonwebtoken: string }) => {
         this._jsonwebtoken = res.jsonwebtoken;
       }
     );
@@ -96,14 +93,14 @@ export class DataService {
   public login(username: string, password: string): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {
       this.http.post<{ jsonwebtoken: string }>(this._hostname + "/login", { username, password }).subscribe(
-        (res) => {
+        (res: { jsonwebtoken: string }) => {
           this._jsonwebtoken = res.jsonwebtoken;
           this.validJwtToken = true;
           this.userLoggedIn = true;
           this.getUserDataOnLoad();
           resolve(true);
         },
-        (error) => {
+        (error: Error) => {
           console.error('Login error', error);
           resolve(false);
         }
@@ -133,9 +130,9 @@ export class DataService {
     localStorage.setItem('jsonwebtoken', jsonwebtoken);
   }
 
-  updateBackgroundcolor(backgroundcolor: string) {
-    document.documentElement.style.setProperty('--background-color', backgroundcolor);
-  }
+  // updateBackgroundcolor(backgroundcolor: string) {
+  //   document.documentElement.style.setProperty('--background-color', backgroundcolor);
+  // }
 
   public getCustomHeaders(): HttpHeaders {
     var headers = new HttpHeaders()
@@ -152,35 +149,35 @@ export class DataService {
     return this.http.get<appointmentCategory[]>(this._SecureApi + "/v2/GetCategories", { headers: this.getCustomHeaders() });
   }
 
-  public createCategory(categoryName: string, categoryColor: string){
-    return this.http.post<appointmentCategory>(this._SecureApi + "/v2/CreateCategory", {term: categoryName, color: categoryColor}, { headers: this.getCustomHeaders() });
+  public createCategory(categoryName: string, categoryColor: string) {
+    return this.http.post<appointmentCategory>(this._SecureApi + "/v2/CreateCategory", { term: categoryName, color: categoryColor }, { headers: this.getCustomHeaders() });
   }
 
-  public updateCategory(category: appointmentCategory){
+  public updateCategory(category: appointmentCategory) {
     return this.http.put<appointmentCategory>(this._SecureApi + "/v2/PutCategory", category, { headers: this.getCustomHeaders() });
   }
 
-  public deleteCategory(category: appointmentCategory){
-    return this.http.delete(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
+  public deleteCategory(category: appointmentCategory) {
+    return this.http.delete<{ message: string }>(this._SecureApi + `/v2/DeleteCategory?id=${category.id}`, { headers: this.getCustomHeaders() });
   }
 
   public createAppointment(appointment: NewAppointment) {
-    return this.http.post<{id: string}>(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
+    return this.http.post<{ id: string }>(this._SecureApi + "/v2/CreateAppointment", appointment, { headers: this.getCustomHeaders() });
   }
 
   public updateAppointment(appointment: Appointment) {
-    return this.http.put<{id: string}>(this._SecureApi + "/v2/PutAppointment", appointment, { headers: this.getCustomHeaders() });
+    return this.http.put<{ id: string }>(this._SecureApi + "/v2/PutAppointment", appointment, { headers: this.getCustomHeaders() });
   }
 
-  public getAppointment(appointmentId: number){
+  public getAppointment(appointmentId: number) {
     return this.http.get<Appointment>(this._SecureApi + `/v2/GetAppointment?id=${appointmentId}`, { headers: this.getCustomHeaders() });
   }
 
   public getAppointments(beginDate: string, endDate: string) {
-    return this.http.get<{date: string, appointments: Appointment[]}[]>(this._SecureApi + `/v2/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
+    return this.http.get<{ date: string, appointments: Appointment[] }[]>(this._SecureApi + `/v2/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
   }
 
   public deleteAppointment(appointment: Appointment) {
-    return this.http.delete<{status: string}>(this._SecureApi + `/v2/DeleteAppointment?id=${appointment.id}`, { headers: this.getCustomHeaders() });
+    return this.http.delete<{ status: string }>(this._SecureApi + `/v2/DeleteAppointment?id=${appointment.id}`, { headers: this.getCustomHeaders() });
   }
 }

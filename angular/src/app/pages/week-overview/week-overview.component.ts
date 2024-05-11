@@ -74,6 +74,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   getAppointments(beginDate: string, endDate: string) {
     this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
+      if (data == null) return;
       data.forEach(element => {
         const day = this.days.find(day => day.date === element.date);
         if (day && element.appointments.length > 0) {

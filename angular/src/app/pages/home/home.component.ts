@@ -1,5 +1,5 @@
 import { AfterContentInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
-import { Appointment, Todo } from 'src/app/interfaces';
+import { Appointment, DayTodo, Todo } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 import * as moment from 'moment';
 import { MatDialog } from '@angular/material/dialog';
@@ -38,7 +38,8 @@ export class HomeComponent implements OnInit {
   }
 
   getAppointments(beginDate: string, endDate: string) {
-    this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
+    this._dataservice.getAppointments(beginDate, endDate).subscribe((data: {date: string, appointments: Appointment[]}[]) => {
+      if (!data) return;
       data.forEach(element => {
         const day = this.day;
         if (day && element.appointments.length > 0) {
@@ -48,7 +49,7 @@ export class HomeComponent implements OnInit {
       });
     });
 
-    this._dataservice.getTodo().subscribe((data) => {
+    this._dataservice.getTodo().subscribe((data: Array<DayTodo>) => {
       this.upcomingSevenDaysTodos = data;
     });
   }
@@ -89,7 +90,7 @@ export class HomeComponent implements OnInit {
         this.upcomingSevenDaysTodos.forEach(day => {
           day.tasks.forEach(task => {
             if (task.id === data.id) {
-              task = data;
+              Object.assign(task, data);
             }
           })
         })
@@ -100,7 +101,7 @@ export class HomeComponent implements OnInit {
   openCreateAppointment() {
     let dialog = this._dialog.open(CreateAppointmentComponent)
     dialog.afterClosed().subscribe((newAppointmentId: number) => {
-      this._dataservice.getAppointment(newAppointmentId).subscribe(appointment => {
+      this._dataservice.getAppointment(newAppointmentId).subscribe((appointment: Appointment) => {
         if (appointment.date !== this.day.date) return;
         this.day.appointments.push(appointment);
         this.day.appointments = this.day.appointments.sort((a, b) => a.starttime.localeCompare(b.starttime));
