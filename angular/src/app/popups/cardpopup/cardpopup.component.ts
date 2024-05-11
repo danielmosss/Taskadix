@@ -45,7 +45,7 @@ export class CardpopupComponent implements OnInit {
   }
 
   deleteCard(todoCard: Todo) {
-    this._dataService.deleteTodoTask(todoCard).subscribe((data: {message: string}) => {
+    this._dataService.deleteTodoTask(todoCard).subscribe((data: { message: string }) => {
       this.todoCard.deleted = true;
       this.dialogRef.close(this.todoCard);
     })
@@ -68,7 +68,7 @@ export class CardpopupComponent implements OnInit {
 
   checkTodo(todoCard: Todo) {
     todoCard.checked = !todoCard.checked;
-    this._dataService.checkTodoTask(todoCard).subscribe(data => {
+    this._dataService.checkTodoTask(todoCard).subscribe((data: { status: string }) => {
       if (data.status == "success") {
         this.dialogRef.close(todoCard);
         return;
