@@ -70,7 +70,6 @@ export class CreateTodoComponent implements OnInit {
   canSave() {
     return this.todoCard &&
            this.todoCard.title &&
-           this.todoCard.description &&
            this.todoCard.date;
   }
 }
