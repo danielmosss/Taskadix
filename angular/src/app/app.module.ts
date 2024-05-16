@@ -70,7 +70,7 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'script/gen',
+    path: 'startup-script',
     component: StartupScriptGeneratorComponent
   },
   {
