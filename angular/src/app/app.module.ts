@@ -62,11 +62,16 @@ import { CreateCategoryComponent } from './popups/create-category/create-categor
 import { NotfoundpageComponent } from './addons/notfoundpage/notfoundpage.component';
 import { WeekMobileViewComponent } from './pages/week-overview/week-mobile-view/week-mobile-view.component';
 import { MobilePickDayPopupComponent } from './popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
+import { StartupScriptGeneratorComponent } from './addons/startup-script-generator/startup-script-generator.component';
 
 const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent
+  },
+  {
+    path: 'script/gen',
+    component: StartupScriptGeneratorComponent
   },
   {
     path: '',
@@ -136,7 +141,8 @@ const routes: Routes = [
     CreateCategoryComponent,
     NotfoundpageComponent,
     WeekMobileViewComponent,
-    MobilePickDayPopupComponent
+    MobilePickDayPopupComponent,
+    StartupScriptGeneratorComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,42 @@
+<div class="container">
+  <form [formGroup]="scriptForm" class="form">
+    <mat-form-field appearance="fill">
+      <mat-label>Application Name</mat-label>
+      <input matInput formControlName="appName">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Path to Executable</mat-label>
+      <input matInput formControlName="appPath" placeholder="e.g., C:\Program Files\App\app.exe">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill" class="inputAgruments">
+      <mat-label>Arguments (comma separated)</mat-label>
+      <input matInput formControlName="appArgs" placeholder="e.g., --new-window, --incognito">
+    </mat-form-field>
+  </form>
+
+  <div class="buttn">
+    <button mat-raised-button color="primary" (click)="generateScript()">Add Application</button>
+    <button mat-raised-button color="accent" (click)="downloadScript()">Download Batch Script</button>
+  </div>
+
+  <!-- Examples and Documentation Links -->
+  <div class="examples">
+    <h3>Examples of Common Arguments:</h3>
+    <ul>
+      <li><strong>Google Chrome:</strong> --new-window, --incognito, --disable-web-security</li>
+      <li><strong>Visual Studio Code:</strong> --new-window, --disable-extensions</li>
+      <li><strong>Custom Applications:</strong> /fullscreen, /minimize</li>
+    </ul>
+    <h3>Documentation Links:</h3>
+    <ul>
+      <li><a href="https://www.google.com/chrome/" target="_blank">Google Chrome Command Line Switches</a></li>
+      <li><a href="https://code.visualstudio.com/docs/editor/command-line" target="_blank">Visual Studio Code Command
+          Line Options</a></li>
+    </ul>
+  </div>
+
+  <input type="file" (change)="onFileSelected($event)" accept=".bat">
+  <textarea [(ngModel)]="batchScript" rows="25" cols="50"></textarea>
+</div>
