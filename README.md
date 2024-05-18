@@ -27,9 +27,6 @@ Screenshots are outdated. I will add new screenshots soon.
 </p>
 
 ## 🚀 Features
-> [!NOTE]  
-> I'm working on new features.<br>
-> Not all features are listed below.
 * ✅ Dashboard with quick overview for desktop and mobile.
 * ✅ Agenda with 3 different views:<br>
       - Day (Default: today)<br>
@@ -51,7 +48,7 @@ Screenshots are outdated. I will add new screenshots soon.
 
 ## ⌨️ How to use?
 
-### Step 1: Clone the repo
+### Step 1: Clone the git repository
   
   ```bash
   git clone https://github.com/danielmosss/dashboardTodo.git
@@ -59,18 +56,16 @@ Screenshots are outdated. I will add new screenshots soon.
 
   Or download the lastest release from [here](https://github.com/danielmosss/dashboardTodo/releases/latest)
 
-### Step 2: Install NodeJS(v18.17.1) & Golang(v1.21.4) & Mysql
-  
-  * [NodeJS](https://nodejs.org/en/download/)
-  * [Golang](https://golang.org/dl/)
-  * [Mysql](https://dev.mysql.com/downloads/installer/)
+### Step 2: Install required programs & tools
+#### Install [Dev Home](https://aka.ms/devhome) inorder to install all the tools with one click.
+With Dev Home you can install all neccesary tools with one click by opening this file: ./dashboardtodo.widget.
 
 ### Step 3: Setup database
     
-Run the todo-v2.sql and the migrations in the migration-v2 folder. 
+Run the todo-v2.sql and the migrations in the migration-v2 folder.<br>
 Run the migrations from lowest to highest number.
 
-### Step 4: Copy the .env-template and rename it to: .env
+### Step 4: Duplicate the .env-template and rename it to: .env
   
   ```bash
   cd api
@@ -113,8 +108,8 @@ Run the migrations from lowest to highest number.
 
 ### Step 8: Visit the dashboard
 
-  For this you need to use a google browser and disable web security. 
-  Here is a guide on how to do that: [Guide](https://alfilatov.com/posts/run-chrome-without-cors/)
+  For this you need to use a google browser and disable web security. <br>
+  Here is a guide on how to do that: [Guide](https://alfilatov.com/posts/run-chrome-without-cors/)<br>
   This is because CORS is not enabled for localhost:4200 in the go restapi.
 
   ```bash
