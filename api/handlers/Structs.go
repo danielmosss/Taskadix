@@ -90,3 +90,14 @@ type ResponseAppointment struct {
 	Date         string        `json:"date"`
 	Appointments []Appointment `json:"appointments"`
 }
+
+type BackupTemplate struct {
+	UserId       int           `json:"userid"`
+	Username     string        `json:"username"`
+	Email        string        `json:"email"`
+	TimeCreated  string        `json:"timeCreated"`
+	TemplateV    int           `json:"templateV"`
+	Todos        []TodoCard    `json:"todos"`
+	Appointments []Appointment `json:"appointments"`
+	Categories   []Category    `json:"categories"`
+}
