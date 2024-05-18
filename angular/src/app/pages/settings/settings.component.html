@@ -135,7 +135,17 @@
       <app-notfoundpage></app-notfoundpage>
     </ng-container>
     <ng-container *ngIf="activeTab == SettingsTabs.Backup">
-      <app-notfoundpage></app-notfoundpage>
+<!-- Add button to download backup, then add a button to restore a backup -->
+      <div class="buttons">
+        <button mat-button class="mat-button pos" (click)="downloadBackup()">
+          <i class="fa-solid fa-download"></i>
+          Download backup
+        </button>
+        <button mat-button class="mat-button pos" (click)="restoreBackup()">
+          <i class="fa-solid fa-upload"></i>
+          Restore backup
+        </button>
+      </div>
     </ng-container>
     <ng-container *ngIf="activeTab == SettingsTabs.Help">
       <app-notfoundpage></app-notfoundpage>

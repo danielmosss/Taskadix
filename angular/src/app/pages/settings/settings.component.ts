@@ -71,4 +71,19 @@ export class SettingsComponent implements OnInit {
       this.categories = this.categories.filter((c) => c.id !== category.id);
     });
   }
+
+
+downloadBackup(){
+    this._dataservice.getBackup().subscribe((data: any) => {
+      const element = document.createElement('a');
+      const file = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+      element.href = URL.createObjectURL(file);
+      element.download = "taskadix-backup-" + new Date().toISOString().split('T')[0] + ".json";
+      document.body.appendChild(element);
+      element.click();
+    });
+}
+  restoreBackup(){
+
+  }
 }
