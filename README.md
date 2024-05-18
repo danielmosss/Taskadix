@@ -1,4 +1,4 @@
-# Taskadix - A Todolist(V1) and Agenda(V2) in one.
+# Taskadix(Tas-ka-dix) - A Todolist(V1) and Agenda(V2) in one.
 <ul>
   <li>Webapplication build with Angular, Golang and Mysql.</li>
   <li>Dashboard with a quick overview of your events today and the tasks for the upcoming 7 days.</li>
