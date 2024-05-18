@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Appointment, DayTodo, NewAppointment, Todo, Weather, appointmentCategory, newTodoRequirements, userdata } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, Weather, appointmentCategory, backup, newTodoRequirements, userdata } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -179,5 +179,13 @@ export class DataService {
 
   public deleteAppointment(appointment: Appointment) {
     return this.http.delete<{ status: string }>(this._SecureApi + `/v2/DeleteAppointment?id=${appointment.id}`, { headers: this.getCustomHeaders() });
+  }
+
+  public getBackup() {
+    return this.http.get<backup>(this._SecureApi + "/v2/GetBackup", { headers: this.getCustomHeaders() });
+  }
+
+  public restorebackup(backup: backup) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/v2/RestoreBackup", backup, { headers: this.getCustomHeaders() });
   }
 }

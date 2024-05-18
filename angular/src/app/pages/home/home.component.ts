@@ -90,7 +90,16 @@ export class HomeComponent implements OnInit {
         this.upcomingSevenDaysTodos.forEach(day => {
           day.tasks.forEach(task => {
             if (task.id === data.id) {
-              Object.assign(task, data);
+              if (task.date !== data.date) {
+                day.tasks = day.tasks.filter(task => task.id !== data.id);
+                this.upcomingSevenDaysTodos.forEach(day => {
+                  if (day.date === data.date) {
+                    day.tasks.push(data);
+                  }
+                })
+              }else{
+                Object.assign(task, data);
+              }
             }
           })
         })

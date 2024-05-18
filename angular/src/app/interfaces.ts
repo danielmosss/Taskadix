@@ -205,3 +205,14 @@ export interface appointmentCategory{
   userid?: number
   isdefault: boolean
 }
+
+export interface backup{
+  userid: number,
+  username: string,
+  email: string,
+  timecreated: string,
+  templatev: number,
+  todos: Array<Todo>,
+  appointments: Array<Appointment>,
+  categories: Array<appointmentCategory>
+}

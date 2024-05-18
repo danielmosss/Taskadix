@@ -2,6 +2,7 @@ package New
 
 import (
 	"api/functions"
+	"api/functions/QueryFunctions"
 	"api/handlers"
 	"database/sql"
 	"encoding/json"
@@ -28,15 +29,7 @@ func CreateCategory(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "INSERT INTO appointment_category (term, color, userid) VALUES (?, ?, ?);"
-	result, err := dbConnection.Exec(query, newCategory.Term, newCategory.Color, userId)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	var lastInsertedId int64
-	lastInsertedId, err = result.LastInsertId()
+	lastInsertedId, err := QueryFunctions.InsertCategory(newCategory.Term, newCategory.Color, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
