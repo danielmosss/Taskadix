@@ -211,7 +211,7 @@ export interface backup{
   username: string,
   email: string,
   timecreated: string,
-  templatev: string,
+  templatev: number,
   todos: Array<Todo>,
   appointments: Array<Appointment>,
   categories: Array<appointmentCategory>

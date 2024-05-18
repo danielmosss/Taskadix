@@ -98,16 +98,14 @@ export class SettingsComponent implements OnInit {
       try {
         uploadedJson = JSON.parse(atob(data.data));
       } catch (error) {
-        this._snackBar.open("Json must be valid", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
+        this._snackBar.open("Your backupfile is not valid", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
         return;
       }
 
-      try {
+      if (uploadedJson.templatev == 2) {
         this._dataservice.restorebackup(uploadedJson).subscribe(data => {
-          this._snackBar.open("Uploaded", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
+          this._snackBar.open("Your backup has been restored", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
         })
-      } catch (error) {
-        this._snackBar.open("Error uploading", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       }
     })
   }
