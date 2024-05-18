@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
+import { GlobalfunctionsService } from 'src/globalfunctions.service';
 
 const exampleJson = [
   {
@@ -33,7 +34,7 @@ interface uploadTodoJson {
   styleUrls: ['./uploadjson.component.scss']
 })
 export class UploadjsonComponent implements OnInit {
-  constructor(private _snackBar: MatSnackBar, private _dataService: DataService, private dialogRef: MatDialogRef<UploadjsonComponent>) { }
+  constructor(private _snackBar: MatSnackBar, private _dataService: DataService, private dialogRef: MatDialogRef<UploadjsonComponent>, private globalfunctions: GlobalfunctionsService) { }
 
   ngOnInit(): void {
 
@@ -54,7 +55,7 @@ export class UploadjsonComponent implements OnInit {
       return;
     }
 
-    this.readFile(file).then((data: any) => {
+    this.globalfunctions.readFile(file).then((data: any) => {
       data.data = data.data.replace(/data:application\/json;base64,/g, "");
       var uploadedJson: uploadTodoJson[];
 
@@ -89,19 +90,4 @@ export class UploadjsonComponent implements OnInit {
       }
     })
   }
-
-  // File reader that returns a promise.
-  readFile(file: File){
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = function (e: Event) {
-        resolve({ name: file.name, data: (<any>e.target).result });
-      };
-      reader.onerror = function (e) {
-        reject(e);
-      };
-      reader.readAsDataURL(file)
-    })
-  }
-
 }

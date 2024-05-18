@@ -141,7 +141,8 @@
           <i class="fa-solid fa-download"></i>
           Download backup
         </button>
-        <button mat-button class="mat-button pos" (click)="restoreBackup()">
+        <input type="file" #fileInput style="display: none;" (change)="restoreBackup($event)" accept=".json" />
+        <button mat-button class="mat-button pos" (click)="fileInput.click()">
           <i class="fa-solid fa-upload"></i>
           Restore backup
         </button>

@@ -36,9 +36,9 @@ export class GlobalfunctionsService {
 
   getDateWeekname(date: string, capitalLetter: boolean = false, letters: number = 0, locale: string): string {
     const dateObj = new Date(date);
-    let name =  dateObj.toLocaleString(locale, { weekday: 'long' })
+    let name = dateObj.toLocaleString(locale, { weekday: 'long' })
     if (letters > 0) name = name.slice(0, letters);
-    if(capitalLetter) name = name.charAt(0).toUpperCase() + name.slice(1);
+    if (capitalLetter) name = name.charAt(0).toUpperCase() + name.slice(1);
     return name;
   }
 
@@ -150,5 +150,17 @@ export class GlobalfunctionsService {
       i += overlaps.length;
     }
     return result;
+  }
+  readFile(file: File) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = function (e: Event) {
+        resolve({ name: file.name, data: (<any>e.target).result });
+      };
+      reader.onerror = function (e) {
+        reject(e);
+      };
+      reader.readAsDataURL(file)
+    })
   }
 }

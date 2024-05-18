@@ -184,4 +184,8 @@ export class DataService {
   public getBackup() {
     return this.http.get<backup>(this._SecureApi + "/v2/GetBackup", { headers: this.getCustomHeaders() });
   }
+
+  public restorebackup(backup: backup) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/v2/RestoreBackup", backup, { headers: this.getCustomHeaders() });
+  }
 }
