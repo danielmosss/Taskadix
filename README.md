@@ -1,9 +1,12 @@
-# DashboardTodo - Todolist(V1) and Agenda(V2) in one.
+# Taskadix - A Todolist(V1) and Agenda(V2) in one.
 <ul>
   <li>Webapplication build with Angular, Golang and Mysql.</li>
   <li>Dashboard with a quick overview of your events today and the tasks for the upcoming 7 days.</li>
   <li>3 different agenda views: [day/week/month] </li>
   <li>Select a [day/week/month] with the angular datepicker.</li>
+  <br>Funfact:
+  <li>Taska means "task" in Spanish</li>
+  <li>Taskadix means "Don't give up" in Maltese.</li>
 </ul>
 
 <p align="center">
