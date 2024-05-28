@@ -27,7 +27,12 @@
            'NotInSelectedMonth': !day.isInSelectedMonth
            }">
 
-        <div class="date-indicator">{{ day.date | date: 'd' }}</div>
+        <div class="date-indicator">
+          {{ day.date | date: 'd' }}
+          <ng-container *ngIf="!day.isInSelectedMonth">
+            {{ day.date | date: 'MMM' }}
+          </ng-container>
+        </div>
 
         <div class="events-container" *ngIf="day.appointments">
           <div *ngFor="let appointment of day.appointments" class="event" (click)="openDetails(appointment)">
