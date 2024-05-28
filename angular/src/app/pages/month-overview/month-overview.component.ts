@@ -32,7 +32,7 @@ export class MonthOverviewComponent implements OnInit {
 
   getMonthView(monthNr?: number): void {
     const now = new Date();
-    let flatMonthView = this.calendarService.getMonthView(now.getFullYear(), monthNr ? monthNr : now.getMonth());
+    let flatMonthView = this.calendarService.getMonthView(now.getFullYear(), (monthNr || monthNr == 0) ? monthNr : now.getMonth());
 
     this.monthView = [];
     for (let i = 0; i < flatMonthView.length; i += 7) {
