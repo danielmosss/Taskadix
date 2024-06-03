@@ -139,11 +139,13 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     });
   }
 
+  // day +1
   onSwipeLeft(){
-    alert('swipe left');
+    this.selectOtherDay(moment(this.day.date).add(1, 'days').format('YYYY-MM-DD'));
   }
 
+  // day -1
   onSwipeRight(){
-    alert('swipe right');
+    this.selectOtherDay(moment(this.day.date).subtract(1, 'days').format('YYYY-MM-DD'));
   }
 }
