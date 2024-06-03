@@ -21,12 +21,11 @@
     </div>
   </div>
 
-
-  <div class="wrapper" (swipeleft)="onSwipeLeft()" (swiperight)="onSwipeRight()">
+  <div class="wrapper">
     <div #daygridScroll class="day-grid"
       [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
 
-      <div class="timeColumn">
+      <div class="timeColumn" (swipeleft)="onSwipeLeft()" (swiperight)="onSwipeRight()">
         <div *ngFor="let time of times; let isLast=last" class="time-cell" [ngStyle]="{'height.px': heightPerHour}">
           <div class="time"> {{ time }}</div>
           <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
@@ -34,7 +33,7 @@
           <div class="divider" [ngStyle]="{'height.px': dividerHeight}"></div>
         </div>
       </div>
-      <div class="day-cell">
+      <div class="day-cell" (swipeleft)="onSwipeLeft()" (swiperight)="onSwipeRight()">
         <div *ngFor="let time of times; let i = index; let isLast=last; let isFirst=first" class="daylines">
           <div class="lines" [ngStyle]="{'top.px': (i) * heightPerHour, 'width.px': widthPerDay}">
           </div>

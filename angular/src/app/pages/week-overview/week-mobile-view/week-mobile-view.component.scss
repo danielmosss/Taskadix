@@ -50,6 +50,13 @@
     }
   }
 
+  .swipe-detector {
+    position: absolute;
+    top: 100px;
+    z-index: 1000;
+    background: transparent;
+  }
+
   .wrapper {
     background-color: #252525;
     border-radius: 8px;
