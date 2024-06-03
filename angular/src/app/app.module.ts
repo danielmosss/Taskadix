@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { BrowserModule, HAMMER_GESTURE_CONFIG, HammerModule } from '@angular/platform-browser';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -23,15 +23,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
-import {MatTooltipModule} from '@angular/material/tooltip';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 
 import { NgxColorsModule } from 'ngx-colors';
 
 // Timepicker
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-
 
 // Components
 import { LoginComponent } from './pages/login/login.component';
@@ -60,7 +59,7 @@ import { FamilyComponent } from './pages/family/family.component';
 import { MonthselectorComponent } from './addons/monthselector/monthselector.component';
 import { CreateCategoryComponent } from './popups/create-category/create-category.component';
 import { NotfoundpageComponent } from './addons/notfoundpage/notfoundpage.component';
-import { WeekMobileViewComponent } from './pages/week-overview/week-mobile-view/week-mobile-view.component';
+import { MyHammerConfig, WeekMobileViewComponent } from './pages/week-overview/week-mobile-view/week-mobile-view.component';
 import { MobilePickDayPopupComponent } from './popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
 import { StartupScriptGeneratorComponent } from './addons/startup-script-generator/startup-script-generator.component';
 
@@ -168,10 +167,12 @@ const routes: Routes = [
     NgxMaterialTimepickerModule,
     RouterModule.forRoot(routes),
     MatProgressBarModule,
-    MatTooltipModule
+    MatTooltipModule,
+    HammerModule
   ],
   providers: [
-    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },
+    { provide: HAMMER_GESTURE_CONFIG, useClass: MyHammerConfig }
   ],
   bootstrap: [AppComponent]
 })

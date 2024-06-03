@@ -7,6 +7,14 @@ import { MatDialog } from '@angular/material/dialog';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { DataService } from 'src/data.service';
 import { MobilePickDayPopupComponent } from 'src/app/popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
+import { HammerGestureConfig } from '@angular/platform-browser';
+import * as Hammer from 'hammerjs'; // Import Hammer.js
+
+export class MyHammerConfig extends HammerGestureConfig{
+  override overrides = <any>{
+    'swipe': { direction: Hammer.DIRECTION_ALL }
+  }
+}
 
 @Component({
   selector: 'app-week-mobile-view',
@@ -129,5 +137,13 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     dialog.afterClosed().subscribe((date) => {
       if (date) this.handleDateSelection(date);
     });
+  }
+
+  onSwipeLeft(){
+    alert('swipe left');
+  }
+
+  onSwipeRight(){
+    alert('swipe right');
   }
 }

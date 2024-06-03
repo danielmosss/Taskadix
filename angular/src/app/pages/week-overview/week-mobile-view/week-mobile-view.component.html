@@ -22,7 +22,7 @@
   </div>
 
 
-  <div class="wrapper">
+  <div class="wrapper" (swipeleft)="onSwipeLeft()" (swiperight)="onSwipeRight()">
     <div #daygridScroll class="day-grid"
       [ngStyle]="{'grid-template-columns': widthTimeColumn + 'px ' + widthPerDay + 'px'}">
 
