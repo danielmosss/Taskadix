@@ -67,6 +67,7 @@
       overflow-y: scroll;
       height: calc(100vh - var(--heightHeaderDates) - 15px - var(--heightPerHour));
       scrollbar-width: none;
+      touch-action: pan-y !important;
 
       .timeColumn {
         grid-column: 1;
