@@ -70,11 +70,16 @@ export class CreateAppointmentComponent implements OnInit {
     if (isStarttime && this.NewAppointment.endtime === "") {
       this.NewAppointment.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
     }
-    let momentStart = moment(this.NewAppointment.starttime, "HH:mm");
-    let momentEnd = moment($event, "HH:mm");
-    if (!isStarttime && momentEnd.isBefore(momentStart)) {
+
+    let eventMoment = moment($event, "HH:mm");
+    if (!isStarttime && eventMoment.isBefore(moment(this.NewAppointment.starttime, "HH:mm"))) {
       setTimeout(() => {
           this.NewAppointment.endtime = moment(this.NewAppointment.starttime, "HH:mm").add(1, "hour").format("HH:mm");
+      }, 0);
+    }
+    else if (isStarttime && eventMoment.isAfter(moment(this.NewAppointment.endtime, "HH:mm"))) {
+      setTimeout(() => {
+        this.NewAppointment.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
       }, 0);
     }
   }
