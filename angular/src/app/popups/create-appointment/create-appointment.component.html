@@ -69,9 +69,8 @@
             #end></ngx-material-timepicker>
           </div>
         </div>
-        <mat-slide-toggle
-        [(ngModel)]="NewAppointment.isAllDay">
-        Whole Day</mat-slide-toggle>
+
+        <mat-checkbox [(ngModel)]="NewAppointment.isAllDay" color="primary">Whole Day</mat-checkbox>
       </div>
     </div>
 
@@ -82,21 +81,6 @@
         <i class="fa-solid fa-map-marker fa-2x"></i>
       </div>
       <div class="input">
-        <!-- <mat-form-field class="full-width">
-          <mat-label>Location</mat-label>
-          <input matInput [value]="NewAppointment.location" type="text" [(ngModel)]="NewAppointment.location">
-        </mat-form-field> -->
-
-        <!-- <mat-form-field class="full-width">
-          <mat-label>Location</mat-label>
-          <input matInput [value]="NewAppointment.location" type="text" [(ngModel)]="NewAppointment.location" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let location of GetTenLastLocationsUser" [value]="location">
-              {{ location }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field> -->
-
         <mat-form-field class="full-width">
           <mat-label>Location</mat-label>
           <input matInput [formControl]="locationControl" type="text" [(ngModel)]="NewAppointment.location" [matAutocomplete]="auto">
@@ -106,8 +90,6 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-
-
       </div>
     </div>
 
