@@ -25,6 +25,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSelectModule } from '@angular/material/select';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCheckboxModule} from '@angular/material/checkbox';
 
 
 import { NgxColorsModule } from 'ngx-colors';
@@ -168,7 +170,9 @@ const routes: Routes = [
     RouterModule.forRoot(routes),
     MatProgressBarModule,
     MatTooltipModule,
-    HammerModule
+    HammerModule,
+    MatAutocompleteModule,
+    MatCheckboxModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true },

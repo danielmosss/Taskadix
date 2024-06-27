@@ -57,6 +57,7 @@ func main() {
 	securedRoutes.HandleFunc("/v2/PutAppointment", New.UpdateAppointment).Methods("PUT")
 	securedRoutes.HandleFunc("/v2/GetBackup", GET.GetBackup).Methods("GET")
 	securedRoutes.HandleFunc("/v2/RestoreBackup", POST.RestoreBackup).Methods("POST")
+	securedRoutes.HandleFunc("/v2/GetTenLastLocationsUser", New.GetTenLastLocationsUser).Methods("GET")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

@@ -338,3 +338,54 @@ func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"id": "` + strconv.Itoa(upAppi.Id) + `"}`))
 }
+
+func GetTenLastLocationsUser(res http.ResponseWriter, req *http.Request) {
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	dbConnection, err := functions.GetDatabaseConnection()
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	query := `select distinct(appointments.location), appointments.id
+			   from appointments
+			   where appointments.location is not null
+			     and userid = ?
+			   order by id desc
+			   limit 10;`
+	result, err := dbConnection.Query(query, userId)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer result.Close()
+
+	var location string
+	var id int
+	var locations []string
+	for result.Next() {
+		err := result.Scan(&location, &id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		if location != "" {
+			locations = append(locations, location)
+		}
+	}
+
+	JSON, err := json.Marshal(locations)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
+	res.Write(JSON)
+}
