@@ -82,10 +82,32 @@
         <i class="fa-solid fa-map-marker fa-2x"></i>
       </div>
       <div class="input">
-        <mat-form-field class="full-width">
+        <!-- <mat-form-field class="full-width">
           <mat-label>Location</mat-label>
           <input matInput [value]="NewAppointment.location" type="text" [(ngModel)]="NewAppointment.location">
+        </mat-form-field> -->
+
+        <!-- <mat-form-field class="full-width">
+          <mat-label>Location</mat-label>
+          <input matInput [value]="NewAppointment.location" type="text" [(ngModel)]="NewAppointment.location" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let location of GetTenLastLocationsUser" [value]="location">
+              {{ location }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field> -->
+
+        <mat-form-field class="full-width">
+          <mat-label>Location</mat-label>
+          <input matInput [formControl]="locationControl" type="text" [(ngModel)]="NewAppointment.location" [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+            <mat-option *ngFor="let location of filteredLocations | async" [value]="location">
+              {{ location }}
+            </mat-option>
+          </mat-autocomplete>
         </mat-form-field>
+
+
       </div>
     </div>
 

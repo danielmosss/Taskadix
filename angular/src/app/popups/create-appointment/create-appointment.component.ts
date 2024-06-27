@@ -5,6 +5,8 @@ import { DataService } from 'src/data.service';
 import * as moment from 'moment';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormControl } from '@angular/forms';
+import { Observable, map, startWith } from 'rxjs';
 
 
 @Component({
@@ -24,6 +26,15 @@ export class CreateAppointmentComponent implements OnInit {
       { id: 5, term: "Other" }
     ];
 
+  public GetTenLastLocationsUser: string[] = [];
+  locationControl = new FormControl();
+  filteredLocations: Observable<string[]>;
+
+  displayFn(location: string): string {
+    return location ? location : '';
+  }
+
+
   constructor(
     private dialogRef: MatDialogRef<CreateAppointmentComponent>,
     private _dataService: DataService,
@@ -32,6 +43,16 @@ export class CreateAppointmentComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+
+    this._dataService.GetTenLastLocationsUser().subscribe((res) => {
+      this.GetTenLastLocationsUser = res;
+
+      this.filteredLocations = this.locationControl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
+    })
+
     if (this.appointment) {
       this.editingExisting = true;
       this.NewAppointment = {
@@ -55,6 +76,11 @@ export class CreateAppointmentComponent implements OnInit {
     this._dataService.getCategories().subscribe(categories => {
       this.categories = categories;
     })
+  }
+
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+    return this.GetTenLastLocationsUser.filter(location => location.toLowerCase().includes(filterValue));
   }
 
   onDateChange(event: MatDatepickerInputEvent<Date>) {
