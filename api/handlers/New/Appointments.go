@@ -365,10 +365,9 @@ func GetTenLastLocationsUser(res http.ResponseWriter, req *http.Request) {
 	defer result.Close()
 
 	var location string
-	var id int
 	var locations []string
 	for result.Next() {
-		err := result.Scan(&location, &id)
+		err := result.Scan(&location)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
