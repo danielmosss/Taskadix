@@ -54,12 +54,26 @@ export class GlobalfunctionsService {
     return { updateType: updateType.NONE, appointmentid: 0 };
   }
 
+  // getWeekNumber(date?: Date): number {
+  //   date = date ? date : new Date();
+  //   const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+  //   const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
+  //   return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+  // }
+
   getWeekNumber(date?: Date): number {
     date = date ? date : new Date();
     const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+    const dayOfWeek = firstDayOfYear.getDay(); // Day of the week for Jan 1st
+    const offset = (dayOfWeek > 0) ? dayOfWeek - 1 : 6; // Offset to adjust to the nearest Sunday
     const pastDaysOfYear = (date.valueOf() - firstDayOfYear.valueOf()) / 86400000;
-    return Math.ceil((pastDaysOfYear + firstDayOfYear.getDay() + 1) / 7);
+
+    // Calculate total days from the nearest Sunday at the start of the year
+    const totalDays = pastDaysOfYear + offset;
+
+    return Math.ceil((totalDays + 1) / 7);
   }
+
 
   isMobile(): boolean {
     return window.innerWidth < 600;
