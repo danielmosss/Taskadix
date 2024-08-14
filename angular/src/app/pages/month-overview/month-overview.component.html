@@ -35,7 +35,8 @@
         </div>
 
         <div class="events-container" *ngIf="day.appointments">
-          <div *ngFor="let appointment of day.appointments" class="event" (click)="openDetails(appointment)">
+          <div *ngFor="let appointment of day.appointments" class="event" (click)="openDetails(appointment)"
+          matTooltip="{{appointment.description}}">
             <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
             <div class="eventContent" *ngIf="appointment.isAllDay">{{ appointment.title }}</div>
             <div class="eventContent" *ngIf="!appointment.isAllDay">{{formatTime(appointment.starttime)}} - {{ appointment.title }}</div>
