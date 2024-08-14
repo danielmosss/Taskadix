@@ -352,13 +352,19 @@ func GetTenLastLocationsUser(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := `select distinct location
-				from appointments
-				where location is not null
-  				  and iswebcall = 0
-				  and userid = ?
-				limit 10;`
-	result, err := dbConnection.Query(query, userId)
+	querySelectLocations := `SELECT DISTINCT location
+						 	 FROM (
+						 	     SELECT location
+						 	     FROM appointments
+						 	     WHERE location IS NOT NULL
+						 	       AND location != ''
+						 	       AND iswebcall = 0
+						 	       AND userid = ?
+						 	     ORDER BY id DESC
+						 	 ) AS subquery
+						 	 LIMIT 20`
+
+	result, err := dbConnection.Query(querySelectLocations, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
