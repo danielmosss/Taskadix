@@ -37,7 +37,7 @@ export class MonthOverviewComponent implements OnInit {
     this.monthView = [];
     for (let i = 0; i < flatMonthView.length; i += 7) {
       this.monthView.push({
-        weeknumber: this.getWeekNumber(flatMonthView[i].date),
+        weeknumber: this.getWeekNumber(flatMonthView[i + 1].date),
         days: flatMonthView.slice(i, i + 7)
       })
     }
