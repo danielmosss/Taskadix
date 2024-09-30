@@ -80,17 +80,17 @@ type NewAppointment struct {
 }
 
 type Appointment struct {
-	Id          int      `json:"id"`
-	Userid      int      `json:"userid"`
-	Title       string   `json:"title"`
-	Description string   `json:"description"`
-	Date        string   `json:"date"`
-	IsAllDay    bool     `json:"isAllDay"`
-	StartTime   string   `json:"starttime"`
-	EndTime     string   `json:"endtime"`
-	Location    string   `json:"location"`
-	Category    Category `json:"category"`
-	IsWebCall   bool     `json:"iswebcall"`
+	Id            int      `json:"id"`
+	Userid        int      `json:"userid"`
+	Title         string   `json:"title"`
+	Description   string   `json:"description"`
+	Date          string   `json:"date"`
+	IsAllDay      bool     `json:"isAllDay"`
+	StartTime     string   `json:"starttime"`
+	EndTime       string   `json:"endtime"`
+	Location      string   `json:"location"`
+	Category      Category `json:"category"`
+	Ics_import_id bool     `json:"ics_import_id"`
 }
 
 type ResponseAppointment struct {

@@ -108,7 +108,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     a.categoryid,
     ac.term,
     ac.color,
-    a.isWebCall
+    a.ics_import_id
     FROM appointments a
          	  INNER JOIN appointment_category ac on a.categoryid = ac.id
        		  LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
@@ -138,7 +138,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 			&appointment.Category.ID,
 			&appointment.Category.Term,
 			&appointment.Category.Color,
-			&appointment.IsWebCall,
+			&appointment.Ics_import_id,
 		)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
