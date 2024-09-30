@@ -9,7 +9,7 @@
     <p>{{userdata?.email}}</p>
   </div>
 
-  <div class="item webcallurl">
+  <!-- <div class="item webcallurl">
     <ng-container *ngIf="userdata?.webcallurl != ''">
       <h2>Webcall URL</h2>
       <p>{{userdata?.webcallurl}}</p>
@@ -34,6 +34,57 @@
         <i class="fa-solid fa-cloud-arrow-up"></i>
         Save webcallurl
       </button>
+    </div>
+  </div> -->
+
+  <div class="ics_imports item">
+    <div>
+      <div style="display: flex; flex-direction: row; gap: 10px; align-items: center; padding-bottom: 5px;">
+        <h2>ICS Import</h2>
+        <button (click)="AddNew = !AddNew" mat-button class="mat-button pos" *ngIf="!AddNew">
+          <i class="fa-solid fa-plus"></i>
+          Add new
+        </button>
+      </div>
+
+      <ng-container *ngIf="!AddNew">
+        <div class="item item2 webcallurl" *ngFor="let ics of userdata?.ics_imports">
+          <mat-form-field>
+            <mat-label>ICS Import_url</mat-label>
+            <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
+              [(ngModel)]="ics.ics_url" disabled>
+          </mat-form-field>
+          <div class="buttons">
+            <button mat-button class="mat-button pos" (click)="syncWebcall(ics.id)"
+              [disabled]="!canSyncWebcall(ics.id)">
+              <i class="fa-solid fa-sync"></i>
+              Sync webcall
+            </button>
+            <button mat-button class="mat-button info" disabled *ngIf="ics.ics_last_synced_at">
+              Last sync: {{ics.ics_last_synced_at}}
+            </button>
+            <button mat-button class="mat-button pos" *ngIf="ics.ics_last_synced_at"
+              (click)="setwebcallurl(ics.id, '')">
+              <i class="fa-solid fa-trash"></i>
+              Delete
+            </button>
+          </div>
+        </div>
+      </ng-container>
+
+      <div class="item item2 webcallurl" *ngIf="AddNew">
+        <mat-form-field>
+          <mat-label>New ICS Import_url</mat-label>
+          <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
+            [(ngModel)]="newIcsUrl">
+        </mat-form-field>
+        <div class="buttons">
+          <button mat-button class="mat-button pos" (click)="addNewImport(); AddNew = !AddNew">
+            <i class="fa-solid fa-plus"></i>
+            Add & Sync
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -63,5 +114,4 @@
       Logout
     </button>
   </div>
-
 </div>

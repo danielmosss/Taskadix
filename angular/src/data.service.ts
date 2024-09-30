@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Appointment, DayTodo, NewAppointment, Todo, Weather, appointmentCategory, backup, newTodoRequirements, userdata } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, UserData, Weather, appointmentCategory, backup, newTodoRequirements } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -15,7 +15,7 @@ export class DataService {
   public validJwtToken: boolean = false;
   public userLoggedIn: boolean = false;
 
-  public userdata: userdata | null;
+  public userdata: UserData | null;
 
   public isMobile(): boolean {
     return window.innerWidth <= 1000;
@@ -55,12 +55,12 @@ export class DataService {
     return this.http.post<{ status: string }>(this._SecureApi + "/PostCheckTodoTask", todoCard, { headers: this.getCustomHeaders() });
   }
 
-  public saveWebcallUrl(url: string) {
-    return this.http.post<{ status: string }>(this._SecureApi + "/PostWebcallUrl", { url: url }, { headers: this.getCustomHeaders() });
+  public saveWebcallUrl(url: string, id: number = 0) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/PostWebcallUrl", { url, id }, { headers: this.getCustomHeaders() });
   }
 
-  public syncWebcall() {
-    return this.http.get<{ status: string }>(this._SecureApi + "/GetWebcallSync", { headers: this.getCustomHeaders() });
+  public syncWebcall(id: number) {
+    return this.http.post<{ status: string }>(this._SecureApi + "/GetWebcallSync", id, { headers: this.getCustomHeaders() });
   }
 
   public putBackgroundcolor(color: string) {
@@ -68,14 +68,14 @@ export class DataService {
   }
 
   public getUserDataOnLoad() {
-    this.http.get<{ username: string, email: string, webcallurl: string, webcalllastsynced: string }>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe((data: { username: string, email: string, webcallurl: string, webcalllastsynced: string }) => {
+    this.http.get<UserData>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() }).subscribe((data: UserData) => {
       this.validJwtToken = true;
       this.userdata = data;
     })
   }
 
   public getUserDataReturn() {
-    return this.http.get<{ username: string, email: string, webcallurl: string, webcalllastsynced: string }>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
+    return this.http.get<UserData>(this._SecureApi + "/GetUserData", { headers: this.getCustomHeaders() })
   }
 
   public uploadBulkTodos(todoCards: newTodoRequirements[]) {

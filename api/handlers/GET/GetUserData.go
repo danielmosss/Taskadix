@@ -21,37 +21,53 @@ func GetUserData(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT username, email, webcallurl, webcalllastsynced FROM users WHERE id = ?;"
+	query := "SELECT username, email FROM users WHERE id = ?;"
 	result, err := dbConnection.Query(query, userId)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	query2 := "SELECT id, ics_url, ics_last_synced_at from ics_imports WHERE user_id = ?;"
+	result2, err := dbConnection.Query(query2, userId)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
 	defer result.Close()
 	defer dbConnection.Close()
 
 	var userdata handlers.UserData
 	for result.Next() {
-		var webcallurl sql.NullString
-		var webcalllastsynced sql.NullString
+		err := result.Scan(&userdata.Username, &userdata.Email)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+	}
 
-		// webcallurl and webcalllastsynced are nullable, so we need to check for null values
-		err := result.Scan(&userdata.Username, &userdata.Email, &webcallurl, &webcalllastsynced)
+	for result2.Next() {
+		var ics_import handlers.ICS_import
+		var ics_url sql.NullString
+		var ics_last_synced_at sql.NullString
+		err := result2.Scan(&ics_import.Id, &ics_url, &ics_last_synced_at)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
 
-		if webcallurl.Valid {
-			userdata.Webcallurl = webcallurl.String
-		} else {
-			userdata.Webcallurl = ""
+		if ics_url.Valid {
+			ics_import.IcsUrl = ics_url.String
+		}
+		if ics_last_synced_at.Valid {
+			ics_import.IcsLastSyncedAt = ics_last_synced_at.String
 		}
 
-		if webcalllastsynced.Valid {
-			userdata.Webcalllastsynced = webcalllastsynced.String
+		if ics_import.Id == 1 && ics_import.IcsUrl == "" && ics_import.IcsLastSyncedAt == "" {
+			continue
 		} else {
-			userdata.Webcalllastsynced = ""
+			userdata.ICS_imports = append(userdata.ICS_imports, ics_import)
 		}
 	}
 

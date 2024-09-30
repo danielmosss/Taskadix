@@ -44,7 +44,7 @@ func main() {
 	securedRoutes.HandleFunc("/UploadBulkTodo", POST.UploadBulkTodo).Methods("POST")
 	securedRoutes.HandleFunc("/PostCheckTodoTask", POST.PostCheckTodoTask).Methods("POST")
 	securedRoutes.HandleFunc("/PostWebcallUrl", POST.PostWebcallUrl).Methods("POST")
-	securedRoutes.HandleFunc("/GetWebcallSync", GET.GetWebcallSync).Methods("GET")
+	securedRoutes.HandleFunc("/GetWebcallSync", POST.PostWebcallSync).Methods("POST")
 
 	securedRoutes.HandleFunc("/v2/GetCategories", New.GetCategories).Methods("GET")
 	securedRoutes.HandleFunc("/v2/CreateAppointment", New.CreateAppointment).Methods("POST")

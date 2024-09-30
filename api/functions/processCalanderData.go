@@ -10,14 +10,14 @@ import (
 	_ "time/tzdata"
 )
 
-func ProcessCalanderData(userid int) {
+func ProcessCalanderData(userid int, ics_id int) {
 	dbconnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 
-	query := "SELECT webcallurl FROM users WHERE id = ?;"
-	result, err := dbconnection.Query(query, userid)
+	query := "SELECT ics_url FROM ics_imports WHERE user_id = ? AND id = ?;"
+	result, err := dbconnection.Query(query, userid, ics_id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -45,8 +45,8 @@ func ProcessCalanderData(userid int) {
 		}
 	}
 
-	updateSync := "UPDATE users SET webcalllastsynced = NOW() WHERE id = ?;"
-	resultUpdate, err := dbconnection.Query(updateSync, userid)
+	updateSync := "UPDATE ics_imports SET ics_last_synced_at = NOW() WHERE user_id = ? AND id = ?;"
+	resultUpdate, err := dbconnection.Query(updateSync, userid, ics_id)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -75,34 +75,109 @@ func fetchCalendarData(webcallurl string) ([]handlers.NewAppointment, error) {
 		return nil, error
 	}
 	for _, event := range calendar.Events() {
-		start, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtStart).Value, loc)
-		end, _ := time.ParseInLocation("20060102T150405", event.GetProperty(ics.ComponentPropertyDtEnd).Value, loc)
+		isAllDay := false
+		startValue := event.GetProperty(ics.ComponentPropertyDtStart).Value
+		endValue := event.GetProperty(ics.ComponentPropertyDtEnd).Value
+
+		if startValue[len(startValue)-1] == 'Z' {
+			startValue = startValue[:len(startValue)-1]
+		}
+
+		if endValue[len(endValue)-1] == 'Z' {
+			endValue = endValue[:len(endValue)-1]
+		}
+
+		if len(endValue) == 8 && len(startValue) == 8 {
+			isAllDay = true
+		}
+
+		if len(startValue) == 8 {
+			startValue = startValue + "T000000"
+		}
+
+		if len(endValue) == 8 {
+			endValue = endValue + "T000000"
+		}
+
+		start, _ := time.ParseInLocation("20060102T150405", startValue, loc)
+		end, _ := time.ParseInLocation("20060102T150405", endValue, loc)
 
 		title := event.GetProperty(ics.ComponentPropertySummary).Value
 		title = strings.Replace(title, "\\", "", -1)
 		title = strings.Split(title, ",")[0]
 
-		location := event.GetProperty(ics.ComponentPropertyLocation).Value
-		location = strings.Replace(location, "@", "", -1)
-		location = strings.Replace(location, "\\", "", -1)
+		locationProperty := event.GetProperty(ics.ComponentPropertyLocation)
+		location := ""
+		if locationProperty != nil {
+			location = locationProperty.Value
+			location = strings.Replace(location, "@", "", -1)
+			location = strings.Replace(location, "\\", "", -1)
+		}
 
-		description := getICSproperty(event, ics.ComponentPropertyDescription)
-		description = strings.Replace(description, "\\", "", -1)
+		descriptionProperty := event.GetProperty(ics.ComponentPropertyDescription)
+		description := ""
+		if descriptionProperty != nil {
+			description = descriptionProperty.Value
+			description = strings.Replace(description, "\\", "", -1)
+		}
 
 		// check if endtime is before starttime
 		if end.Before(start) {
 			end = start.Add(1 * time.Hour)
 		}
 
-		appointments = append(appointments, handlers.NewAppointment{
-			Title:       title,
-			Description: description,
-			Date:        start.Format("2006-01-02"),
-			IsAllDay:    false,
-			StartTime:   start.Format("15:04"),
-			EndTime:     end.Format("15:04"),
-			Location:    location,
-		})
+		//check if endtime is next day and starttime is previous day
+		if end.Day() != start.Day() {
+
+			for i := 0; i <= end.Day()-start.Day(); i++ {
+				if i == 0 {
+					appointments = append(appointments, handlers.NewAppointment{
+						Title:       title,
+						Description: description,
+						Date:        start.Format("2006-01-02"),
+						IsAllDay:    false,
+						StartTime:   start.Format("15:04"),
+						EndTime:     "23:59",
+						Location:    location,
+					})
+				} else if i == end.Day()-start.Day() {
+					endtime := end.Format("15:04")
+					if endtime == "00:00" {
+						endtime = "23:59"
+					}
+					appointments = append(appointments, handlers.NewAppointment{
+						Title:       title,
+						Description: description,
+						Date:        end.Format("2006-01-02"),
+						IsAllDay:    false,
+						StartTime:   "00:00",
+						EndTime:     endtime,
+						Location:    location,
+					})
+				} else {
+					appointments = append(appointments, handlers.NewAppointment{
+						Title:       title,
+						Description: description,
+						Date:        start.AddDate(0, 0, i).Format("2006-01-02"),
+						IsAllDay:    false,
+						StartTime:   "00:00",
+						EndTime:     "23:59",
+						Location:    location,
+					})
+				}
+			}
+
+		} else {
+			appointments = append(appointments, handlers.NewAppointment{
+				Title:       title,
+				Description: description,
+				Date:        start.Format("2006-01-02"),
+				IsAllDay:    isAllDay,
+				StartTime:   start.Format("15:04"),
+				EndTime:     end.Format("15:04"),
+				Location:    location,
+			})
+		}
 	}
 
 	return appointments, nil

@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { userdata } from 'src/app/interfaces';
+import { UserData } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -11,9 +11,9 @@ import { DataService } from 'src/data.service';
 export class AccountComponent implements OnInit {
   @Output() onSyncWebcall = new EventEmitter<void>();
 
-  public userdata: userdata | null;
-  public setWebcallurl: string;
-  public webcallurlSet: boolean = false;
+  public userdata: UserData | null;
+  public newIcsUrl: string;
+  public AddNew: boolean = false;
 
   public oldPassword: string;
   public newPassword: string;
@@ -30,12 +30,14 @@ export class AccountComponent implements OnInit {
   }
 
   // Check if user can sync webcall, if the user has never synced before, or if the last sync was more than 1 day ago, the user can sync.
-  canSyncWebcall() {
-    if (this.userdata?.webcalllastsynced == "") {
+  canSyncWebcall(id: number) {
+    var ics_import = this.userdata?.ics_imports.find(x => x.id == id);
+
+    if (ics_import?.ics_last_synced_at == null || ics_import?.ics_last_synced_at == "") {
       return true;
     }
     if (this.userdata) {
-      let lastsynced = new Date(this.userdata.webcalllastsynced);
+      let lastsynced = new Date(ics_import.ics_last_synced_at);
       let today = new Date();
       let diff = Math.abs(today.getTime() - lastsynced.getTime());
       let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
@@ -47,22 +49,26 @@ export class AccountComponent implements OnInit {
   }
 
   // Set webcall url and save it to the database.
-  setwebcallurl() {
-    this._dataservice.saveWebcallUrl(this.setWebcallurl).subscribe((data: any) => {
+  setwebcallurl(id:number, new_ics_url: string) {
+    this._dataservice.saveWebcallUrl(new_ics_url, id).subscribe((data: any) => {
       if (data.status == 'success') {
-        this.webcallurlSet = true;
         this.setUserData();
       }
     })
   }
 
-  syncWebcall() {
-    this._dataservice.syncWebcall().subscribe((data: any) => {
+  syncWebcall(id: number) {
+    this._dataservice.syncWebcall(id).subscribe((data: any) => {
       if (data.status == 'success') {
         this.onSyncWebcall.emit();
         this.setUserData();
       }
     })
+  }
+
+  addNewImport(){
+    this.setwebcallurl(0, this.newIcsUrl)
+    this.newIcsUrl = "";
   }
 
   setUserData() {
