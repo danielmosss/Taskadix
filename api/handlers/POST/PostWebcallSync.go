@@ -45,13 +45,6 @@ func PostWebcallSync(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	updateSync := "UPDATE ics_imports SET ics_last_synced_at = NOW() WHERE user_id = ? AND id = ?;"
-	resultUpdate, err := dbConnection.Query(updateSync, userId, ics_id)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer resultUpdate.Close()
 	defer dbConnection.Close()
 
 	functions.ProcessCalanderData(userId, ics_id)

@@ -16,15 +16,16 @@ func ProcessCalanderData(userid int, ics_id int) {
 		panic(err.Error())
 	}
 
-	query := "SELECT ics_url FROM ics_imports WHERE user_id = ? AND id = ?;"
+	query := "SELECT ics_url, category_id FROM ics_imports WHERE user_id = ? AND id = ?;"
 	result, err := dbconnection.Query(query, userid, ics_id)
 	if err != nil {
 		panic(err.Error())
 	}
 
 	var webcallurl string
+	var category_id int = 0
 	for result.Next() {
-		err := result.Scan(&webcallurl)
+		err := result.Scan(&webcallurl, &category_id)
 		if err != nil {
 			panic(err.Error())
 		}
@@ -41,7 +42,7 @@ func ProcessCalanderData(userid int, ics_id int) {
 	for _, appointment := range appointments {
 		fmt.Println(appointment)
 		if !taskExistsInDB(appointment, userid) {
-			insertAppointmentIntoDB(appointment, userid)
+			insertAppointmentIntoDB(appointment, userid, category_id)
 		}
 	}
 
@@ -196,8 +197,7 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
                                     AND starttime = ?
                                     AND endtime = ?
                                     AND userId = ? 
-                                    AND isWebCall = 1
-                                    AND categoryid = (select id from appointment_category where isdefault = 1 and term = 'School');`
+                                    AND isWebCall = 1;`
 	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
@@ -215,22 +215,51 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
 	return count > 0
 }
 
-func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int) {
+func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int, categoryid int) {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
 	}
 
+	if categoryid == 0 {
+		categoryid = GetDefaultICSImportCategory()
+	}
+
 	query := `INSERT INTO appointments
 			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, isWebCall)
 			  VALUES
-			      (?,?,?,?,?,?,?,?,(select id from appointment_category where isdefault = 1 and term = 'School'), 1);`
+			      (?,?,?,?,?,?,?,?,?,1);`
 
-	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location)
+	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, categoryid)
 	if err != nil {
 		panic(err.Error())
 	}
 	defer dbConnection.Close()
+}
+
+func GetDefaultICSImportCategory() int {
+	dbConnection, err := GetDatabaseConnection()
+	if err != nil {
+		panic(err.Error())
+	}
+
+	query := "SELECT id FROM appointment_category WHERE isdefault = 1 AND term = 'ICS Import';"
+	result, err := dbConnection.Query(query)
+	if err != nil {
+		panic(err.Error())
+	}
+	defer result.Close()
+	defer dbConnection.Close()
+
+	var category_id int
+	for result.Next() {
+		err := result.Scan(&category_id)
+		if err != nil {
+			panic(err.Error())
+		}
+	}
+
+	return category_id
 }
 
 func getICSproperty(event *ics.VEvent, property ics.ComponentProperty) string {

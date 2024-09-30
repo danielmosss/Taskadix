@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { UserData } from 'src/app/interfaces';
+import { appointmentCategory, UserData } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -13,7 +13,10 @@ export class AccountComponent implements OnInit {
 
   public userdata: UserData | null;
   public newIcsUrl: string;
+  public newIcsCategoryId: number;
   public AddNew: boolean = false;
+
+  public categories: appointmentCategory[] = [];
 
   public oldPassword: string;
   public newPassword: string;
@@ -23,6 +26,9 @@ export class AccountComponent implements OnInit {
 
   ngOnInit(): void {
     this.setUserData();
+    this._dataservice.getCategories().subscribe((data: any) => {
+      this.categories = data;
+    });
   }
 
   logout() {
@@ -50,7 +56,7 @@ export class AccountComponent implements OnInit {
 
   // Set webcall url and save it to the database.
   setwebcallurl(id:number, new_ics_url: string) {
-    this._dataservice.saveWebcallUrl(new_ics_url, id).subscribe((data: any) => {
+    this._dataservice.saveWebcallUrl(new_ics_url, id, this.newIcsCategoryId).subscribe((data: any) => {
       if (data.status == 'success') {
         this.setUserData();
       }

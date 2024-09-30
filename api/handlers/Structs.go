@@ -29,8 +29,9 @@ type RegisterRequest struct {
 }
 
 type Url struct {
-	Url string `json:"url"`
-	Id  int    `json:"id"`
+	Url         string `json:"url"`
+	Id          int    `json:"id"`
+	Category_id int    `json:"categoryId"`
 }
 
 type LoginResponse struct {

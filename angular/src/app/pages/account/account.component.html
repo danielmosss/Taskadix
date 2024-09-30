@@ -60,7 +60,8 @@
               <i class="fa-solid fa-sync"></i>
               Sync webcall
             </button>
-            <button mat-button class="mat-button info" disabled *ngIf="ics.ics_last_synced_at" [matTooltip]="ics.ics_last_synced_at">
+            <button mat-button class="mat-button info" disabled *ngIf="ics.ics_last_synced_at"
+              [matTooltip]="ics.ics_last_synced_at">
               Last sync: {{SyncedAgo(ics.ics_last_synced_at)}}
             </button>
             <button mat-button class="mat-button pos" *ngIf="ics.ics_last_synced_at"
@@ -73,11 +74,23 @@
       </ng-container>
 
       <div class="item item2 webcallurl" *ngIf="AddNew">
-        <mat-form-field>
-          <mat-label>New ICS Import_url</mat-label>
-          <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
-            [(ngModel)]="newIcsUrl">
-        </mat-form-field>
+        <div class="newItemFormfields">
+          <mat-form-field>
+            <mat-label>New ICS Import_url</mat-label>
+            <input matInput placeholder="webcal://che.myx.nl/api/InternetCalendar/feed/xxxtokenxxx/xxxtokenxxx"
+              [(ngModel)]="newIcsUrl">
+          </mat-form-field>
+
+          <mat-form-field>
+            <mat-label>Category</mat-label>
+            <mat-select [(ngModel)]="newIcsCategoryId">
+              <mat-option *ngFor="let category of categories" [value]="category.id">
+                <span style="color: {{category.color}}">&#x25CF;</span> {{category.term}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
         <div class="buttons">
           <button mat-button class="mat-button pos" (click)="addNewImport(); AddNew = !AddNew">
             <i class="fa-solid fa-plus"></i>

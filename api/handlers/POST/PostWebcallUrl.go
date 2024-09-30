@@ -34,31 +34,30 @@ func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if url.Id != 0 && url.Url == "" {
-		queryDelete := "DELETE FROM ics_imports WHERE user_id = ? AND id = ?;"
+		queryDelete := "DELETE FROM appointments WHERE userid = ? AND ics_import_id = ?;"
 		resultDelete, err := dbConnection.Query(queryDelete, userId, url.Id)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		queryDelete2 := "DELETE FROM ics_imports WHERE user_id = ? AND id = ?;"
+		resultDelete2, err := dbConnection.Query(queryDelete2, userId, url.Id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
 		defer resultDelete.Close()
+		defer resultDelete2.Close()
 		defer dbConnection.Close()
 	} else if url.Id == 0 {
-		queryInsert := "INSERT INTO ics_imports (user_id, ics_url) VALUES (?, ?);"
-		resultInsert, err := dbConnection.Query(queryInsert, userId, url.Url)
+		queryInsert := "INSERT INTO ics_imports (user_id, ics_url, category_id) VALUES (?, ?, ?);"
+		resultInsert, err := dbConnection.Query(queryInsert, userId, url.Url, url.Category_id)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
 		defer resultInsert.Close()
-		defer dbConnection.Close()
-	} else {
-		queryUpdate := "UPDATE ics_imports SET ics_url = ? WHERE user_id = ? AND id = ?;"
-		resultUpdate, err := dbConnection.Query(queryUpdate, url.Url, userId, url.Id)
-		if err != nil {
-			http.Error(res, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		defer resultUpdate.Close()
 		defer dbConnection.Close()
 	}
 
