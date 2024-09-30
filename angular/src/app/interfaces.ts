@@ -185,7 +185,7 @@ export interface Appointment {
   endtime: string,
   location: string,
   category: Category,
-  iswebcall: boolean,
+  ics_import_id: number,
   width?: number,
   left?: number,
 }
