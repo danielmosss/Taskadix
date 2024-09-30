@@ -90,7 +90,7 @@ type Appointment struct {
 	EndTime       string   `json:"endtime"`
 	Location      string   `json:"location"`
 	Category      Category `json:"category"`
-	Ics_import_id bool     `json:"ics_import_id"`
+	Ics_import_id int      `json:"ics_import_id"`
 }
 
 type ResponseAppointment struct {
