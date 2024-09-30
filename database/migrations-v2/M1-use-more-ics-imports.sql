@@ -10,7 +10,6 @@ CREATE TABLE ics_imports
     category_id        INT,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (category_id) REFERENCES appointment_category (id),
-    CONSTRAINT UQ_ics_url UNIQUE (ics_url),
     CONSTRAINT UQ_ics_url_user_id UNIQUE (ics_url, user_id),
     CONSTRAINT CK_ics_imports_user_id CHECK (user_id <= 10)
 );
