@@ -40,10 +40,10 @@ func PostWebcallSync(res http.ResponseWriter, req *http.Request) {
 	}
 	defer result.Close()
 
-	//if !result.Next() {
-	//	http.Error(res, "Webcall lastest sync is less than 1 day ago", http.StatusForbidden)
-	//	return
-	//}
+	if !result.Next() {
+		http.Error(res, "Webcall lastest sync is less than 1 day ago", http.StatusForbidden)
+		return
+	}
 
 	updateSync := "UPDATE ics_imports SET ics_last_synced_at = NOW() WHERE user_id = ? AND id = ?;"
 	resultUpdate, err := dbConnection.Query(updateSync, userId, ics_id)
