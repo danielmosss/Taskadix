@@ -77,6 +77,30 @@ export class AccountComponent implements OnInit {
     })
   }
 
+  SyncedAgo(ics_last_synced_at: string) {
+    let lastsynced = new Date(ics_last_synced_at);
+    let today = new Date();
+    let diff = Math.abs(today.getTime() - lastsynced.getTime());
+    let diffDays = Math.ceil(diff / (1000 * 3600 * 24));
+    let diffHours = Math.ceil(diff / (1000 * 3600));
+    let diffMinutes = Math.ceil(diff / (1000 * 60));
+    let diffSeconds = Math.ceil(diff / 1000);
+
+    if (diffDays > 1) {
+      return diffDays + " days ago";
+    }
+    if (diffHours > 1) {
+      return diffHours + " hours ago";
+    }
+    if (diffMinutes > 1) {
+      return diffMinutes + " minutes ago";
+    }
+    if (diffSeconds > 1) {
+      return diffSeconds + " seconds ago";
+    }
+    return "1 second ago";
+  }
+
   changePassword() {
     console.log(this.oldPassword, this.newPassword, this.newRepeatPassword);
   }

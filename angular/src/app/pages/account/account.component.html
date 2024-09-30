@@ -60,8 +60,8 @@
               <i class="fa-solid fa-sync"></i>
               Sync webcall
             </button>
-            <button mat-button class="mat-button info" disabled *ngIf="ics.ics_last_synced_at">
-              Last sync: {{ics.ics_last_synced_at}}
+            <button mat-button class="mat-button info" disabled *ngIf="ics.ics_last_synced_at" [matTooltip]="ics.ics_last_synced_at">
+              Last sync: {{SyncedAgo(ics.ics_last_synced_at)}}
             </button>
             <button mat-button class="mat-button pos" *ngIf="ics.ics_last_synced_at"
               (click)="setwebcallurl(ics.id, '')">
