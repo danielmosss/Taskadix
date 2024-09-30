@@ -21,7 +21,7 @@ FROM users
 where webcallurl is not null;
 
 alter table appointments add column ics_import_id int;
-update appointments set ics_import_id = (select id from ics_imports where user_id = appointments.userid limit 1);
+update appointments set ics_import_id = (select id from ics_imports where user_id = appointments.userid limit 1) where iswebcall = 1;
 
 alter table appointments drop column iswebcall;
 
