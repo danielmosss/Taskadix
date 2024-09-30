@@ -29,7 +29,9 @@ type RegisterRequest struct {
 }
 
 type Url struct {
-	Url string `json:"url"`
+	Url         string `json:"url"`
+	Id          int    `json:"id"`
+	Category_id int    `json:"categoryId"`
 }
 
 type LoginResponse struct {
@@ -41,11 +43,16 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
+type ICS_import struct {
+	Id              int    `json:"id"`
+	IcsUrl          string `json:"ics_url"`
+	IcsLastSyncedAt string `json:"ics_last_synced_at"`
+}
+
 type UserData struct {
-	Username          string `json:"username"`
-	Email             string `json:"email"`
-	Webcallurl        string `json:"webcallurl"`
-	Webcalllastsynced string `json:"webcalllastsynced"`
+	Username    string       `json:"username"`
+	Email       string       `json:"email"`
+	ICS_imports []ICS_import `json:"ics_imports"`
 }
 
 type DateRange struct {

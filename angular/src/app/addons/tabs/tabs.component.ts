@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { userdata } from 'src/app/interfaces';
+import { UserData } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 
 @Component({
@@ -9,7 +9,7 @@ import { DataService } from 'src/data.service';
   styleUrls: ['./tabs.component.scss']
 })
 export class TabsComponent implements OnInit{
-  public userdata: userdata | null;
+  public userdata: UserData | null;
 
   constructor(private _dataservice: DataService, private _snackbar: MatSnackBar) { }
 

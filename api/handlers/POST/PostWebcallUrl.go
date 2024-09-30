@@ -33,26 +33,33 @@ func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	query := "SELECT * FROM users WHERE id = ? AND webcallurl IS NOT NULL;"
-	result, err := dbConnection.Query(query, userId)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
+	if url.Id != 0 && url.Url == "" {
+		queryDelete := "DELETE FROM appointments WHERE userid = ? AND ics_import_id = ?;"
+		resultDelete, err := dbConnection.Query(queryDelete, userId, url.Id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
 
-	if result.Next() {
-		http.Error(res, "Webcall URL already set", http.StatusForbidden)
-		return
+		queryDelete2 := "DELETE FROM ics_imports WHERE user_id = ? AND id = ?;"
+		resultDelete2, err := dbConnection.Query(queryDelete2, userId, url.Id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer resultDelete.Close()
+		defer resultDelete2.Close()
+		defer dbConnection.Close()
+	} else if url.Id == 0 {
+		queryInsert := "INSERT INTO ics_imports (user_id, ics_url, category_id) VALUES (?, ?, ?);"
+		resultInsert, err := dbConnection.Query(queryInsert, userId, url.Url, url.Category_id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		defer resultInsert.Close()
+		defer dbConnection.Close()
 	}
-
-	queryUpdate := "UPDATE users SET webcallurl = ? WHERE webcallurl IS NULL AND id = ?;"
-	resultUpdate, err := dbConnection.Query(queryUpdate, url.Url, userId)
-	if err != nil {
-		http.Error(res, err.Error(), http.StatusInternalServerError)
-		return
-	}
-	defer resultUpdate.Close()
-	defer dbConnection.Close()
 
 	res.Header().Set("Content-Type", "application/json")
 	res.Write([]byte(`{"status": "success"}`))

@@ -1,10 +1,3 @@
-export interface userdata {
-  username: string,
-  email: string,
-  webcallurl: string,
-  webcalllastsynced: string
-}
-
 export interface Weather {
   location: interfaceLocation,
   current: interfaceWeather,
@@ -215,4 +208,16 @@ export interface backup{
   todos: Array<Todo>,
   appointments: Array<Appointment>,
   categories: Array<appointmentCategory>
+}
+
+export interface ICS_import {
+  id: number,
+  ics_url: string,
+  ics_last_synced_at: string
+}
+
+export interface UserData {
+  username: string,
+  email: string,
+  ics_imports: Array<ICS_import>
 }

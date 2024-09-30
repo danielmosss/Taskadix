@@ -10,7 +10,7 @@ import { DataService } from 'src/data.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CardpopupComponent } from '../../popups/cardpopup/cardpopup.component';
 import { CreateTodoComponent } from '../../popups/create-todo/create-todo.component';
-import { DayTodo, Todo, userdata } from '../../interfaces';
+import { DayTodo, Todo, UserData } from '../../interfaces';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { UploadjsonComponent } from '../../popups/uploadjson/uploadjson.component';
 const timer = (ms: any) => new Promise(res => setTimeout(res, ms))
@@ -31,7 +31,7 @@ export class TodosComponent implements OnInit {
   public dateRange: { start: string, end: string };
 
   public loading: boolean = false;
-  public userdata: userdata | null;
+  public userdata: UserData | null;
 
   public showCheckedItems: boolean = false;
 

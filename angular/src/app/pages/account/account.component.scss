@@ -16,8 +16,19 @@ mat-form-field {
     border-radius: 15px;
     background-color: var(--gray-light);
 
+    .item2{
+      background-color: var(--gray-lighter);
+      margin-bottom: 10px;
+
+      .newItemFormfields{
+        display: grid;
+        grid-template-columns: 4fr 1fr;
+        gap: 10px;
+      }
+    }
+
     .buttons{
-      margin-top: 15px;
+      margin-top: -15px;
     }
 
     .changePassword{
