@@ -44,13 +44,13 @@
             target="_blank">
           </i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editAppointment(appointment)" *ngIf="!appointment.iswebcall">
+          <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editAppointment(appointment)" *ngIf="!appointment.ics_import_id">
             <i class="fa-solid fa-pen-to-square fa-23"></i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.iswebcall" (click)="deleteAppointment(appointment)">
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.ics_import_id > 0" (click)="deleteAppointment(appointment)">
             <i class="fa-regular fa-calendar-xmark fa-23"></i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="!appointment.iswebcall" (click)="deleteAppointment(appointment)">
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.ics_import_id == 0" (click)="deleteAppointment(appointment)">
             <i class="fa-solid fa-trash-can fa-23"></i>
           </button>
         </div>

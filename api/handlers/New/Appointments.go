@@ -247,24 +247,24 @@ func DeleteAppointment(res http.ResponseWriter, req *http.Request) {
 	}
 
 	id := req.URL.Query().Get("id")
-	querySelectIsWebCall := `SELECT isWebCall FROM appointments WHERE userid = ? AND id = ?;`
-	result, err := dbConnection.Query(querySelectIsWebCall, userId, id)
+	querySelectics_import_id := `SELECT ics_import_id FROM appointments WHERE userid = ? AND id = ?;`
+	result, err := dbConnection.Query(querySelectics_import_id, userId, id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
 	}
 	defer result.Close()
 
-	var isWebCall int
+	var ics_import_id int
 	for result.Next() {
-		err := result.Scan(&isWebCall)
+		err := result.Scan(&ics_import_id)
 		if err != nil {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
 	}
 
-	if isWebCall == 1 {
+	if ics_import_id == 1 {
 		query := `INSERT INTO inrelevantappointments (userid, appointmentid) VALUES (?, ?);`
 		_, err = dbConnection.Exec(query, userId, id)
 		if err != nil {
@@ -358,7 +358,7 @@ func GetTenLastLocationsUser(res http.ResponseWriter, req *http.Request) {
 						 	     FROM appointments
 						 	     WHERE location IS NOT NULL
 						 	       AND location != ''
-						 	       AND iswebcall = 0
+						 	       AND ics_import_id = 0
 						 	       AND userid = ?
 						 	     ORDER BY id DESC
 						 	 ) AS subquery

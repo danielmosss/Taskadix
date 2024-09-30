@@ -156,7 +156,7 @@ export class CreateAppointmentComponent implements OnInit {
         starttime: this.NewAppointment.starttime ? this.NewAppointment.starttime : "",
         endtime: this.NewAppointment.endtime,
         location: this.NewAppointment.location,
-        iswebcall: this.appointment.iswebcall,
+        ics_import_id: this.appointment.ics_import_id,
         category: { id: this.NewAppointment.category.id, term: this.NewAppointment.category.term, color: this.appointment.category.color },
       }
 

@@ -3,11 +3,12 @@ package functions
 import (
 	"api/handlers"
 	"fmt"
-	ics "github.com/arran4/golang-ical"
 	"net/http"
 	"strings"
 	"time"
 	_ "time/tzdata"
+
+	ics "github.com/arran4/golang-ical"
 )
 
 func ProcessCalanderData(userid int, ics_id int) {
@@ -42,7 +43,7 @@ func ProcessCalanderData(userid int, ics_id int) {
 	for _, appointment := range appointments {
 		fmt.Println(appointment)
 		if !taskExistsInDB(appointment, userid) {
-			insertAppointmentIntoDB(appointment, userid, category_id)
+			insertAppointmentIntoDB(appointment, userid, category_id, ics_id)
 		}
 	}
 
@@ -197,7 +198,7 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
                                     AND starttime = ?
                                     AND endtime = ?
                                     AND userId = ? 
-                                    AND isWebCall = 1;`
+                                    AND ics_import_id > 0;`
 	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
@@ -215,7 +216,7 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
 	return count > 0
 }
 
-func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int, categoryid int) {
+func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int, categoryid int, ics_import_id int) {
 	dbConnection, err := GetDatabaseConnection()
 	if err != nil {
 		panic(err.Error())
@@ -226,11 +227,11 @@ func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int,
 	}
 
 	query := `INSERT INTO appointments
-			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, isWebCall)
+			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, ics_import_id)
 			  VALUES
-			      (?,?,?,?,?,?,?,?,?,1);`
+			      (?,?,?,?,?,?,?,?,?,?);`
 
-	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, categoryid)
+	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, categoryid, ics_import_id)
 	if err != nil {
 		panic(err.Error())
 	}

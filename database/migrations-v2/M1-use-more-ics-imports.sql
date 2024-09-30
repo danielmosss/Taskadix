@@ -19,7 +19,7 @@ SELECT id, webcallurl, null, now(), now(), webcalllastsynced
 FROM users
 where webcallurl is not null;
 
-alter table appointments add column ics_import_id int;
+alter table appointments add column ics_import_id int DEFAULT(0);
 update appointments set ics_import_id = (select id from ics_imports where user_id = appointments.userid limit 1) where iswebcall = 1;
 
 alter table appointments drop column iswebcall;
