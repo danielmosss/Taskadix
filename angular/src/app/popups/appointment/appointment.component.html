@@ -17,8 +17,11 @@
 
       <div class="Item">
         <i class="fa-solid fa-clock fa-23"></i>
-        <p class="text time">
+        <p class="text time" *ngIf="!appointment.isAllDay">
           {{getDateName(appointment.date)}} {{formatTime(appointment.starttime)}} - {{formatTime(appointment.endtime)}}
+        </p>
+        <p class="text time" *ngIf="appointment.isAllDay">
+          {{getDateName(appointment.date)}} {{getDateName(appointment.enddate) == getDateName(appointment.date) ? "" : "- " + getDateName(appointment.enddate)}}
         </p>
       </div>
 

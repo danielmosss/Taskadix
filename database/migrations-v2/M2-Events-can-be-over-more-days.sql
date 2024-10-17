@@ -15,6 +15,9 @@ alter table appointments
 
 # enddate can not be null
 ALTER TABLE appointments
-    MODIFY enddate DATETIME NOT NULL;
+    MODIFY enddate date NOT NULL;
+
+alter table appointments
+    modify ics_import_id int default(0) NOT NULL;
 
 

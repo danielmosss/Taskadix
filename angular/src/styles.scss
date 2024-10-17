@@ -9,6 +9,7 @@
   --gray-light: #424242;
   --gray-lighter: #606060;
   --gray-lightest: #686868;
+  --gray-lightest2: #757575;
   --primary-color: #b22234;
   --secondary-color: #f3f3f3;
   --aquablue: #00C9C8;
@@ -29,6 +30,13 @@ body {
   display: none;
 }
 
+.datetimeinput .mat-mdc-form-field-subscript-wrapper{
+  display: none;;
+}
+
+.disabled{
+  background-color: var(--gray-lightest2) !important;
+}
 
 body {
   margin: 0;

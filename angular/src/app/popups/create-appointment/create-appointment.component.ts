@@ -84,9 +84,15 @@ export class CreateAppointmentComponent implements OnInit {
     return this.GetTenLastLocationsUser.filter(location => location.toLowerCase().includes(filterValue));
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
+  onDateChange(event: MatDatepickerInputEvent<Date>, isEnddate: boolean) {
     const formatted = moment(event.value).format('YYYY-MM-DD');
-    this.NewAppointment.date = formatted;
+    if (isEnddate) this.NewAppointment.enddate = formatted;
+    else {
+      this.NewAppointment.date = formatted;
+      if (this.NewAppointment.enddate === "") {
+        this.NewAppointment.enddate = formatted;
+      }
+    }
   }
 
   cancel() {
