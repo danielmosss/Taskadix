@@ -72,6 +72,7 @@ type NewAppointment struct {
 	Title       string   `json:"title"`
 	Description string   `json:"description"`
 	Date        string   `json:"date"`
+	Enddate     string   `json:"enddate"`
 	IsAllDay    bool     `json:"isAllDay"`
 	StartTime   string   `json:"starttime"`
 	EndTime     string   `json:"endtime"`
@@ -85,6 +86,7 @@ type Appointment struct {
 	Title         string   `json:"title"`
 	Description   string   `json:"description"`
 	Date          string   `json:"date"`
+	Enddate       string   `json:"enddate"`
 	IsAllDay      bool     `json:"isAllDay"`
 	StartTime     string   `json:"starttime"`
 	EndTime       string   `json:"endtime"`

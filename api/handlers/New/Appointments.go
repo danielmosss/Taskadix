@@ -29,6 +29,7 @@ func GetAppointment(res http.ResponseWriter, req *http.Request) {
     a.title,
     a.description,
     a.date,
+    a.enddate,
     a.isallday,
     a.starttime,
     a.endtime,
@@ -55,6 +56,7 @@ func GetAppointment(res http.ResponseWriter, req *http.Request) {
 			&appointment.Title,
 			&appointment.Description,
 			&appointment.Date,
+			&appointment.Enddate,
 			&appointment.IsAllDay,
 			&appointment.StartTime,
 			&appointment.EndTime,
@@ -100,7 +102,8 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     a.userid,
     a.title,
     a.description,
-    a.date, 
+    a.date,
+    a.enddate, 
     a.isallday,
     a.starttime,
     a.endtime,
@@ -131,6 +134,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 			&appointment.Title,
 			&appointment.Description,
 			&appointment.Date,
+			&appointment.Enddate,
 			&appointment.IsAllDay,
 			&appointment.StartTime,
 			&appointment.EndTime,
@@ -208,11 +212,11 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 	}
 
 	query := `INSERT INTO appointments 
-			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid) 
+			      (userid, title, description, date, enddate, isallday, starttime, endtime, location, categoryid) 
 			  VALUES 
-			      (?,?,?,?,?,?,?,?,?);`
+			      (?,?,?,?,?,?,?,?,?,?);`
 
-	result, err := dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, newAppointment.Category.ID)
+	result, err := dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.Enddate, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, newAppointment.Category.ID)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -326,10 +330,10 @@ func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
 	}
 
 	query := `UPDATE appointments 
-			  SET title = ?, description = ?, date = ?, isallday = ?, starttime = ?, endtime = ?, location = ?, categoryid = ? 
+			  SET title = ?, description = ?, date = ?, enddate = ?, isallday = ?, starttime = ?, endtime = ?, location = ?, categoryid = ? 
 			  WHERE userid = ? AND id = ?;`
 
-	_, err = dbConnection.Exec(query, upAppi.Title, upAppi.Description, upAppi.Date, upAppi.IsAllDay, upAppi.StartTime, upAppi.EndTime, upAppi.Location, upAppi.Category.ID, userId, upAppi.Id)
+	_, err = dbConnection.Exec(query, upAppi.Title, upAppi.Description, upAppi.Date, upAppi.Enddate, upAppi.IsAllDay, upAppi.StartTime, upAppi.EndTime, upAppi.Location, upAppi.Category.ID, userId, upAppi.Id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
