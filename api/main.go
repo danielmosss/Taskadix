@@ -32,8 +32,7 @@ func main() {
 
 	securedRoutes := handler.PathPrefix("/api").Subrouter()
 	securedRoutes.Use(functions.TokenVerifyMiddleware)
-
-	securedRoutes.HandleFunc("/GetWeather", GET.GetWeather).Methods("GET")
+	
 	securedRoutes.HandleFunc("/GetTodoTasks", GET.GetTodoTasks).Methods("GET")
 	securedRoutes.HandleFunc("/PutTodoTasks", PUT.PutTodoTasks).Methods("PUT")
 	securedRoutes.HandleFunc("/PostTodoTask", POST.PostTodoTask).Methods("POST")
