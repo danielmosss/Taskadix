@@ -264,7 +264,7 @@ func DeleteAppointment(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	if ics_import_id == 1 {
+	if ics_import_id > 0 {
 		query := `INSERT INTO inrelevantappointments (userid, appointmentid) VALUES (?, ?);`
 		_, err = dbConnection.Exec(query, userId, id)
 		if err != nil {
