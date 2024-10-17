@@ -30,9 +30,11 @@ export class MonthOverviewComponent implements OnInit {
     this.getMonthView();
   }
 
-  getMonthView(monthNr?: number): void {
-    const now = new Date();
-    let flatMonthView = this.calendarService.getMonthView(now.getFullYear(), (monthNr || monthNr == 0) ? monthNr : now.getMonth());
+  getMonthView(date?: any): void {
+    if (!date) date = new Date();
+    let monthNr = new Date(date).getMonth();
+    let yearNr = new Date(date).getFullYear();
+    let flatMonthView = this.calendarService.getMonthView(yearNr, monthNr);
 
     this.monthView = [];
     for (let i = 0; i < flatMonthView.length; i += 7) {
@@ -94,8 +96,7 @@ export class MonthOverviewComponent implements OnInit {
   }
 
   monthSelected(date: string) {
-    let monthNr = new Date(date).getMonth();
-    this.getMonthView(monthNr);
+    this.getMonthView(date);
   }
 
   async openDetails(appointment: Appointment) {
