@@ -10,7 +10,6 @@ CREATE TABLE ics_imports
     category_id        INT,
     FOREIGN KEY (user_id) REFERENCES users (id),
     FOREIGN KEY (category_id) REFERENCES appointment_category (id),
-    CONSTRAINT UQ_ics_url UNIQUE (ics_url),
     CONSTRAINT UQ_ics_url_user_id UNIQUE (ics_url, user_id),
     CONSTRAINT CK_ics_imports_user_id CHECK (user_id <= 10)
 );
@@ -20,8 +19,8 @@ SELECT id, webcallurl, null, now(), now(), webcalllastsynced
 FROM users
 where webcallurl is not null;
 
-alter table appointments add column ics_import_id int;
-update appointments set ics_import_id = (select id from ics_imports where user_id = appointments.userid limit 1);
+alter table appointments add column ics_import_id int DEFAULT(0);
+update appointments set ics_import_id = (select id from ics_imports where user_id = appointments.userid limit 1) where iswebcall = 1;
 
 alter table appointments drop column iswebcall;
 

@@ -37,7 +37,7 @@ BEGIN
                                    'endtime', appointments.endtime,
                                    'location', appointments.location,
                                    'categoryid', appointments.categoryid,
-                                   'iswebcall', appointments.iswebcall))
+                                   'ics_import_id', appointments.ics_import_id))
             FROM appointments
             WHERE appointments.userid = userid) as Appointments,
            (SELECT JSON_ARRAYAGG(
