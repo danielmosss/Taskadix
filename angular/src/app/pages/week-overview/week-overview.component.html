@@ -52,7 +52,7 @@
                 <div class="appointmentTime">
                   <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displayAppo.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(displayAppo)">
+                  <div class="cardContent" (click)="openDetails(displayAppo)" [ngStyle]="{'margin-top': displayAppo.isAllDay ? 0 : (getNumberOfWholeDayAppointments(day) * 35) + 10 + 'px'}">
                     <div class="category" [ngStyle]="{'color': getAppointment(displayAppo.appointmentid).category.color}"
                       *ngIf="ShowCategory(displayAppo)">
                       {{ getAppointment(displayAppo.appointmentid).category.term }}
@@ -60,9 +60,17 @@
                     <div class="title">
                       {{ getAppointment(displayAppo.appointmentid).title }}
                     </div>
-                    <div class="time">
+
+                    <div class="time" *ngIf="getAppointment(displayAppo.appointmentid).date !== getAppointment(displayAppo.appointmentid).enddate">
+                      {{ getDateName(getAppointment(displayAppo.appointmentid).date) }} {{ getFormattedTime(getAppointment(displayAppo.appointmentid).starttime) }}
+                      <br>
+                      {{ getDateName(getAppointment(displayAppo.appointmentid).enddate) }} {{ getFormattedTime(getAppointment(displayAppo.appointmentid).endtime) }}
+                    </div>
+
+                    <div class="time" *ngIf="getAppointment(displayAppo.appointmentid).date == getAppointment(displayAppo.appointmentid).enddate">
                       {{ getFormattedTime(getAppointment(displayAppo.appointmentid).starttime) }} - {{ getFormattedTime(getAppointment(displayAppo.appointmentid).endtime) }}
                     </div>
+
                     <div class="location">
                       <i class="fa-solid fa-location-dot fa-2xs"></i> {{ getAppointment(displayAppo.appointmentid).location }}
                     </div>

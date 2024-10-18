@@ -16,6 +16,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   // Global functions
   getDateNumber = this.globalfunctions.getDateNumber;
+  getDateName = this.globalfunctions.getDateName;
   updateType = updateType;
   // Global functions
 
@@ -54,6 +55,10 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     else if (hour >= 17 && hour < 24) scrollHeight = 16 * this.heightPerHour;
 
     this.weekgridScroll.nativeElement.scrollTop = scrollHeight;
+  }
+
+  getNumberOfWholeDayAppointments(day: day): number {
+    return day.displayAppointments.filter(appointment => appointment.isAllDay).length;
   }
 
   getAppointment(id: number): Appointment {
