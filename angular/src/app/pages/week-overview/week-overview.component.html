@@ -46,36 +46,36 @@
 
 
           <div class="appointments">
-            <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment"
-            matTooltip="{{appointment.description}}">
-              <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
+            <div *ngFor="let displApp of day.displayAppointments" [ngStyle]="getTaskStyle(displApp)" class="appointment"
+            matTooltip="{{getAppointment(displApp.appointmentid).description}}">
+              <ng-container *ngIf="displApp.date === day.date && !getAppointment(displApp.appointmentid).isAllDay">
                 <div class="appointmentTime">
-                  <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                  <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displApp.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(appointment)">
-                    <div class="category" [ngStyle]="{'color': appointment.category.color}"
-                      *ngIf="ShowCategory(appointment)">
-                      {{ appointment.category.term }}
+                  <div class="cardContent" (click)="openDetails(displApp)">
+                    <div class="category" [ngStyle]="{'color': getAppointment(displApp.appointmentid).category.color}"
+                      *ngIf="ShowCategory(displApp)">
+                      {{ getAppointment(displApp.appointmentid).category.term }}
                     </div>
                     <div class="title">
-                      {{ appointment.title }}
+                      {{ getAppointment(displApp.appointmentid).title }}
                     </div>
                     <div class="time">
-                      {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
+                      {{ getFormattedTime(getAppointment(displApp.appointmentid).starttime) }} - {{ getFormattedTime(getAppointment(displApp.appointmentid).endtime) }}
                     </div>
                     <div class="location">
-                      <i class="fa-solid fa-location-dot fa-2xs"></i> {{ appointment.location }}
+                      <i class="fa-solid fa-location-dot fa-2xs"></i> {{ getAppointment(displApp.appointmentid).location }}
                     </div>
                   </div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="appointment.date === day.date && appointment.isAllDay">
+              <ng-container *ngIf="displApp.date === day.date && displApp.isAllDay">
                 <div class="appointmentWholeDay">
-                  <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                  <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displApp.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(appointment)">
+                  <div class="cardContent" (click)="openDetails(displApp)">
                     <div class="title">
-                      {{ appointment.title }}
+                      {{ getAppointment(displApp.appointmentid).title }}
                     </div>
                   </div>
                 </div>

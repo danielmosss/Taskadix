@@ -63,6 +63,7 @@ export interface Appointment {
 export interface DisplayAppointment {
   starttime: string,
   endtime: string,
+  isAllDay: boolean,
   date: string,
   height?: number,
   top?: number,

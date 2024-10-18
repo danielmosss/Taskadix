@@ -1,14 +1,15 @@
 import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
-import { day } from '../week-overview.component';
 import * as moment from 'moment';
-import { Appointment } from 'src/app/interfaces';
+import { Appointment, day, DisplayAppointment } from 'src/app/interfaces';
 import { MatDialog } from '@angular/material/dialog';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
+// import funciton from week-overview.component.ts
 import { DataService } from 'src/data.service';
 import { MobilePickDayPopupComponent } from 'src/app/popups/mobile-pick-day-popup/mobile-pick-day-popup.component';
 import { HammerGestureConfig } from '@angular/platform-browser';
 import * as Hammer from 'hammerjs'; // Import Hammer.js
+import { WeekOverviewComponent } from '../week-overview.component';
 
 export class MyHammerConfig extends HammerGestureConfig{
   override overrides = <any>{
@@ -38,18 +39,12 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   getActivePosition() {
     return this.globalfunctions.getActivePosition(this.heightPerHour);
   }
-  getTaskStyle(appointment: Appointment): any {
-    return this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
-  }
-  calculateOverlaps(appointments: Appointment[]) {
-    return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
-  }
   updateType = updateType;
   //GLOBAL FUNCTIONS
 
-  public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
   public today: string = moment().format('YYYY-MM-DD');
   public activeDate: string = moment().format('YYYY-MM-DD');
+  private appointments: Map<number, Appointment> = new Map<number, Appointment>();
   public days: day[] = [];
   public times: string[] = [];
 
@@ -72,6 +67,18 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
     this.daygridScroll.nativeElement.scrollTop = scrollHeight;
   }
 
+  getTaskStyle(disApp: DisplayAppointment): any {
+    return this.globalfunctions.getTaskStyle(disApp, this.getActiveDay().displayAppointments, Array.from(this.appointments.values()), this.heightPerHour);
+  }
+
+  getActiveDay(): day {
+    return this.days.find(day => day.date === this.activeDate) || this.days[0];
+  }
+
+  getAppointment(id: number): Appointment {
+    return this.appointments.get(id) || {} as Appointment;
+  }
+
   generateDays(middleDate?: Date): day[] {
     let days: day[] = [];
 
@@ -84,46 +91,61 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
         date: moment(date).format('YYYY-MM-DD'),
         day: date.toLocaleString('en-us', { weekday: 'short' }),
         istoday: date.toDateString() === new Date().toDateString(),
-        appointments: []
+        displayAppointments: []
       });
     }
 
     return days;
   }
 
-  async openDetails(appointment: Appointment) {
+  async openDetails(disApp: DisplayAppointment) {
+    let appointment = this.getAppointment(disApp.appointmentid);
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
     if (result.updateType === updateType.DELETE) {
-      this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result.appointmentid);
+      this.days.forEach(day => {
+        day.displayAppointments = day.displayAppointments.filter(disApp => disApp.appointmentid !== result.appointmentid);
+        day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
+      });
+      this.appointments.delete(result.appointmentid);
     }
     if (result.updateType === updateType.UPDATE) {
-      this.getAppointments(this.day.date, this.day.date);
+      this.getAppointments(this.activeDate, this.activeDate);
     }
   }
 
-  ShowCategory(appointment: Appointment): boolean {
-    let height = this.getTaskStyle(appointment).height;
+  ShowCategory(disApp: DisplayAppointment): boolean {
+    let day = this.days.find(day => day.date === disApp.date);
+    if (!day) return false;
+
+    let height = this.globalfunctions.getTaskStyle(disApp, day.displayAppointments, Array.from(this.appointments.values()), this.heightPerHour).height;
     let heightNumber = parseInt(height.slice(0, -2), 10);
     return heightNumber > 60;
   }
 
   getAppointments(beginDate: string, endDate: string) {
-    this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
+    this._dataservice.GetAppointmentsV3(beginDate, endDate).subscribe((data) => {
       if (data == null) return;
-      data.forEach(element => {
-        const day = this.day;
-        if (day && element.appointments.length > 0) {
-          day.appointments = element.appointments;
-          day.appointments = this.calculateOverlaps(day.appointments);
-        }
+      data.forEach(appointment => {
+        this.appointments.set(appointment.id, appointment);
+        // this.processDisplayAppointments(appointment);
+        // use processDisplayAppointments from week-overview.component.ts
+        var displAppointments: DisplayAppointment[] = WeekOverviewComponent.prototype.processDisplayAppointments(appointment);
+        displAppointments.forEach(displApp => {
+          let day = this.days.find(day => day.date === displApp.date);
+          if (day) {
+            day.displayAppointments.push(displApp);
+          }
+        });
+      });
+      this.days.forEach(day => {
+        day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
       });
     });
   }
 
   selectOtherDay(date: string) {
-    this.day = { date: date, datename: this.getDateName(date), day: moment(date).format('dddd'), appointments: [] };
-    this.getAppointments(date, date);
     this.activeDate = moment(date).format('YYYY-MM-DD');
+    this.getAppointments(date, date);
   }
 
   handleDateSelection(date: string) {
@@ -141,11 +163,11 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
 
   // day +1
   onSwipeLeft(){
-    this.selectOtherDay(moment(this.day.date).add(1, 'days').format('YYYY-MM-DD'));
+    this.selectOtherDay(moment(this.activeDate).add(1, 'days').format('YYYY-MM-DD'));
   }
 
   // day -1
   onSwipeRight(){
-    this.selectOtherDay(moment(this.day.date).subtract(1, 'days').format('YYYY-MM-DD'));
+    this.selectOtherDay(moment(this.activeDate).subtract(1, 'days').format('YYYY-MM-DD'));
   }
 }
