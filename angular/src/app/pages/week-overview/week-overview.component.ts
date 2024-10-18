@@ -86,7 +86,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       if (data == null) return;
       data.forEach(appointment => {
         this.appointments.set(appointment.id, appointment);
-        var displAppointments: DisplayAppointment[] = this.processDisplayAppointments(appointment);
+        var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
         displAppointments.forEach(displApp => {
           let day = this.days.find(day => day.date === displApp.date);
           if (day) {
@@ -98,66 +98,6 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
       });
     });
-  }
-
-  processDisplayAppointments(appointment: Appointment): DisplayAppointment[] {
-    // appointments can be over multipledays, so we need to create a displayappointment for each day.
-    // we need to check which part of the multiple day appointment is in this week.
-    let displayAppointments: DisplayAppointment[] = [];
-
-    //if single day appointment
-    if (appointment.date === appointment.enddate) {
-      let displayAppointment: DisplayAppointment = {
-        starttime: appointment.starttime,
-        endtime: appointment.endtime,
-        isAllDay: appointment.isAllDay,
-        date: appointment.date,
-        appointmentid: appointment.id,
-      }
-      displayAppointments.push(displayAppointment);
-    }
-
-    // if multiple day appointment
-    else if (appointment.date !== appointment.enddate) {
-      let startDate = new Date(appointment.date);
-      let endDate = new Date(appointment.enddate);
-      let currentDate = new Date(startDate);
-
-      while (currentDate <= endDate) {
-        let starttime = appointment.starttime;
-        let endtime = appointment.endtime;
-
-        if (currentDate.toDateString() === startDate.toDateString()) {
-          starttime = appointment.starttime;
-          endtime = '23:59:00';
-        }
-        else
-        if (currentDate.toDateString() === endDate.toDateString()) {
-          starttime = '00:00:00';
-          endtime = appointment.endtime;
-        }
-        else {
-          starttime = '00:00:00';
-          endtime = '23:59:00';
-        }
-
-        if (appointment.isAllDay) {
-          starttime = '00:00:00';
-          endtime = '00:00:00';
-        }
-
-        let displayAppointment: DisplayAppointment = {
-          starttime: starttime,
-          endtime: endtime,
-          isAllDay: appointment.isAllDay,
-          date: moment(currentDate).format('YYYY-MM-DD'),
-          appointmentid: appointment.id,
-        }
-        displayAppointments.push(displayAppointment);
-        currentDate.setDate(currentDate.getDate() + 1);
-      }
-    }
-    return displayAppointments;
   }
 
   generateTimes(): string[] {
@@ -215,7 +155,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
-      var displAppointments: DisplayAppointment[] = this.processDisplayAppointments(appointment);
+      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
       displAppointments.forEach(displApp => {
         let day = this.days.find(day => day.date === displApp.date);
         if (day) {

@@ -129,7 +129,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
         this.appointments.set(appointment.id, appointment);
         // this.processDisplayAppointments(appointment);
         // use processDisplayAppointments from week-overview.component.ts
-        var displAppointments: DisplayAppointment[] = WeekOverviewComponent.prototype.processDisplayAppointments(appointment);
+        var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
         displAppointments.forEach(displApp => {
           let day = this.days.find(day => day.date === displApp.date);
           if (day) {

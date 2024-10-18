@@ -63,7 +63,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
       if (appointment.date !== this.day.date) return;
       // this.day.appointments.push(appointment);
       // this.day.appointments = this.calculateOverlaps(this.day.appointments);
-      var displAppointments: DisplayAppointment[] = WeekOverviewComponent.prototype.processDisplayAppointments(appointment);
+      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
       displAppointments.forEach(displApp => {
         if (displApp.date === this.day.date) {
           this.day.displayAppointments.push(displApp);
@@ -82,7 +82,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
       if (data == null) return;
       data.forEach(appointment => {
         this.appointments.set(appointment.id, appointment);
-        var displAppointments: DisplayAppointment[] = WeekOverviewComponent.prototype.processDisplayAppointments(appointment);
+        var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
         displAppointments.forEach(displApp => {
           if (displApp.date === this.day.date) {
             this.day.displayAppointments.push(displApp);
