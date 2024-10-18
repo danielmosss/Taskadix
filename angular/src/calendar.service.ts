@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import * as moment from 'moment';
-import { Appointment, Todo } from './app/interfaces';
+import { Appointment, DisplayAppointment, Todo } from './app/interfaces';
 
 export interface CalendarDay {
   date: Date;
   momentDate: string;
-  appointments: Array<Appointment>;
+  displayAppointments: Array<DisplayAppointment>;
   isInSelectedMonth?: boolean;
 }
 
@@ -36,7 +36,7 @@ export class CalendarService {
       days.push({
         date: new Date(day),
         momentDate: moment(day).format('YYYY-MM-DD'),
-        appointments: [],
+        displayAppointments: [],
         isInSelectedMonth: day.getMonth() === month
       });
     }

@@ -34,12 +34,12 @@
           </ng-container>
         </div>
 
-        <div class="events-container" *ngIf="day.appointments">
-          <div *ngFor="let appointment of day.appointments" class="event" (click)="openDetails(appointment)"
-          matTooltip="{{appointment.description}}">
-            <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}"></div>
-            <div class="eventContent" *ngIf="appointment.isAllDay">{{ appointment.title }}</div>
-            <div class="eventContent" *ngIf="!appointment.isAllDay">{{formatTime(appointment.starttime)}} - {{ appointment.title }}</div>
+        <div class="events-container" *ngIf="day.displayAppointments">
+          <div *ngFor="let displayAppo of day.displayAppointments" class="event" (click)="openDetails(displayAppo)"
+          matTooltip="{{getAppointment(displayAppo.appointmentid).description}}">
+            <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displayAppo.appointmentid).category.color}"></div>
+            <div class="eventContent" *ngIf="getAppointment(displayAppo.appointmentid).isAllDay">{{ getAppointment(displayAppo.appointmentid).title }}</div>
+            <div class="eventContent" *ngIf="!getAppointment(displayAppo.appointmentid).isAllDay">{{formatTime(displayAppo.starttime)}} - {{ getAppointment(displayAppo.appointmentid).title }}</div>
           </div>
         </div>
 

@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Appointment, Todo } from 'src/app/interfaces';
+import { Appointment, DisplayAppointment, Todo } from 'src/app/interfaces';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
@@ -23,6 +23,7 @@ export class MonthOverviewComponent implements OnInit {
 
   monthView: { weeknumber: number, days: CalendarDay[] }[] = []
   today: Date = new Date();
+  public appointments: Map<number, Appointment> = new Map<number, Appointment>();
 
   constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog, private globalfunctions: GlobalfunctionsService) { }
 
@@ -47,18 +48,36 @@ export class MonthOverviewComponent implements OnInit {
     this.getMonthAppointments();
   }
 
-  getMonthAppointments() {
-    this._dataservice.getAppointments(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate).subscribe(monthData => {
-      monthData.forEach(day => {
-        let findday = this.findDayInMonthView(new Date(day.date))
-        if (findday) {
-          if (!findday.appointments) {
-            findday.appointments = [];
-          }
-          findday.appointments = day.appointments;
+  getAppointment(id: number): Appointment {
+    return this.appointments.get(id) || {} as Appointment;
+  }
 
-          // order: wholeday, then time based
-          findday.appointments = findday.appointments.sort((a, b) => {
+  getMonthAppointments() {
+    this._dataservice.GetAppointmentsV3(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate).subscribe(appointments => {
+      this.appointments = new Map<number, Appointment>();
+      appointments.forEach(appointment => {
+        this.appointments.set(appointment.id, appointment);
+
+        var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
+        displAppointments.forEach(displApp => {
+          let findday = this.findDayInMonthView(new Date(displApp.date))
+          if (findday) {
+            if (!findday.displayAppointments) {
+              findday.displayAppointments = [];
+            }
+            findday.displayAppointments.push(displApp);
+          }
+        })
+      })
+      this.sortAllDays();
+    })
+  }
+
+  sortAllDays(){
+    this.monthView.forEach(week => {
+      week.days.forEach(day => {
+        if(day.displayAppointments){
+          day.displayAppointments = day.displayAppointments.sort((a, b) => {
             if (a.isAllDay && !b.isAllDay) return -1;
             if (!a.isAllDay && b.isAllDay) return 1;
             if (a.isAllDay && b.isAllDay) return 0;
@@ -85,31 +104,29 @@ export class MonthOverviewComponent implements OnInit {
   }
 
   newAppointment(appointmentId: number) {
-    console.log(appointmentId)
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
-      const date = new Date(appointment.date);
-      const calendarDay = this.findDayInMonthView(date);
-      if (!calendarDay) return;
-      if (!calendarDay.appointments) calendarDay.appointments = [];
-      calendarDay.appointments.push(appointment);
+      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
+      displAppointments.forEach(displApp => {
+        let findday = this.findDayInMonthView(new Date(displApp.date))
+        if (findday) {
+          if (!findday.displayAppointments) {
+            findday.displayAppointments = [];
+          }
+          findday.displayAppointments.push(displApp);
+        }
+      })
     })
+    this.sortAllDays();
   }
 
   monthSelected(date: string) {
     this.getMonthView(date);
   }
 
-  async openDetails(appointment: Appointment) {
+  async openDetails(displayAppo: DisplayAppointment) {
+    let appointment = this.getAppointment(displayAppo.appointmentid);
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
-    if (result.updateType === updateType.DELETE) {
-      this.monthView.forEach(week => {
-        week.days.forEach(day => {
-          if (day.appointments) day.appointments = day.appointments.filter(appointment => appointment.id !== result.appointmentid);
-        })
-      })
-    }
-    if (result.updateType === updateType.UPDATE) {
-      // TODO: update only the appointment itself, not the whole month
+    if (result.updateType === updateType.UPDATE || result.updateType === updateType.DELETE) {
       this.getMonthAppointments();
     }
   }
