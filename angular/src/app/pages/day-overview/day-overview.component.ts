@@ -35,7 +35,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
     return this.globalfunctions.getActivePosition(this.heightPerHour);
   }
   calculateOverlaps(disApps: DisplayAppointment[]) {
-    return this.globalfunctions.calculateOverlaps(disApps, this.heightPerHour);
+    return this.globalfunctions.calculateOverlaps(disApps, this.widthPerDay);
   }
   // Global functions
 
@@ -56,6 +56,10 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
 
   getAppointment(id: number): Appointment {
     return this.appointments.get(id) || {} as Appointment;
+  }
+
+  getNumberOfWholeDayAppointments(day: day): number {
+    return day.displayAppointments.filter(appointment => appointment.isAllDay).length;
   }
 
   newAppointment(appointmentId: number) {
