@@ -281,15 +281,16 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// check if appointment endtime is 00:00 then set it to 23:59
-	if newAppointment.EndTime == "00:00" {
-		newAppointment.EndTime = "23:59"
-	}
-
-	// check if endtime is after starttime
-	if newAppointment.EndTime < newAppointment.StartTime {
-		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
-		return
+	if newAppointment.Date == newAppointment.Enddate {
+		if newAppointment.EndTime < newAppointment.StartTime {
+			http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+			return
+		}
+	} else {
+		if newAppointment.Enddate < newAppointment.Date {
+			http.Error(res, "Enddate is before date", http.StatusBadRequest)
+			return
+		}
 	}
 
 	if newAppointment.IsAllDay == true {
@@ -409,10 +410,16 @@ func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
 		upAppi.EndTime = ""
 	}
 
-	// check if endtime is after starttime
-	if upAppi.EndTime < upAppi.StartTime {
-		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
-		return
+	if upAppi.Date == upAppi.Enddate {
+		if upAppi.EndTime < upAppi.StartTime {
+			http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+			return
+		}
+	} else {
+		if upAppi.Enddate < upAppi.Date {
+			http.Error(res, "Enddate is before date", http.StatusBadRequest)
+			return
+		}
 	}
 
 	query := `UPDATE appointments 
