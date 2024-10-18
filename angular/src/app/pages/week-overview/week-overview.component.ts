@@ -122,21 +122,6 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       let startDate = new Date(appointment.date);
       let endDate = new Date(appointment.enddate);
       let currentDate = new Date(startDate);
-      // while (currentDate <= endDate) {
-      //   let displayAppointment: DisplayAppointment = {
-      //     starttime: appointment.starttime,
-      //     endtime: appointment.endtime,
-      //     isAllDay: appointment.isAllDay,
-      //     date: moment(currentDate).format('YYYY-MM-DD'),
-      //     appointmentid: appointment.id,
-      //   }
-      //   displayAppointments.push(displayAppointment);
-      //   currentDate.setDate(currentDate.getDate() + 1);
-      // }
-
-      // first day needs to begin with the starttime of the appointment and end at 23:59
-      // days in between need to begin at 00:00 and end at 23:59
-      // last day needs to begin at 00:00 and end at the endtime of the appointment
 
       while (currentDate <= endDate) {
         let starttime = appointment.starttime;
@@ -154,6 +139,11 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         else {
           starttime = '00:00:00';
           endtime = '23:59:00';
+        }
+
+        if (appointment.isAllDay) {
+          starttime = '00:00:00';
+          endtime = '00:00:00';
         }
 
         let displayAppointment: DisplayAppointment = {
