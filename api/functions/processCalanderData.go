@@ -123,63 +123,21 @@ func fetchCalendarData(webcallurl string) ([]handlers.NewAppointment, error) {
 			description = strings.Replace(description, "\\", "", -1)
 		}
 
-		// check if endtime is before starttime
+		// Check if endtime is after starttime
 		if end.Before(start) {
 			end = start.Add(1 * time.Hour)
 		}
 
-		//check if endtime is next day and starttime is previous day
-		if end.Day() != start.Day() {
-
-			for i := 0; i <= end.Day()-start.Day(); i++ {
-				if i == 0 {
-					appointments = append(appointments, handlers.NewAppointment{
-						Title:       title,
-						Description: description,
-						Date:        start.Format("2006-01-02"),
-						IsAllDay:    false,
-						StartTime:   start.Format("15:04"),
-						EndTime:     "23:59",
-						Location:    location,
-					})
-				} else if i == end.Day()-start.Day() {
-					endtime := end.Format("15:04")
-					if endtime == "00:00" {
-						endtime = "23:59"
-					}
-					appointments = append(appointments, handlers.NewAppointment{
-						Title:       title,
-						Description: description,
-						Date:        end.Format("2006-01-02"),
-						IsAllDay:    false,
-						StartTime:   "00:00",
-						EndTime:     endtime,
-						Location:    location,
-					})
-				} else {
-					appointments = append(appointments, handlers.NewAppointment{
-						Title:       title,
-						Description: description,
-						Date:        start.AddDate(0, 0, i).Format("2006-01-02"),
-						IsAllDay:    false,
-						StartTime:   "00:00",
-						EndTime:     "23:59",
-						Location:    location,
-					})
-				}
-			}
-
-		} else {
-			appointments = append(appointments, handlers.NewAppointment{
-				Title:       title,
-				Description: description,
-				Date:        start.Format("2006-01-02"),
-				IsAllDay:    isAllDay,
-				StartTime:   start.Format("15:04"),
-				EndTime:     end.Format("15:04"),
-				Location:    location,
-			})
-		}
+		appointments = append(appointments, handlers.NewAppointment{
+			Title:       title,
+			Description: description,
+			Date:        start.Format("2006-01-02"),
+			Enddate:     end.Format("2006-01-02"),
+			IsAllDay:    isAllDay,
+			StartTime:   start.Format("15:04"),
+			EndTime:     end.Format("15:04"),
+			Location:    location,
+		})
 	}
 
 	return appointments, nil
@@ -195,11 +153,12 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
 	query := `SELECT COUNT(*) FROM appointments WHERE title = ? 
                                     AND description = ? 
                                     AND date = ? 
+                                    AND enddate = ?
                                     AND starttime = ?
                                     AND endtime = ?
                                     AND userId = ? 
                                     AND ics_import_id > 0;`
-	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.StartTime, appointment.EndTime, userId)
+	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.Enddate, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -227,11 +186,11 @@ func insertAppointmentIntoDB(newAppointment handlers.NewAppointment, userId int,
 	}
 
 	query := `INSERT INTO appointments
-			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid, ics_import_id)
+			      (userid, title, description, date, enddate, isallday, starttime, endtime, location, categoryid, ics_import_id)
 			  VALUES
-			      (?,?,?,?,?,?,?,?,?,?);`
+			      (?,?,?,?,?,?,?,?,?,?,?);`
 
-	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, categoryid, ics_import_id)
+	_, err = dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.Enddate, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, categoryid, ics_import_id)
 	if err != nil {
 		panic(err.Error())
 	}

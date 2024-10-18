@@ -21,3 +21,15 @@ alter table appointments
     modify ics_import_id int default(0) NOT NULL;
 
 
+alter table appointments
+    drop constraint if_allday_starttime_endtime_null;
+
+alter table appointments
+    add constraint if_allday_starttime_endtime_null
+        check ( (`isallday` = 1) or
+                ((`starttime` is not null) and (`endtime` is not null)) );
+
+check ((`isallday` = 1) or
+               ((`starttime` is not null) and (`endtime` is not null)
+
+
