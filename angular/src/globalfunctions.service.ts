@@ -123,44 +123,46 @@ export class GlobalfunctionsService {
   }
 
   calculateOverlaps(tasks: DisplayAppointment[], widthPerDay: number): DisplayAppointment[] {
-    // Sort tasks by start time
+    // Sort by startdate all appointments
     const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
-    const result = [];
+    const result: any[] = [];
 
-    let i = 0;
-    while (i < sortedTasks.length) {
-      const currentTask = sortedTasks[i];
-      let overlaps = [currentTask];
+    const columns: DisplayAppointment[][] = [];
 
-      // Find all tasks that overlap with the current or any overlapping task
-      let maxEndTime = currentTask.endtime;
-      for (let j = i + 1; j < sortedTasks.length; j++) {
-        const nextTask = sortedTasks[j];
-        if (nextTask.starttime < maxEndTime) {
-          overlaps.push(nextTask);
-          if (nextTask.endtime > maxEndTime) {
-            maxEndTime = nextTask.endtime;
-          }
-        } else {
+    // Iterate through each task to place it in the correct column
+    for (const task of sortedTasks) {
+      let placed = false;
+
+      // Try to place the task in an existing column
+      for (const column of columns) {
+        // Check if it can fit in this column without overlapping
+        const lastTaskInColumn = column[column.length - 1];
+        if (lastTaskInColumn.endtime <= task.starttime) {
+          column.push(task);
+          placed = true;
           break;
         }
       }
 
-      // Calculate width and left for overlapping tasks
-      const width = widthPerDay / overlaps.length;
-      overlaps.forEach((task, index) => {
-        task.width = width;
-        task.left = index * width
-      });
-
-      // Add processed tasks to the result array
-      result.push(...overlaps);
-
-      // Skip over the processed tasks
-      i += overlaps.length;
+      // if task cant fit in any column, creata a new column.
+      if (!placed) {
+        columns.push([task]);
+      }
     }
+
+    // calculate the width and left position of each task
+    const columnWidth = widthPerDay / columns.length;
+    columns.forEach((column, colIndex) => {
+      column.forEach(task => {
+        task.width = columnWidth;
+        task.left = colIndex * columnWidth;
+        result.push(task);
+      });
+    });
+
     return result;
   }
+
 
   processDisplayAppointments(appointment: Appointment): DisplayAppointment[] {
     // appointments can be over multipledays, so we need to create a displayappointment for each day.
