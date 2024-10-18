@@ -52,7 +52,7 @@
                 <div class="appointmentTime">
                   <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displayAppo.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(displayAppo)" [ngStyle]="{'margin-top': displayAppo.isAllDay ? 0 : (getNumberOfWholeDayAppointments(day) * 35) + 10 + 'px'}">
+                  <div class="cardContent" (click)="openDetails(displayAppo)" [ngStyle]="{'margin-top': (!displayAppo.isAllDay && displayAppo.starttime == '00:00:00') ? (getNumberOfWholeDayAppointments(day) * 35) + 10 + 'px' : 0}">
                     <div class="category" [ngStyle]="{'color': getAppointment(displayAppo.appointmentid).category.color}"
                       *ngIf="ShowCategory(displayAppo)">
                       {{ getAppointment(displayAppo.appointmentid).category.term }}
