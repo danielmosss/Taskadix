@@ -80,7 +80,7 @@ export class GlobalfunctionsService {
 
     if (appointment.isAllDay) {
       let top = 30;
-      top = (disAppointments.indexOf(disApp) * (top + 10));
+      top = (disAppointments.filter(disApp => disApp.isAllDay).indexOf(disApp) * (top + 10));
       return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px', 'z-index': '3' };
     }
 

@@ -98,6 +98,13 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
         });
       });
       this.days.forEach(day => {
+        // sort on isAllDay, then on starttime
+        day.displayAppointments = day.displayAppointments.sort((a, b) => {
+          if (a.isAllDay && !b.isAllDay) return -1;
+          if (!a.isAllDay && b.isAllDay) return 1;
+          if (a.isAllDay && b.isAllDay) return 0;
+          return a.starttime.localeCompare(b.starttime);
+        });
         day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
       });
     });
