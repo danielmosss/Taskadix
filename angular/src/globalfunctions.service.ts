@@ -72,16 +72,16 @@ export class GlobalfunctionsService {
     return window.innerWidth < 600;
   }
 
-  getTaskStyle(disApp: DisplayAppointment, disAppointments: DisplayAppointment[], appointments: Appointment[], heightPerHour: number): { top: string, height: string, width: string, left: string } {
+  getTaskStyle(disApp: DisplayAppointment, disAppointments: DisplayAppointment[], appointments: Appointment[], heightPerHour: number): { top: string, height: string, width: string, left: string, 'z-index': string } {
     const appointment = appointments.find(appointment => appointment.id === disApp.appointmentid);
     if (!appointment) {
-      return { top: '0px', height: '0px', width: '0px', left: '0px' };
+      return { top: '0px', height: '0px', width: '0px', left: '0px', 'z-index': '0' };
     }
 
     if (appointment.isAllDay) {
       let top = 30;
       top = (disAppointments.indexOf(disApp) * (top + 10));
-      return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px' };
+      return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px', 'z-index': '3' };
     }
 
     const startHour = parseInt(disApp.starttime.split(':')[0], 10);
@@ -98,7 +98,8 @@ export class GlobalfunctionsService {
       top: `${startPosition}px`,
       height: `${height}px`,
       width: `${disApp.width}px`,
-      left: `${disApp.left}px`
+      left: `${disApp.left}px`,
+      'z-index': '2'
     };
   }
 
