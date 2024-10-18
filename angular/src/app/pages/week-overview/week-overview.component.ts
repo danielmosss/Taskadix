@@ -82,6 +82,9 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   }
 
   getAppointments(beginDate: string, endDate: string) {
+    this.appointments.clear();
+    this.days.forEach(day => day.displayAppointments = []);
+
     this._dataservice.GetAppointmentsV3(beginDate, endDate).subscribe((data) => {
       if (data == null) return;
       data.forEach(appointment => {
@@ -185,14 +188,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
     if (!appointment) return;
 
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
-    if (result.updateType === updateType.DELETE) {
-      this.days.forEach(day => {
-        day.displayAppointments = day.displayAppointments.filter(appointment => appointment.appointmentid !== result.appointmentid);
-        day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
-      })
-      this.appointments.delete(result.appointmentid);
-    }
-    if (result.updateType === updateType.UPDATE) {
+    if (result.updateType === updateType.UPDATE || result.updateType === updateType.DELETE) {
       this.getAppointments(this.days[0].date, this.days[6].date);
     }
   }

@@ -101,14 +101,7 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   async openDetails(disApp: DisplayAppointment) {
     let appointment = this.getAppointment(disApp.appointmentid);
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
-    if (result.updateType === updateType.DELETE) {
-      this.days.forEach(day => {
-        day.displayAppointments = day.displayAppointments.filter(disApp => disApp.appointmentid !== result.appointmentid);
-        day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
-      });
-      this.appointments.delete(result.appointmentid);
-    }
-    if (result.updateType === updateType.UPDATE) {
+    if (result.updateType === updateType.UPDATE || result.updateType === updateType.DELETE) {
       this.getAppointments(this.activeDate, this.activeDate);
     }
   }
@@ -123,12 +116,13 @@ export class WeekMobileViewComponent implements OnInit, AfterViewInit {
   }
 
   getAppointments(beginDate: string, endDate: string) {
+    this.appointments.clear();
+    this.days.forEach(day => day.displayAppointments = []);
+
     this._dataservice.GetAppointmentsV3(beginDate, endDate).subscribe((data) => {
       if (data == null) return;
       data.forEach(appointment => {
         this.appointments.set(appointment.id, appointment);
-        // this.processDisplayAppointments(appointment);
-        // use processDisplayAppointments from week-overview.component.ts
         var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
         displAppointments.forEach(displApp => {
           let day = this.days.find(day => day.date === displApp.date);

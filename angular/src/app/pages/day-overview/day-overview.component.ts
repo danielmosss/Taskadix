@@ -61,8 +61,6 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
       if (appointment.date !== this.day.date) return;
-      // this.day.appointments.push(appointment);
-      // this.day.appointments = this.calculateOverlaps(this.day.appointments);
       var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
       displAppointments.forEach(displApp => {
         if (displApp.date === this.day.date) {
@@ -78,6 +76,9 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   }
 
   getAppointments(beginDate: string, endDate: string) {
+    this.appointments.clear();
+    this.day.displayAppointments = [];
+
     this._dataservice.GetAppointmentsV3(beginDate, endDate).subscribe((data) => {
       if (data == null) return;
       data.forEach(appointment => {
@@ -119,12 +120,7 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   async openDetails(displayAppo: DisplayAppointment) {
     const appointment = this.getAppointment(displayAppo.appointmentid);
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
-    if (result.updateType === updateType.DELETE) {
-      this.day.displayAppointments = this.day.displayAppointments.filter(disApp => disApp.appointmentid !== result.appointmentid);
-      this.day.displayAppointments = this.calculateOverlaps(this.day.displayAppointments);
-      this.appointments.delete(result.appointmentid);
-    }
-    if (result.updateType === updateType.UPDATE) {
+    if (result.updateType === updateType.UPDATE || result.updateType === updateType.DELETE) {
       this.getAppointments(this.day.date, this.day.date);
     }
   }
