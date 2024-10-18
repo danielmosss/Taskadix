@@ -104,6 +104,11 @@ func fetchCalendarData(webcallurl string) ([]handlers.NewAppointment, error) {
 		start, _ := time.ParseInLocation("20060102T150405", startValue, loc)
 		end, _ := time.ParseInLocation("20060102T150405", endValue, loc)
 
+		// check if UID containts @google.com then the end is 1 day earlier
+		if strings.Contains(event.GetProperty(ics.ComponentPropertyUniqueId).Value, "@google.com") {
+			end = end.Add(-24 * time.Hour)
+		}
+
 		title := event.GetProperty(ics.ComponentPropertySummary).Value
 		title = strings.Replace(title, "\\", "", -1)
 		title = strings.Split(title, ",")[0]
