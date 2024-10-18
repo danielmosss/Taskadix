@@ -170,6 +170,92 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 	res.Write(JSON)
 }
 
+// This appointments endpoint will get all appointments that are between this timespawn.
+// It will also look for appointments that are partly in the timespawn.
+// Checking the date and enddate.
+// it will return a list of appointments that are in the timespawn.
+func GetAppointmentsV3(res http.ResponseWriter, req *http.Request) {
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	beginDate := req.URL.Query().Get("start")
+	endDate := req.URL.Query().Get("end")
+
+	dbConnection, err := functions.GetDatabaseConnection()
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer dbConnection.Close()
+
+	query := `SELECT 
+	a.id,
+	a.userid,
+	a.title,
+	a.description,
+	a.date,
+	a.enddate, 
+	a.isallday,
+	a.starttime,
+	a.endtime,
+	a.location,
+	a.categoryid,
+	ac.term,
+	ac.color,
+	a.ics_import_id
+	FROM appointments a
+		 	  INNER JOIN appointment_category ac on a.categoryid = ac.id
+	   		  LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
+			  WHERE a.userid = ?
+			  AND ia.appointmentid IS NULL
+			  AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))`
+	result, err := dbConnection.Query(query, userId, userId, beginDate, endDate, beginDate, endDate)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer result.Close()
+
+	var appointmentMap []handlers.Appointment
+	for result.Next() {
+		var appointment handlers.Appointment
+		err := result.Scan(
+			&appointment.Id,
+			&appointment.Userid,
+			&appointment.Title,
+			&appointment.Description,
+			&appointment.Date,
+			&appointment.Enddate,
+			&appointment.IsAllDay,
+			&appointment.StartTime,
+			&appointment.EndTime,
+			&appointment.Location,
+			&appointment.Category.ID,
+			&appointment.Category.Term,
+			&appointment.Category.Color,
+			&appointment.Ics_import_id,
+		)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		appointmentMap = append(appointmentMap, appointment)
+	}
+
+	JSON, err := json.Marshal(appointmentMap)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
+	res.Write(JSON)
+}
+
 func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 	userId, err := functions.GetUserID(req)
 	if err != nil {

@@ -55,9 +55,27 @@ export interface Appointment {
   endtime: string,
   location: string,
   category: Category,
-  ics_import_id: number,
-  width?: number,
+  ics_import_id: number
+}
+
+// The displayAppointment is used to display the appointments in the week overview.
+// All data will be shown from .appointment, the starttime, endtime and date are used to calculate the position of the appointment.
+export interface DisplayAppointment {
+  starttime: string,
+  endtime: string,
+  date: string,
+  height?: number,
+  top?: number,
   left?: number,
+  width?: number,
+  appointmentid: number,
+}
+
+export interface day {
+  date: string,
+  day: string,
+  istoday: boolean,
+  displayAppointments: DisplayAppointment[]
 }
 
 

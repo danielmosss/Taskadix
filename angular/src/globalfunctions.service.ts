@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { Appointment } from './app/interfaces';
+import { Appointment, DisplayAppointment } from './app/interfaces';
 import { AppointmentComponent } from './app/popups/appointment/appointment.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -72,14 +72,16 @@ export class GlobalfunctionsService {
     return window.innerWidth < 600;
   }
 
-  getTaskStyle(appointment: Appointment, appointments: Appointment[], heightPerHour: number): any {
+  getTaskStyle(disApp: DisplayAppointment, disAppointments: DisplayAppointment[], appointments: Appointment[], heightPerHour: number): { top: string, height: string, width: string, left: string } {
+    const appointment = appointments.find(appointment => appointment.id === disApp.appointmentid);
+    if (!appointment) {
+      return { top: '0px', height: '0px', width: '0px', left: '0px' };
+    }
+
     if (appointment.isAllDay) {
       let top = 30;
-      const wholeDayAppointments = appointments.filter(appointment => appointment.isAllDay);
-      if (wholeDayAppointments) {
-        top = (wholeDayAppointments.indexOf(appointment) * (top + 10));
-      }
-      return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
+      top = (disAppointments.indexOf(disApp) * (top + 10));
+      return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px' };
     }
 
     const startHour = parseInt(appointment.starttime.split(':')[0], 10);
@@ -95,8 +97,8 @@ export class GlobalfunctionsService {
     return {
       top: `${startPosition}px`,
       height: `${height}px`,
-      width: `${appointment.width}px`,
-      left: `${appointment.left}px`
+      width: `${disApp.width}px`,
+      left: `${disApp.left}px`
     };
   }
 
@@ -119,7 +121,7 @@ export class GlobalfunctionsService {
     return times;
   }
 
-  calculateOverlaps(tasks: Appointment[], widthPerDay: number): Appointment[] {
+  calculateOverlaps(tasks: DisplayAppointment[], widthPerDay: number): DisplayAppointment[] {
     // Sort tasks by start time
     const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
     const result = [];
@@ -158,6 +160,7 @@ export class GlobalfunctionsService {
     }
     return result;
   }
+
   readFile(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();

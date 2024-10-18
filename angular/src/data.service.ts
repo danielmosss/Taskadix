@@ -187,4 +187,10 @@ export class DataService {
   public GetTenLastLocationsUser() {
     return this.http.get<string[]>(this._SecureApi + "/v2/GetTenLastLocationsUser", { headers: this.getCustomHeaders() });
   }
+
+  //V3 API Endpoints
+
+  public GetAppointmentsV3(beginDate: string, endDate: string) {
+    return this.http.get<Appointment[]>(this._SecureApi + `/v3/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
+  }
 }
