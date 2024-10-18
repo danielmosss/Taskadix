@@ -84,10 +84,10 @@ export class GlobalfunctionsService {
       return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px' };
     }
 
-    const startHour = parseInt(appointment.starttime.split(':')[0], 10);
-    const startMinute = parseInt(appointment.starttime.split(':')[1], 10);
-    const endHour = parseInt(appointment.endtime.split(':')[0], 10);
-    const endMinute = parseInt(appointment.endtime.split(':')[1], 10);
+    const startHour = parseInt(disApp.starttime.split(':')[0], 10);
+    const startMinute = parseInt(disApp.starttime.split(':')[1], 10);
+    const endHour = parseInt(disApp.endtime.split(':')[0], 10);
+    const endMinute = parseInt(disApp.endtime.split(':')[1], 10);
 
     const startPosition = (startHour + startMinute / 60) * heightPerHour; // Bijvoorbeeld, 9.30 wordt 570 (9*60 + 30)
     const endPosition = (endHour + endMinute / 60) * heightPerHour;

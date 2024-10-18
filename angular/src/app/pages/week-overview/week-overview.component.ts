@@ -29,7 +29,6 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
   public gridDividerWidth: number = 3;
   public dividerHeight: number = 3;
 
-  //appointments need to be a map of id and appointment to be able to look them up fast.
   private appointments: Map<number, Appointment> = new Map<number, Appointment>();
   public days: day[] = [];
   public times: string[] = [];
@@ -82,55 +81,19 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       if (data == null) return;
       data.forEach(appointment => {
         this.appointments.set(appointment.id, appointment);
-        this.processDisplayAppointments(appointment);
+        var displAppointments: DisplayAppointment[] = this.processDisplayAppointments(appointment);
+        displAppointments.forEach(displApp => {
+          let day = this.days.find(day => day.date === displApp.date);
+          if (day) {
+            day.displayAppointments.push(displApp);
+          }
+        });
       });
       this.days.forEach(day => {
         day.displayAppointments = this.globalfunctions.calculateOverlaps(day.displayAppointments, this.widthPerDay);
       });
     });
   }
-
-  // processDisplayAppointments(appointment: Appointment) {
-  //   // appointments can be over multipledays, so we need to create a displayappointment for each day.
-  //   // we need to check which part of the multiple day appointment is in this week.
-
-
-  //   //if single day appointment
-  //   if (appointment.date === appointment.enddate) {
-  //     let displayAppointment: DisplayAppointment = {
-  //       starttime: appointment.starttime,
-  //       endtime: appointment.endtime,
-  //       date: appointment.date,
-  //       appointmentid: appointment.id,
-  //     }
-  //     let day = this.findDayInWeek(new Date(appointment.date));
-  //     if (day) {
-  //       day.displayAppointments.push(displayAppointment);
-  //     }
-  //   }
-
-  //   // if multiple day appointment
-  //   else if (appointment.date !== appointment.enddate) {
-  //     let startDate = new Date(appointment.date);
-  //     let endDate = new Date(appointment.enddate);
-  //     let currentDate = new Date(startDate);
-  //     while (currentDate <= endDate) {
-  //       let displayAppointment: DisplayAppointment = {
-  //         starttime: appointment.starttime,
-  //         endtime: appointment.endtime,
-  //         date: moment(currentDate).format('YYYY-MM-DD'),
-  //         appointmentid: appointment.id,
-  //       }
-  //       let day = this.findDayInWeek(currentDate);
-  //       if (day) {
-  //         day.displayAppointments.push(displayAppointment);
-  //       }
-  //       currentDate.setDate(currentDate.getDate() + 1);
-  //     }
-  //   }
-  //   console.log("Appointments have been processed")
-  //   console.log(this.days)
-  // }
 
   processDisplayAppointments(appointment: Appointment): DisplayAppointment[] {
     // appointments can be over multipledays, so we need to create a displayappointment for each day.
@@ -154,10 +117,43 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
       let startDate = new Date(appointment.date);
       let endDate = new Date(appointment.enddate);
       let currentDate = new Date(startDate);
+      // while (currentDate <= endDate) {
+      //   let displayAppointment: DisplayAppointment = {
+      //     starttime: appointment.starttime,
+      //     endtime: appointment.endtime,
+      //     isAllDay: appointment.isAllDay,
+      //     date: moment(currentDate).format('YYYY-MM-DD'),
+      //     appointmentid: appointment.id,
+      //   }
+      //   displayAppointments.push(displayAppointment);
+      //   currentDate.setDate(currentDate.getDate() + 1);
+      // }
+
+      // first day needs to begin with the starttime of the appointment and end at 23:59
+      // days in between need to begin at 00:00 and end at 23:59
+      // last day needs to begin at 00:00 and end at the endtime of the appointment
+
       while (currentDate <= endDate) {
+        let starttime = appointment.starttime;
+        let endtime = appointment.endtime;
+
+        if (currentDate.toDateString() === startDate.toDateString()) {
+          starttime = appointment.starttime;
+          endtime = '23:59:00';
+        }
+        else
+        if (currentDate.toDateString() === endDate.toDateString()) {
+          starttime = '00:00:00';
+          endtime = appointment.endtime;
+        }
+        else {
+          starttime = '00:00:00';
+          endtime = '23:59:00';
+        }
+
         let displayAppointment: DisplayAppointment = {
-          starttime: appointment.starttime,
-          endtime: appointment.endtime,
+          starttime: starttime,
+          endtime: endtime,
           isAllDay: appointment.isAllDay,
           date: moment(currentDate).format('YYYY-MM-DD'),
           appointmentid: appointment.id,
@@ -224,7 +220,13 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
-      this.processDisplayAppointments(appointment);
+      var displAppointments: DisplayAppointment[] = this.processDisplayAppointments(appointment);
+      displAppointments.forEach(displApp => {
+        let day = this.days.find(day => day.date === displApp.date);
+        if (day) {
+          day.displayAppointments.push(displApp);
+        }
+      });
     })
   }
 
