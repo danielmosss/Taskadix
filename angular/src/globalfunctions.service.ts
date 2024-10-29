@@ -190,6 +190,7 @@ export class GlobalfunctionsService {
       while (currentDate <= endDate) {
         let starttime = appointment.starttime;
         let endtime = appointment.endtime;
+        let isAllDay = appointment.isAllDay;
 
         if (currentDate.toDateString() === startDate.toDateString()) {
           starttime = appointment.starttime;
@@ -202,7 +203,8 @@ export class GlobalfunctionsService {
         }
         else {
           starttime = '00:00:00';
-          endtime = '23:59:00';
+          endtime = '00:00:00';
+          isAllDay = true;
         }
 
         if (appointment.isAllDay) {
@@ -213,7 +215,7 @@ export class GlobalfunctionsService {
         let displayAppointment: DisplayAppointment = {
           starttime: starttime,
           endtime: endtime,
-          isAllDay: appointment.isAllDay,
+          isAllDay: isAllDay,
           date: moment(currentDate).format('YYYY-MM-DD'),
           appointmentid: appointment.id,
         }
