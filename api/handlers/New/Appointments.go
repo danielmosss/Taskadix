@@ -29,6 +29,7 @@ func GetAppointment(res http.ResponseWriter, req *http.Request) {
     a.title,
     a.description,
     a.date,
+    a.enddate,
     a.isallday,
     a.starttime,
     a.endtime,
@@ -55,6 +56,7 @@ func GetAppointment(res http.ResponseWriter, req *http.Request) {
 			&appointment.Title,
 			&appointment.Description,
 			&appointment.Date,
+			&appointment.Enddate,
 			&appointment.IsAllDay,
 			&appointment.StartTime,
 			&appointment.EndTime,
@@ -100,7 +102,8 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
     a.userid,
     a.title,
     a.description,
-    a.date, 
+    a.date,
+    a.enddate, 
     a.isallday,
     a.starttime,
     a.endtime,
@@ -131,6 +134,7 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 			&appointment.Title,
 			&appointment.Description,
 			&appointment.Date,
+			&appointment.Enddate,
 			&appointment.IsAllDay,
 			&appointment.StartTime,
 			&appointment.EndTime,
@@ -166,6 +170,92 @@ func GetAppointments(res http.ResponseWriter, req *http.Request) {
 	res.Write(JSON)
 }
 
+// This appointments endpoint will get all appointments that are between this timespawn.
+// It will also look for appointments that are partly in the timespawn.
+// Checking the date and enddate.
+// it will return a list of appointments that are in the timespawn.
+func GetAppointmentsV3(res http.ResponseWriter, req *http.Request) {
+	userId, err := functions.GetUserID(req)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusUnauthorized)
+		return
+	}
+
+	beginDate := req.URL.Query().Get("start")
+	endDate := req.URL.Query().Get("end")
+
+	dbConnection, err := functions.GetDatabaseConnection()
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer dbConnection.Close()
+
+	query := `SELECT 
+	a.id,
+	a.userid,
+	a.title,
+	a.description,
+	a.date,
+	a.enddate, 
+	a.isallday,
+	a.starttime,
+	a.endtime,
+	a.location,
+	a.categoryid,
+	ac.term,
+	ac.color,
+	a.ics_import_id
+	FROM appointments a
+		 	  INNER JOIN appointment_category ac on a.categoryid = ac.id
+	   		  LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
+			  WHERE a.userid = ?
+			  AND ia.appointmentid IS NULL
+			  AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))`
+	result, err := dbConnection.Query(query, userId, userId, beginDate, endDate, beginDate, endDate)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	defer result.Close()
+
+	var appointmentMap []handlers.Appointment
+	for result.Next() {
+		var appointment handlers.Appointment
+		err := result.Scan(
+			&appointment.Id,
+			&appointment.Userid,
+			&appointment.Title,
+			&appointment.Description,
+			&appointment.Date,
+			&appointment.Enddate,
+			&appointment.IsAllDay,
+			&appointment.StartTime,
+			&appointment.EndTime,
+			&appointment.Location,
+			&appointment.Category.ID,
+			&appointment.Category.Term,
+			&appointment.Category.Color,
+			&appointment.Ics_import_id,
+		)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		appointmentMap = append(appointmentMap, appointment)
+	}
+
+	JSON, err := json.Marshal(appointmentMap)
+	if err != nil {
+		http.Error(res, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	res.Header().Set("Content-Type", "application/json")
+	res.WriteHeader(http.StatusOK)
+	res.Write(JSON)
+}
+
 func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 	userId, err := functions.GetUserID(req)
 	if err != nil {
@@ -191,15 +281,16 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 		return
 	}
 
-	// check if appointment endtime is 00:00 then set it to 23:59
-	if newAppointment.EndTime == "00:00" {
-		newAppointment.EndTime = "23:59"
-	}
-
-	// check if endtime is after starttime
-	if newAppointment.EndTime < newAppointment.StartTime {
-		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
-		return
+	if newAppointment.Date == newAppointment.Enddate {
+		if newAppointment.EndTime < newAppointment.StartTime {
+			http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+			return
+		}
+	} else {
+		if newAppointment.Enddate < newAppointment.Date {
+			http.Error(res, "Enddate is before date", http.StatusBadRequest)
+			return
+		}
 	}
 
 	if newAppointment.IsAllDay == true {
@@ -208,11 +299,11 @@ func CreateAppointment(res http.ResponseWriter, req *http.Request) {
 	}
 
 	query := `INSERT INTO appointments 
-			      (userid, title, description, date, isallday, starttime, endtime, location, categoryid) 
+			      (userid, title, description, date, enddate, isallday, starttime, endtime, location, categoryid) 
 			  VALUES 
-			      (?,?,?,?,?,?,?,?,?);`
+			      (?,?,?,?,?,?,?,?,?,?);`
 
-	result, err := dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, newAppointment.Category.ID)
+	result, err := dbConnection.Exec(query, userId, newAppointment.Title, newAppointment.Description, newAppointment.Date, newAppointment.Enddate, newAppointment.IsAllDay, newAppointment.StartTime, newAppointment.EndTime, newAppointment.Location, newAppointment.Category.ID)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
@@ -264,7 +355,7 @@ func DeleteAppointment(res http.ResponseWriter, req *http.Request) {
 		}
 	}
 
-	if ics_import_id == 1 {
+	if ics_import_id > 0 {
 		query := `INSERT INTO inrelevantappointments (userid, appointmentid) VALUES (?, ?);`
 		_, err = dbConnection.Exec(query, userId, id)
 		if err != nil {
@@ -319,17 +410,23 @@ func UpdateAppointment(res http.ResponseWriter, req *http.Request) {
 		upAppi.EndTime = ""
 	}
 
-	// check if endtime is after starttime
-	if upAppi.EndTime < upAppi.StartTime {
-		http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
-		return
+	if upAppi.Date == upAppi.Enddate {
+		if upAppi.EndTime < upAppi.StartTime {
+			http.Error(res, "Endtime is before starttime", http.StatusBadRequest)
+			return
+		}
+	} else {
+		if upAppi.Enddate < upAppi.Date {
+			http.Error(res, "Enddate is before date", http.StatusBadRequest)
+			return
+		}
 	}
 
 	query := `UPDATE appointments 
-			  SET title = ?, description = ?, date = ?, isallday = ?, starttime = ?, endtime = ?, location = ?, categoryid = ? 
+			  SET title = ?, description = ?, date = ?, enddate = ?, isallday = ?, starttime = ?, endtime = ?, location = ?, categoryid = ? 
 			  WHERE userid = ? AND id = ?;`
 
-	_, err = dbConnection.Exec(query, upAppi.Title, upAppi.Description, upAppi.Date, upAppi.IsAllDay, upAppi.StartTime, upAppi.EndTime, upAppi.Location, upAppi.Category.ID, userId, upAppi.Id)
+	_, err = dbConnection.Exec(query, upAppi.Title, upAppi.Description, upAppi.Date, upAppi.Enddate, upAppi.IsAllDay, upAppi.StartTime, upAppi.EndTime, upAppi.Location, upAppi.Category.ID, userId, upAppi.Id)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return

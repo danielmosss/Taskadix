@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Appointment, DayTodo, NewAppointment, Todo, UserData, Weather, appointmentCategory, backup, newTodoRequirements } from './app/interfaces';
+import { Appointment, DayTodo, NewAppointment, Todo, UserData,appointmentCategory, backup, newTodoRequirements } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -22,10 +22,6 @@ export class DataService {
   }
 
   constructor(private http: HttpClient, private _snackbar: MatSnackBar, private _router: Router) { }
-
-  public getWeather() {
-    return this.http.get<Weather>(this._SecureApi + "/GetWeather", { headers: this.getCustomHeaders() });
-  }
 
   public getTodo() {
     return this.http.get<Array<DayTodo>>(this._SecureApi + "/GetTodoTasks", { headers: this.getCustomHeaders() });
@@ -190,5 +186,11 @@ export class DataService {
   }
   public GetTenLastLocationsUser() {
     return this.http.get<string[]>(this._SecureApi + "/v2/GetTenLastLocationsUser", { headers: this.getCustomHeaders() });
+  }
+
+  //V3 API Endpoints
+
+  public GetAppointmentsV3(beginDate: string, endDate: string) {
+    return this.http.get<Appointment[]>(this._SecureApi + `/v3/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
   }
 }

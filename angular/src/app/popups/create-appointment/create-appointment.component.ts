@@ -59,6 +59,7 @@ export class CreateAppointmentComponent implements OnInit {
         title: this.appointment.title,
         description: this.appointment.description,
         date: this.appointment.date,
+        enddate: this.appointment.enddate,
         starttime: "00:00",
         endtime: "00:00",
         isAllDay: this.appointment.isAllDay,
@@ -83,31 +84,47 @@ export class CreateAppointmentComponent implements OnInit {
     return this.GetTenLastLocationsUser.filter(location => location.toLowerCase().includes(filterValue));
   }
 
-  onDateChange(event: MatDatepickerInputEvent<Date>) {
+  onDateChange(event: MatDatepickerInputEvent<Date>, isEnddate: boolean) {
     const formatted = moment(event.value).format('YYYY-MM-DD');
-    this.NewAppointment.date = formatted;
+    if (isEnddate) this.NewAppointment.enddate = formatted;
+    else {
+      this.NewAppointment.date = formatted;
+      if (this.NewAppointment.enddate === "") {
+        this.NewAppointment.enddate = formatted;
+      }
+    }
+    this.checkIfDateAndTimeAreValid();
   }
+
+  checkIfDateAndTimeAreValid() {
+    // check if date is the same that endtime is after starttime
+    // and if enddate is after date
+
+    if (this.NewAppointment.date === this.NewAppointment.enddate) {
+      if (!this.NewAppointment.isAllDay) {
+        let start = moment(this.NewAppointment.starttime, "HH:mm");
+        let end = moment(this.NewAppointment.endtime, "HH:mm");
+        if (end.isBefore(start)) {
+          this.NewAppointment.endtime = moment(this.NewAppointment.starttime, "HH:mm").add(1, 'hour').format("HH:mm");
+        }
+      }
+    } else {
+      let date = moment(this.NewAppointment.date);
+      let enddate = moment(this.NewAppointment.enddate)
+      // if enddate is before date, set enddate to date
+      if (enddate.isBefore(date)) {
+        this.NewAppointment.enddate = this.NewAppointment.date;
+      }
+    }
+  }
+
 
   cancel() {
     this.dialogRef.close();
   }
 
   changeTime($event: string, isStarttime: boolean) {
-    if (isStarttime && this.NewAppointment.endtime === "") {
-      this.NewAppointment.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
-    }
-
-    let eventMoment = moment($event, "HH:mm");
-    if (!isStarttime && eventMoment.isBefore(moment(this.NewAppointment.starttime, "HH:mm"))) {
-      setTimeout(() => {
-          this.NewAppointment.endtime = moment(this.NewAppointment.starttime, "HH:mm").add(1, "hour").format("HH:mm");
-      }, 0);
-    }
-    else if (isStarttime && eventMoment.isAfter(moment(this.NewAppointment.endtime, "HH:mm"))) {
-      setTimeout(() => {
-        this.NewAppointment.endtime = moment($event, "HH:mm").add(1, "hour").format("HH:mm");
-      }, 0);
-    }
+    this.checkIfDateAndTimeAreValid();
   }
 
   CreateNewAppointment(): NewAppointment {
@@ -115,6 +132,7 @@ export class CreateAppointmentComponent implements OnInit {
       title: "",
       description: "",
       date: "",
+      enddate: "",
       isAllDay: false,
       starttime: "",
       endtime: "",
@@ -152,6 +170,7 @@ export class CreateAppointmentComponent implements OnInit {
         title: this.NewAppointment.title,
         description: this.NewAppointment.description,
         date: this.NewAppointment.date,
+        enddate: this.NewAppointment.enddate,
         isAllDay: this.NewAppointment.isAllDay,
         starttime: this.NewAppointment.starttime ? this.NewAppointment.starttime : "",
         endtime: this.NewAppointment.endtime,
@@ -164,7 +183,7 @@ export class CreateAppointmentComponent implements OnInit {
         this.dialogRef.close(res.id);
         this._snackbar.open("Appointment updated", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });
       })
-    }else{
+    } else {
       this._dataService.createAppointment(this.NewAppointment).subscribe((res) => {
         this.dialogRef.close(res.id);
         this._snackbar.open("Appointment created", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'success' });

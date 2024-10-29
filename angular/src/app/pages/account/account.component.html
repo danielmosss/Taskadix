@@ -64,7 +64,7 @@
               [matTooltip]="ics.ics_last_synced_at">
               Last sync: {{SyncedAgo(ics.ics_last_synced_at)}}
             </button>
-            <button mat-button class="mat-button pos" *ngIf="ics.ics_last_synced_at"
+            <button mat-button class="mat-button pos"
               (click)="setwebcallurl(ics.id, '')">
               <i class="fa-solid fa-trash"></i>
               Delete

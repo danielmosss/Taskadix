@@ -33,7 +33,6 @@ func main() {
 	securedRoutes := handler.PathPrefix("/api").Subrouter()
 	securedRoutes.Use(functions.TokenVerifyMiddleware)
 
-	securedRoutes.HandleFunc("/GetWeather", GET.GetWeather).Methods("GET")
 	securedRoutes.HandleFunc("/GetTodoTasks", GET.GetTodoTasks).Methods("GET")
 	securedRoutes.HandleFunc("/PutTodoTasks", PUT.PutTodoTasks).Methods("PUT")
 	securedRoutes.HandleFunc("/PostTodoTask", POST.PostTodoTask).Methods("POST")
@@ -58,6 +57,8 @@ func main() {
 	securedRoutes.HandleFunc("/v2/GetBackup", GET.GetBackup).Methods("GET")
 	securedRoutes.HandleFunc("/v2/RestoreBackup", POST.RestoreBackup).Methods("POST")
 	securedRoutes.HandleFunc("/v2/GetTenLastLocationsUser", New.GetTenLastLocationsUser).Methods("GET")
+
+	securedRoutes.HandleFunc("/v3/GetAppointments", New.GetAppointmentsV3).Methods("GET")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(

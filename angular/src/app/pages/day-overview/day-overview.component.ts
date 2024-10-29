@@ -1,10 +1,11 @@
 import { AfterViewChecked, AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import * as moment from 'moment';
-import { Appointment } from 'src/app/interfaces';
+import { Appointment, day, DisplayAppointment } from 'src/app/interfaces';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { DataService } from 'src/data.service';
 import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
+import { WeekOverviewComponent } from '../week-overview/week-overview.component';
 
 @Component({
   selector: 'app-day-overview',
@@ -21,8 +22,10 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   public dividerHeight: number = 3;
   public weeknumber: number = moment().week();
 
-  public day: { date: string, day: string, datename: string, appointments: Appointment[] } = { date: moment().format('YYYY-MM-DD'), datename: this.getDateName(moment().format('YYYY-MM-DD')), day: moment().format('dddd'), appointments: [] };
+  private appointments: Map<number, Appointment> = new Map<number, Appointment>();
+  public day: day = { date: '', day: '', istoday: false, displayAppointments: []};
   public times: string[] = [];
+  public activeDate: string = moment().format('YYYY-MM-DD');
 
   constructor(private _dataservice: DataService, private globalfunctions: GlobalfunctionsService, private _dialog: MatDialog) { }
 
@@ -31,14 +34,14 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   getActivePosition() {
     return this.globalfunctions.getActivePosition(this.heightPerHour);
   }
-  calculateOverlaps(appointments: Appointment[]) {
-    return this.globalfunctions.calculateOverlaps(appointments, this.widthPerDay);
+  calculateOverlaps(disApps: DisplayAppointment[]) {
+    return this.globalfunctions.calculateOverlaps(disApps, this.widthPerDay);
   }
   // Global functions
 
   ngOnInit(): void {
     this.times = this.globalfunctions.generateTimes();
-    this.getAppointments(moment().format('YYYY-MM-DD'), moment().format('YYYY-MM-DD'));
+    this.dayDateSelected(moment().format('YYYY-MM-DD'));
   }
 
   ngAfterViewInit(): void {
@@ -51,27 +54,46 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
     this.daygridScroll.nativeElement.scrollTop = scrollHeight;
   }
 
+  getAppointment(id: number): Appointment {
+    return this.appointments.get(id) || {} as Appointment;
+  }
+
+  getNumberOfWholeDayAppointments(day: day): number {
+    return day.displayAppointments.filter(appointment => appointment.isAllDay).length;
+  }
+
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
       if (appointment.date !== this.day.date) return;
-      this.day.appointments.push(appointment);
-      this.day.appointments = this.calculateOverlaps(this.day.appointments);
+      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
+      displAppointments.forEach(displApp => {
+        if (displApp.date === this.day.date) {
+          this.day.displayAppointments.push(displApp);
+        }
+      });
+      this.day.displayAppointments = this.calculateOverlaps(this.day.displayAppointments);
     })
   }
 
-  getTaskStyle(appointment: Appointment): any {
-    return this.globalfunctions.getTaskStyle(appointment, this.day.appointments, this.heightPerHour);
+  getTaskStyle(disApp: DisplayAppointment): any {
+    return this.globalfunctions.getTaskStyle(disApp, this.day.displayAppointments, Array.from(this.appointments.values()), this.heightPerHour);
   }
 
   getAppointments(beginDate: string, endDate: string) {
-    this._dataservice.getAppointments(beginDate, endDate).subscribe((data) => {
+    this.appointments.clear();
+    this.day.displayAppointments = [];
+
+    this._dataservice.GetAppointmentsV3(beginDate, endDate).subscribe((data) => {
       if (data == null) return;
-      data.forEach(element => {
-        const day = this.day;
-        if (day && element.appointments.length > 0) {
-          day.appointments = element.appointments;
-          day.appointments = this.calculateOverlaps(day.appointments);
-        }
+      data.forEach(appointment => {
+        this.appointments.set(appointment.id, appointment);
+        var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
+        displAppointments.forEach(displApp => {
+          if (displApp.date === this.day.date) {
+            this.day.displayAppointments.push(displApp);
+          }
+        });
+        this.day.displayAppointments = this.calculateOverlaps(this.day.displayAppointments);
       });
     });
   }
@@ -84,8 +106,8 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
     return dateName;
   }
 
-  ShowCategory(appointment: Appointment): boolean {
-    let height = this.getTaskStyle(appointment).height;
+  ShowCategory(displApp: DisplayAppointment): boolean {
+    let height = this.getTaskStyle(displApp).height;
     let heightNumber = parseInt(height.slice(0, -2), 10);
     return heightNumber > 60;
   }
@@ -95,16 +117,14 @@ export class DayOverviewComponent implements OnInit, AfterViewInit {
   }
 
   dayDateSelected(date: string) {
-    this.day = { date: date, datename: this.getDateName(date), day: moment(date).format('dddd'), appointments: [] };
+    this.day = { date: date, day: moment(date).format('dddd'), istoday: moment(date).isSame(moment(), 'day'), displayAppointments: [] };
     this.getAppointments(date, date);
   }
 
-  async openDetails(appointment: Appointment) {
+  async openDetails(displayAppo: DisplayAppointment) {
+    const appointment = this.getAppointment(displayAppo.appointmentid);
     let result = await this.globalfunctions.openAppointmentDetails(appointment);
-    if (result.updateType === updateType.DELETE) {
-      this.day.appointments = this.day.appointments.filter(appointment => appointment.id !== result.appointmentid);
-    }
-    if (result.updateType === updateType.UPDATE) {
+    if (result.updateType === updateType.UPDATE || result.updateType === updateType.DELETE) {
       this.getAppointments(this.day.date, this.day.date);
     }
   }

@@ -34,6 +34,13 @@ func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 	}
 
 	if url.Id != 0 && url.Url == "" {
+		queryDeleteInrelevant := "DELETE FROM inrelevantappointments WHERE userid = ? AND appointmentid IN (SELECT id FROM appointments WHERE ics_import_id = ?);"
+		resultDeleteInrelevant, err := dbConnection.Query(queryDeleteInrelevant, userId, url.Id)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+
 		queryDelete := "DELETE FROM appointments WHERE userid = ? AND ics_import_id = ?;"
 		resultDelete, err := dbConnection.Query(queryDelete, userId, url.Id)
 		if err != nil {
@@ -47,6 +54,7 @@ func PostWebcallUrl(res http.ResponseWriter, req *http.Request) {
 			http.Error(res, err.Error(), http.StatusInternalServerError)
 			return
 		}
+		defer resultDeleteInrelevant.Close()
 		defer resultDelete.Close()
 		defer resultDelete2.Close()
 		defer dbConnection.Close()

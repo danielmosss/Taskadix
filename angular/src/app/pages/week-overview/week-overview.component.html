@@ -46,36 +46,44 @@
 
 
           <div class="appointments">
-            <div *ngFor="let appointment of day.appointments" [ngStyle]="getTaskStyle(appointment)" class="appointment"
-            matTooltip="{{appointment.description}}">
-              <ng-container *ngIf="appointment.date === day.date && !appointment.isAllDay">
+            <div *ngFor="let displayAppo of day.displayAppointments" [ngStyle]="getTaskStyle(displayAppo)" class="appointment"
+            matTooltip="{{getAppointment(displayAppo.appointmentid).description}}">
+              <ng-container *ngIf="displayAppo.date === day.date && !getAppointment(displayAppo.appointmentid).isAllDay">
                 <div class="appointmentTime">
-                  <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                  <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displayAppo.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(appointment)">
-                    <div class="category" [ngStyle]="{'color': appointment.category.color}"
-                      *ngIf="ShowCategory(appointment)">
-                      {{ appointment.category.term }}
+                  <div class="cardContent" (click)="openDetails(displayAppo)" [ngStyle]="{'margin-top': (!displayAppo.isAllDay && displayAppo.starttime == '00:00:00') ? (getNumberOfWholeDayAppointments(day) * 35) + 10 + 'px' : 0}">
+                    <div class="category" [ngStyle]="{'color': getAppointment(displayAppo.appointmentid).category.color}"
+                      *ngIf="ShowCategory(displayAppo)">
+                      {{ getAppointment(displayAppo.appointmentid).category.term }}
                     </div>
                     <div class="title">
-                      {{ appointment.title }}
+                      {{ getAppointment(displayAppo.appointmentid).title }}
                     </div>
-                    <div class="time">
-                      {{ getFormattedTime(appointment.starttime) }} - {{ getFormattedTime(appointment.endtime) }}
+
+                    <div class="time" *ngIf="getAppointment(displayAppo.appointmentid).date !== getAppointment(displayAppo.appointmentid).enddate">
+                      {{ getDateName(getAppointment(displayAppo.appointmentid).date) }} {{ getFormattedTime(getAppointment(displayAppo.appointmentid).starttime) }}
+                      <br>
+                      {{ getDateName(getAppointment(displayAppo.appointmentid).enddate) }} {{ getFormattedTime(getAppointment(displayAppo.appointmentid).endtime) }}
                     </div>
+
+                    <div class="time" *ngIf="getAppointment(displayAppo.appointmentid).date == getAppointment(displayAppo.appointmentid).enddate">
+                      {{ getFormattedTime(getAppointment(displayAppo.appointmentid).starttime) }} - {{ getFormattedTime(getAppointment(displayAppo.appointmentid).endtime) }}
+                    </div>
+
                     <div class="location">
-                      <i class="fa-solid fa-location-dot fa-2xs"></i> {{ appointment.location }}
+                      <i class="fa-solid fa-location-dot fa-2xs"></i> {{ getAppointment(displayAppo.appointmentid).location }}
                     </div>
                   </div>
                 </div>
               </ng-container>
-              <ng-container *ngIf="appointment.date === day.date && appointment.isAllDay">
+              <ng-container *ngIf="displayAppo.date === day.date && displayAppo.isAllDay">
                 <div class="appointmentWholeDay">
-                  <div class="categoryColor" [ngStyle]="{'background-color': appointment.category.color}">
+                  <div class="categoryColor" [ngStyle]="{'background-color': getAppointment(displayAppo.appointmentid).category.color}">
                   </div>
-                  <div class="cardContent" (click)="openDetails(appointment)">
+                  <div class="cardContent" (click)="openDetails(displayAppo)">
                     <div class="title">
-                      {{ appointment.title }}
+                      {{ getAppointment(displayAppo.appointmentid).title }}
                     </div>
                   </div>
                 </div>

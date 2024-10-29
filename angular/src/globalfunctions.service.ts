@@ -1,6 +1,6 @@
 import { Injectable, OnInit } from '@angular/core';
 import * as moment from 'moment';
-import { Appointment } from './app/interfaces';
+import { Appointment, DisplayAppointment } from './app/interfaces';
 import { AppointmentComponent } from './app/popups/appointment/appointment.component';
 import { MatDialog } from '@angular/material/dialog';
 
@@ -22,9 +22,10 @@ export class GlobalfunctionsService {
     return moment(time, 'HH:mm').format('HH:mm');
   }
 
-  getDateName(date?: string): string {
+  getDateName(date?: string, longmonth: boolean = true): string {
     moment.locale('nl');
     let dateName = moment(date ? date : moment()).format('DD MMMM');
+    if (!longmonth) dateName = moment(date ? date : moment()).format('DD MMM');
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
     dateName = dateName.replace(/\b\w/g, l => l.toUpperCase());
     return dateName;
@@ -72,20 +73,22 @@ export class GlobalfunctionsService {
     return window.innerWidth < 600;
   }
 
-  getTaskStyle(appointment: Appointment, appointments: Appointment[], heightPerHour: number): any {
-    if (appointment.isAllDay) {
-      let top = 30;
-      const wholeDayAppointments = appointments.filter(appointment => appointment.isAllDay);
-      if (wholeDayAppointments) {
-        top = (wholeDayAppointments.indexOf(appointment) * (top + 10));
-      }
-      return { 'top.px': top, 'height': '30px', width: '100%', left: '0px' };
+  getTaskStyle(disApp: DisplayAppointment, disAppointments: DisplayAppointment[], appointments: Appointment[], heightPerHour: number): { top: string, height: string, width: string, left: string, 'z-index': string } {
+    const appointment = appointments.find(appointment => appointment.id === disApp.appointmentid);
+    if (!appointment) {
+      return { top: '0px', height: '0px', width: '0px', left: '0px', 'z-index': '0' };
     }
 
-    const startHour = parseInt(appointment.starttime.split(':')[0], 10);
-    const startMinute = parseInt(appointment.starttime.split(':')[1], 10);
-    const endHour = parseInt(appointment.endtime.split(':')[0], 10);
-    const endMinute = parseInt(appointment.endtime.split(':')[1], 10);
+    if (appointment.isAllDay) {
+      let top = 30;
+      top = (disAppointments.filter(disApp => disApp.isAllDay).indexOf(disApp) * (top + 10));
+      return { 'top': `${top}px`, 'height': '30px', width: '100%', left: '0px', 'z-index': '3' };
+    }
+
+    const startHour = parseInt(disApp.starttime.split(':')[0], 10);
+    const startMinute = parseInt(disApp.starttime.split(':')[1], 10);
+    const endHour = parseInt(disApp.endtime.split(':')[0], 10);
+    const endMinute = parseInt(disApp.endtime.split(':')[1], 10);
 
     const startPosition = (startHour + startMinute / 60) * heightPerHour; // Bijvoorbeeld, 9.30 wordt 570 (9*60 + 30)
     const endPosition = (endHour + endMinute / 60) * heightPerHour;
@@ -95,8 +98,9 @@ export class GlobalfunctionsService {
     return {
       top: `${startPosition}px`,
       height: `${height}px`,
-      width: `${appointment.width}px`,
-      left: `${appointment.left}px`
+      width: `${disApp.width}px`,
+      left: `${disApp.left}px`,
+      'z-index': '2'
     };
   }
 
@@ -119,45 +123,115 @@ export class GlobalfunctionsService {
     return times;
   }
 
-  calculateOverlaps(tasks: Appointment[], widthPerDay: number): Appointment[] {
-    // Sort tasks by start time
+  calculateOverlaps(tasks: DisplayAppointment[], widthPerDay: number): DisplayAppointment[] {
+    // Sort by startdate all appointments
     const sortedTasks = tasks.sort((a, b) => a.starttime.localeCompare(b.starttime));
-    const result = [];
+    const result: any[] = [];
 
-    let i = 0;
-    while (i < sortedTasks.length) {
-      const currentTask = sortedTasks[i];
-      let overlaps = [currentTask];
+    const columns: DisplayAppointment[][] = [];
 
-      // Find all tasks that overlap with the current or any overlapping task
-      let maxEndTime = currentTask.endtime;
-      for (let j = i + 1; j < sortedTasks.length; j++) {
-        const nextTask = sortedTasks[j];
-        if (nextTask.starttime < maxEndTime) {
-          overlaps.push(nextTask);
-          if (nextTask.endtime > maxEndTime) {
-            maxEndTime = nextTask.endtime;
-          }
-        } else {
+    // Iterate through each task to place it in the correct column
+    for (const task of sortedTasks) {
+      let placed = false;
+
+      // Try to place the task in an existing column
+      for (const column of columns) {
+        // Check if it can fit in this column without overlapping
+        const lastTaskInColumn = column[column.length - 1];
+        if (lastTaskInColumn.endtime <= task.starttime) {
+          column.push(task);
+          placed = true;
           break;
         }
       }
 
-      // Calculate width and left for overlapping tasks
-      const width = widthPerDay / overlaps.length;
-      overlaps.forEach((task, index) => {
-        task.width = width;
-        task.left = index * width
-      });
-
-      // Add processed tasks to the result array
-      result.push(...overlaps);
-
-      // Skip over the processed tasks
-      i += overlaps.length;
+      // if task cant fit in any column, creata a new column.
+      if (!placed) {
+        columns.push([task]);
+      }
     }
+
+    // calculate the width and left position of each task
+    const columnWidth = widthPerDay / columns.length;
+    columns.forEach((column, colIndex) => {
+      column.forEach(task => {
+        task.width = columnWidth;
+        task.left = colIndex * columnWidth;
+        result.push(task);
+      });
+    });
+
     return result;
   }
+
+
+  processDisplayAppointments(appointment: Appointment): DisplayAppointment[] {
+    // appointments can be over multipledays, so we need to create a displayappointment for each day.
+    // we need to check which part of the multiple day appointment is in this week.
+    let displayAppointments: DisplayAppointment[] = [];
+
+    //if single day appointment
+    if (appointment.date === appointment.enddate) {
+      let displayAppointment: DisplayAppointment = {
+        starttime: appointment.starttime,
+        endtime: appointment.endtime,
+        isAllDay: appointment.isAllDay,
+        date: appointment.date,
+        appointmentid: appointment.id,
+      }
+      displayAppointments.push(displayAppointment);
+    }
+
+    // if multiple day appointment
+    else if (appointment.date !== appointment.enddate) {
+      let startDate = new Date(appointment.date);
+      startDate.setHours(0, 0, 0, 0);
+
+      let endDate = new Date(appointment.enddate);
+      endDate.setHours(0, 0, 0, 0);
+
+      let currentDate = new Date(startDate);
+      currentDate.setHours(0, 0, 0, 0);
+
+      while (currentDate <= endDate) {
+        let starttime = appointment.starttime;
+        let endtime = appointment.endtime;
+        let isAllDay = appointment.isAllDay;
+
+        if (currentDate.toDateString() === startDate.toDateString()) {
+          starttime = appointment.starttime;
+          endtime = '23:59:00';
+        }
+        else
+        if (currentDate.toDateString() === endDate.toDateString()) {
+          starttime = '00:00:00';
+          endtime = appointment.endtime;
+        }
+        else {
+          starttime = '00:00:00';
+          endtime = '00:00:00';
+          isAllDay = true;
+        }
+
+        if (appointment.isAllDay) {
+          starttime = '00:00:00';
+          endtime = '00:00:00';
+        }
+
+        let displayAppointment: DisplayAppointment = {
+          starttime: starttime,
+          endtime: endtime,
+          isAllDay: isAllDay,
+          date: moment(currentDate).format('YYYY-MM-DD'),
+          appointmentid: appointment.id,
+        }
+        displayAppointments.push(displayAppointment);
+        currentDate.setDate(currentDate.getDate() + 1);
+      }
+    }
+    return displayAppointments;
+  }
+
   readFile(file: File) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
