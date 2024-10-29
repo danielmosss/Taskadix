@@ -71,7 +71,7 @@
                       {{ getFormattedTime(getAppointment(displayAppo.appointmentid).starttime) }} - {{ getFormattedTime(getAppointment(displayAppo.appointmentid).endtime) }}
                     </div>
 
-                    <div class="location">
+                    <div class="location" *ngIf="getAppointment(displayAppo.appointmentid).location">
                       <i class="fa-solid fa-location-dot fa-2xs"></i> {{ getAppointment(displayAppo.appointmentid).location }}
                     </div>
                   </div>
