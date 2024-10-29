@@ -189,7 +189,9 @@ export class GlobalfunctionsService {
 
       let endDate = new Date(appointment.enddate);
       endDate.setHours(0, 0, 0, 0);
+
       let currentDate = new Date(startDate);
+      currentDate.setHours(0, 0, 0, 0);
 
       while (currentDate <= endDate) {
         let starttime = appointment.starttime;
