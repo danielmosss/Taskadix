@@ -158,6 +158,8 @@ export class GlobalfunctionsService {
         task.width = columnWidth;
         task.left = colIndex * columnWidth;
 
+        //check for all appointments in array[0] if they have any overlap with the rest. if they dont have any overlap, then we can set the width to 100%.
+        // otherwise we will just do nothing.
         // Iterate through each column
         for (let colIndex = 0; colIndex < columns.length; colIndex++) {
           const column = columns[colIndex];
