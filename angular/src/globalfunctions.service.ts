@@ -22,9 +22,10 @@ export class GlobalfunctionsService {
     return moment(time, 'HH:mm').format('HH:mm');
   }
 
-  getDateName(date?: string): string {
+  getDateName(date?: string, longmonth: boolean = true): string {
     moment.locale('nl');
     let dateName = moment(date ? date : moment()).format('DD MMMM');
+    if (!longmonth) dateName = moment(date ? date : moment()).format('DD MMM');
     dateName = dateName.charAt(0).toUpperCase() + dateName.slice(1);
     dateName = dateName.replace(/\b\w/g, l => l.toUpperCase());
     return dateName;

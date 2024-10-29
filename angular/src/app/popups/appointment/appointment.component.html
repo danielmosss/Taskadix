@@ -18,10 +18,17 @@
       <div class="Item">
         <i class="fa-solid fa-clock fa-23"></i>
         <p class="text time" *ngIf="!appointment.isAllDay">
-          {{getDateName(appointment.date)}} {{formatTime(appointment.starttime)}} - {{formatTime(appointment.endtime)}}
+          {{getDateName(appointment.date, false)}} {{formatTime(appointment.starttime)}} -
+
+          <!-- IF enddate is the same as date, only show the time
+          ELSE then its an appointment that spans multiple days, show the enddate and time -->
+          {{ getDateName(appointment.enddate) == getDateName(appointment.date)
+          ? formatTime(appointment.endtime)
+          : getDateName(appointment.enddate, false) + " " + formatTime(appointment.endtime) }}
         </p>
         <p class="text time" *ngIf="appointment.isAllDay">
-          {{getDateName(appointment.date)}} {{getDateName(appointment.enddate) == getDateName(appointment.date) ? "" : "- " + getDateName(appointment.enddate)}}
+          {{getDateName(appointment.date)}} {{getDateName(appointment.enddate) == getDateName(appointment.date) ? "" :
+          "- " + getDateName(appointment.enddate)}}
         </p>
       </div>
 
@@ -43,17 +50,19 @@
         <div class="actions">
           <button mat-button class="mat-button lgray" matTooltip="Google maps">
             <i class="fa-solid fa-map-location-dot fa-23"
-            (click)="navigate('https://www.google.com/maps/search/?api=1&query=' + appointment.location, true)"
-            target="_blank">
-          </i>
+              (click)="navigate('https://www.google.com/maps/search/?api=1&query=' + appointment.location, true)"
+              target="_blank">
+            </i>
           </button>
           <button mat-button class="mat-button lgray" matTooltip="Bewerken" (click)="editAppointment(appointment)">
             <i class="fa-solid fa-pen-to-square fa-23"></i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="(ICS) Verwijderen" *ngIf="appointment.ics_import_id > 0" (click)="deleteAppointment(appointment)">
+          <button mat-button class="mat-button lgray" matTooltip="(ICS) Verwijderen"
+            *ngIf="appointment.ics_import_id > 0" (click)="deleteAppointment(appointment)">
             <i class="fa-regular fa-calendar-xmark fa-23"></i>
           </button>
-          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.ics_import_id == 0" (click)="deleteAppointment(appointment)">
+          <button mat-button class="mat-button lgray" matTooltip="Verwijderen" *ngIf="appointment.ics_import_id == 0"
+            (click)="deleteAppointment(appointment)">
             <i class="fa-solid fa-trash-can fa-23"></i>
           </button>
         </div>
