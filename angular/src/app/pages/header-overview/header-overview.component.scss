@@ -58,7 +58,7 @@
       }
     }
 
-    .createAppointment {
+    .buttonCreate {
       background-color: var(--gray);
       height: 49px;
       border-radius: 10px;
@@ -81,7 +81,11 @@
 
         .plus {
           font-size: 20px;
-          position: absolute;
+          margin-left: -25px;
+        }
+
+        .bigicon{
+          font-size: 25px;
         }
       }
 

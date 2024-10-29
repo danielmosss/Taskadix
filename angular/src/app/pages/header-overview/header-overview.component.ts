@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
+import { UploadicsComponent } from 'src/app/popups/uploadics/uploadics.component';
 
 enum Type {
   month = 'month',
@@ -30,6 +31,13 @@ export class HeaderOverviewComponent implements OnInit {
 
   openCreateAppointment() {
     let dialog = this._dialog.open(CreateAppointmentComponent)
+    dialog.afterClosed().subscribe((result: number) => {
+      this.newAppointmentId.emit(result)
+    })
+  }
+
+  openICSupload() {
+    let dialog = this._dialog.open(UploadicsComponent)
     dialog.afterClosed().subscribe((result: number) => {
       this.newAppointmentId.emit(result)
     })
