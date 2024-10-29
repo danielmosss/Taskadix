@@ -28,8 +28,3 @@ alter table appointments
     add constraint if_allday_starttime_endtime_null
         check ( (`isallday` = 1) or
                 ((`starttime` is not null) and (`endtime` is not null)) );
-
-check ((`isallday` = 1) or
-               ((`starttime` is not null) and (`endtime` is not null)
-
-
