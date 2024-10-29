@@ -3,7 +3,9 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { DataService } from 'src/data.service';
 import * as moment from 'moment';
-import { newTodoRequirements } from 'src/app/interfaces';
+import { Appointment, Category, NewAppointment, newTodoRequirements } from 'src/app/interfaces';
+import { NonNullAssert } from '@angular/compiler';
+import { firstValueFrom } from 'rxjs';
 
 interface CalendarEvent {
   title: string;
@@ -34,12 +36,16 @@ export class UploadicsComponent implements OnInit {
     this.dialogRef.close();
   }
 
-  onFileSelected(event: any) {
+  async onFileSelected(event: any) {
     const file: File = event.target.files[0];
     if (file.type !== "text/calendar") {
       this._snackBar.open("File must be of type .ics", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
       return;
     }
+    var categories: Category[] = [];
+    await firstValueFrom(this._dataService.getCategories()).then((data) => {
+      categories = data;
+    });
 
     this.readFile(file).then((data: any) => {
       data.data = data.data.replace(/data:text\/calendar;base64,/g, "");
@@ -47,18 +53,31 @@ export class UploadicsComponent implements OnInit {
       var icsString = atob(data.data);
       // parse the ics string
       const events = this.parseICS(icsString);
+
       events.forEach(event => {
         console.log("event", event);
 
-        // TODO: send start and end time to backend when time is implemented, same for location.
-        this.newtodo = {
-          title: event.title ? event.title : "ICS Event",
-          description: `${event.startTime} - ${event.endTime} ${event.location ? `@ ${event.location}` : ""}\n\n${event.description}`,
-          date: event.startDate
+        let category: Category | undefined = categories.find(category => category.term === "ICS Import");
+        if (!category) {
+          return this._snackBar.open("No category found for ICS Import", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
         }
-        this._dataService.postTodoInfo(this.newtodo).subscribe(data => {
+
+        var appointment: NewAppointment = {
+          title: event.title,
+          description: event.description,
+          date: event.startDate,
+          enddate: event.endDate,
+          isAllDay: (event.startTime === "00:00" && event.endTime === "23:59" && (event.startDate === event.endDate) ? true : false),
+          starttime: event.startTime,
+          endtime: event.endTime,
+          location: event.location,
+          category: { id: category.id, term: category.term }
+        }
+
+        this._dataService.createAppointment(appointment).subscribe(() => {
           this._snackBar.open("Event added to your calendar", "Dismiss", { duration: 5000, horizontalPosition: "left", verticalPosition: "bottom" });
         })
+        return;
       })
       this.close();
     })
