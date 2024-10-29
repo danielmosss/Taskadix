@@ -185,7 +185,10 @@ export class GlobalfunctionsService {
     // if multiple day appointment
     else if (appointment.date !== appointment.enddate) {
       let startDate = new Date(appointment.date);
+      startDate.setHours(0, 0, 0, 0);
+
       let endDate = new Date(appointment.enddate);
+      endDate.setHours(0, 0, 0, 0);
       let currentDate = new Date(startDate);
 
       while (currentDate <= endDate) {
