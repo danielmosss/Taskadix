@@ -165,13 +165,7 @@ export class WeekOverviewComponent implements OnInit, AfterViewInit {
 
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
-      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
-      displAppointments.forEach(displApp => {
-        let day = this.days.find(day => day.date === displApp.date);
-        if (day) {
-          day.displayAppointments.push(displApp);
-        }
-      });
+      this.getAppointments(this.days[0].date, this.days[6].date);
     })
   }
 

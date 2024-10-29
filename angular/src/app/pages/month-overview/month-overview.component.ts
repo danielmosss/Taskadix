@@ -105,18 +105,8 @@ export class MonthOverviewComponent implements OnInit {
 
   newAppointment(appointmentId: number) {
     this._dataservice.getAppointment(appointmentId).subscribe(appointment => {
-      var displAppointments: DisplayAppointment[] = this.globalfunctions.processDisplayAppointments(appointment);
-      displAppointments.forEach(displApp => {
-        let findday = this.findDayInMonthView(new Date(displApp.date))
-        if (findday) {
-          if (!findday.displayAppointments) {
-            findday.displayAppointments = [];
-          }
-          findday.displayAppointments.push(displApp);
-        }
-      })
+      this.getMonthAppointments();
     })
-    this.sortAllDays();
   }
 
   monthSelected(date: string) {
