@@ -5,6 +5,7 @@ import { Appointment } from 'src/app/interfaces';
 import { DataService } from 'src/data.service';
 import { GlobalfunctionsService, updateType } from 'src/globalfunctions.service';
 import { CreateAppointmentComponent } from '../create-appointment/create-appointment.component';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-appointment',
@@ -22,7 +23,8 @@ export class AppointmentComponent {
     private globalfunctions: GlobalfunctionsService,
     private _router: Router,
     private _dataservice: DataService,
-    private _dialog: MatDialog
+    private _dialog: MatDialog,
+    private _snackBar: MatSnackBar
   ) { }
 
   navigate(url: string, blank: boolean = false) {
@@ -45,6 +47,15 @@ export class AppointmentComponent {
     this._dataservice.deleteAppointment(appointment).subscribe(data => {
       if (data.status == "success") this.closedialog(updateType.DELETE, appointment.id);
     })
+  }
+
+  GoogleCalanderLink(appointment: Appointment){
+    let url = `https://calndr.link/d/event/?service=google&start=${appointment.date}T${appointment.starttime}&end=${appointment.enddate}T${appointment.endtime}&title=${appointment.title}&timezone=Europe/Amsterdam`
+    navigator.clipboard.writeText(url).then(() => {
+      this._snackBar.open("Google Calendar link copied to clipboard", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'alert' });
+    }).catch(() => {
+      this._snackBar.open("Oops! An error occurred while trying to copy the invitation link.", '', { duration: 3000, horizontalPosition: 'left', panelClass: 'alert' });
+    });
   }
 
   closedialog(updatetype: updateType, appointmentid: number) {

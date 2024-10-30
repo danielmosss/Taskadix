@@ -65,9 +65,10 @@
             (click)="deleteAppointment(appointment)">
             <i class="fa-solid fa-trash-can fa-23"></i>
           </button>
-           <a href="https://calndr.link/d/event/?service=google&start={{appointment.date}}T{{appointment.starttime}}&end={{appointment.enddate}}T{{appointment.endtime}}&title={{appointment.title}}&timezone=Europe/Amsterdam" target="_blank" class="mat-button lgray" matTooltip="Toevoegen aan Google Calendar">
-            <i class="fa-solid fa-calendar-plus fa-23"></i>
-          </a>
+            <button mat-button class="mat-button lgray googlecalanderlink" matTooltip="Google Calendar Link"
+            (click)="GoogleCalanderLink(appointment)">
+            <img src="assets/icons/icons8-google-calendar.svg" alt="Google Calendar" class="googlecalendericon">
+          </button>
         </div>
       </div>
     </div>
