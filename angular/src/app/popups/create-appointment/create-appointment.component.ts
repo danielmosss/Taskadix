@@ -108,13 +108,6 @@ export class CreateAppointmentComponent implements OnInit {
           this.NewAppointment.endtime = moment(this.NewAppointment.starttime, "HH:mm").add(1, 'hour').format("HH:mm");
         }
       }
-    } else {
-      let date = moment(this.NewAppointment.date);
-      let enddate = moment(this.NewAppointment.enddate)
-      // if enddate is before date, set enddate to date
-      if (enddate.isBefore(date)) {
-        this.NewAppointment.enddate = this.NewAppointment.date;
-      }
     }
   }
 
@@ -155,14 +148,27 @@ export class CreateAppointmentComponent implements OnInit {
 
   canCreateAppointment() {
     let v = this.NewAppointment;
+    let moment1 = moment(v.date + "T" + v.starttime);
+    let moment2 = moment(v.enddate + "T" + v.endtime);
+    var bool = moment2.isAfter(moment1);
+    console.log(moment1 + " " + moment2 + " " + bool);
     return (
       v.title !== "" &&
       v.date !== "" &&
       v.category.id !== 0 &&
       (
-        v.isAllDay
-        ||
-        (v.starttime !== "" && v.endtime !== "")
+      v.isAllDay
+      ||
+      (v.starttime !== "" && v.endtime !== "")
+      )
+      &&
+      //check if enddate is after date
+      moment(v.enddate + "T" + v.endtime).isAfter(moment(v.date + "T" + v.starttime)) &&
+      //check if endtime is after starttime if dates are the same
+      (
+      v.isAllDay
+      ||
+      (moment(v.enddate).isSame(v.date) ? moment(v.endtime, "HH:mm").isAfter(moment(v.starttime, "HH:mm")) : true)
       )
     )
   }
