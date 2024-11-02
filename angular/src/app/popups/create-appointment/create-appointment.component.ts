@@ -124,6 +124,11 @@ export class CreateAppointmentComponent implements OnInit {
   }
 
   changeTime($event: string, isStarttime: boolean) {
+    if (isStarttime){
+      if(this.NewAppointment.endtime === ""){
+        this.NewAppointment.endtime = moment($event, "HH:mm").add(1, 'hour').format("HH:mm");
+      }
+    }
     this.checkIfDateAndTimeAreValid();
   }
 
