@@ -55,6 +55,12 @@ export class MonthOverviewComponent implements OnInit {
   getMonthAppointments() {
     this._dataservice.GetAppointmentsV3(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate).subscribe(appointments => {
       this.appointments = new Map<number, Appointment>();
+      this.monthView.forEach(week => {
+        week.days.forEach(day => {
+          day.displayAppointments = [];
+        })
+      })
+
       appointments.forEach(appointment => {
         this.appointments.set(appointment.id, appointment);
 
