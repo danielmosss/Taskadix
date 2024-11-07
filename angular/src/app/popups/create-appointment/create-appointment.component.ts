@@ -163,7 +163,7 @@ export class CreateAppointmentComponent implements OnInit {
       )
       &&
       //check if enddate is after date
-      moment(v.enddate + "T" + v.endtime).isAfter(moment(v.date + "T" + v.starttime)) &&
+      moment(v.enddate + "T" + v.endtime).isSameOrAfter(moment(v.date + "T" + v.starttime)) &&
       //check if endtime is after starttime if dates are the same
       (
       v.isAllDay
