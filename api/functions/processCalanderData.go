@@ -154,9 +154,10 @@ func taskExistsInDB(appointment handlers.NewAppointment, userId int) bool {
                                     AND description = ? 
                                     AND date = ? 
                                     AND enddate = ?
+                                    AND (starttime = ? OR endtime = ?)
                                     AND userId = ? 
                                     AND ics_import_id > 0;`
-	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.Enddate, userId)
+	result, err := dbConnection.Query(query, appointment.Title, appointment.Description, appointment.Date, appointment.Enddate, appointment.StartTime, appointment.EndTime, userId)
 	if err != nil {
 		panic(err.Error())
 	}
