@@ -35,12 +35,24 @@ export class GlobalfunctionsService {
     return moment(date).format('DD');
   }
 
+  getDateCustomFormat(date: string, format: string, removeLastCharacter: boolean = false): string {
+    let res = moment(date).format(format);
+    if (removeLastCharacter) res = res.slice(0, -1);
+    return res;
+  }
+
   getDateWeekname(date: string, capitalLetter: boolean = false, letters: number = 0, locale: string): string {
     const dateObj = new Date(date);
     let name = dateObj.toLocaleString(locale, { weekday: 'long' })
     if (letters > 0) name = name.slice(0, letters);
     if (capitalLetter) name = name.charAt(0).toUpperCase() + name.slice(1);
     return name;
+  }
+
+  getDaysLeft(date: string): number {
+    const today = moment().startOf('day');
+    const eventDate = moment(date).startOf('day');
+    return eventDate.diff(today, 'days');
   }
 
   async openAppointmentDetails(appointment: Appointment): Promise<{ updateType: updateType, appointmentid: number }> {

@@ -77,10 +77,10 @@
       <div class="day" *ngFor="let day of upcomingSevenDaysTodos">
         <div class="dayinfo">
           <h2 class="date noMargin" *ngIf="!isMobile()">
-            {{getDateWeekname(day.date, true, 3, "en-US")}} - {{ getDateName(day.date) }}
+            {{getDateWeekname(day.date, true, 10, "nl-NL")}} {{ getDateCustomFormat(day.date, "DD MMM", true) }} - in {{getDaysLeft(day.date)}} <i class="fa-solid fa-calendar-days fa-xs"></i>
           </h2>
           <h2 class="date noMargin" *ngIf="isMobile()">
-            {{getDateWeekname(day.date, true, 2, "nl-NL")}} - {{ getDateName(day.date) }}
+            {{getDateWeekname(day.date, true, 2, "nl-NL")}} {{ getDateCustomFormat(day.date, "DD MMM", true) }} - in {{getDaysLeft(day.date)}} <i class="fa-solid fa-calendar-days fa-xs"></i>
           </h2>
           <div class="progress-loader">
             <div class="progress" [ngStyle]="{'width': getPercentTaskedChecked(day.tasks) + '%'}"></div>

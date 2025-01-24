@@ -19,9 +19,12 @@ export class HomeComponent implements OnInit {
   // Global functions
   formatTime = this.globalfunctions.getFormattedTime;
   getDateName = this.globalfunctions.getDateName;
+  getDateNumber = this.globalfunctions.getDateNumber;
   getWeekNumber = this.globalfunctions.getWeekNumber;
+  getDateCustomFormat = this.globalfunctions.getDateCustomFormat;
   isMobile = this.globalfunctions.isMobile;
   getDateWeekname = this.globalfunctions.getDateWeekname;
+  getDaysLeft = this.globalfunctions.getDaysLeft;
   updateType = updateType;
   // Global functions
 
