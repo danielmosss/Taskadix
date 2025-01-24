@@ -49,7 +49,7 @@ export class HomeComponent implements OnInit {
       });
     });
 
-    this._dataservice.getTodo().subscribe((data: Array<DayTodo>) => {
+    this._dataservice.getUpcommingTodos(14).subscribe((data: Array<DayTodo>) => {
       this.upcomingSevenDaysTodos = data;
     });
   }
