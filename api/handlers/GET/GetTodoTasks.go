@@ -5,6 +5,7 @@ import (
 	"api/handlers"
 	"encoding/json"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -22,8 +23,21 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	}
 	defer dbConnection.Close()
 
+	daysStr := req.URL.Query().Get("days")
+	if daysStr == "" {
+		http.Error(res, "Days parameter is required", http.StatusBadRequest)
+		return
+	}
+
+	// check if days is a valid number
+	daysInt, err := strconv.Atoi(daysStr)
+	if err != nil {
+		http.Error(res, "Invalid days parameter", http.StatusBadRequest)
+		return
+	}
+
 	todayDate := time.Now().Format(time.DateOnly)
-	endDate := time.Now().Add(7 * 24 * time.Hour).Format(time.DateOnly)
+	endDate := time.Now().Add(time.Duration(daysInt) * 24 * time.Hour).Format(time.DateOnly)
 
 	query := `SELECT id, title, description, date, todoOrder, checked, isCHEagenda 
 			  FROM todos 
@@ -49,14 +63,20 @@ func GetTodoTasks(res http.ResponseWriter, req *http.Request) {
 	}
 
 	var weekTasks []handlers.DayTodos
-	for i := 0; i < 7; i++ {
-		date := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format(time.DateOnly)
-		dayName := time.Now().Add(time.Duration(i) * 24 * time.Hour).Format("Monday")
-		dayTasks, exists := tasksMap[date]
-		if !exists {
-			dayTasks = []handlers.TodoCard{} // Empty slice
+	for i, task := range tasksMap {
+		// i = 2025-01-25
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
 		}
-		weekTasks = append(weekTasks, handlers.DayTodos{Day: dayName, Date: date, Tasks: dayTasks})
+
+		dayName, err := time.Parse(time.DateOnly, i)
+		if err != nil {
+			http.Error(res, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		date := dayName.Format("Monday")
+		weekTasks = append(weekTasks, handlers.DayTodos{Day: date, Date: i, Tasks: task})
 	}
 
 	tasksJSON, err := json.Marshal(weekTasks)

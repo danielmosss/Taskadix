@@ -128,6 +128,11 @@ func fetchCalendarData(webcallurl string) ([]handlers.NewAppointment, error) {
 			end = start.Add(1 * time.Hour)
 		}
 
+		//if wholeday and endtime is 00:00, set endtime to 23:59 and enddate to 1 day earlier
+		if isAllDay && end.Format("15:04") == "00:00" {
+			end = end.Add(-1 * time.Minute)
+		}
+
 		appointments = append(appointments, handlers.NewAppointment{
 			Title:       title,
 			Description: description,
