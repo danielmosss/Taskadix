@@ -23,8 +23,12 @@ export class DataService {
 
   constructor(private http: HttpClient, private _snackbar: MatSnackBar, private _router: Router) { }
 
+  public getTodoTasks() {
+    return this.http.get<Array<DayTodo>>(this._SecureApi + `/GetTodoTasks`, { headers: this.getCustomHeaders() });
+  }
+
   public getUpcommingTodos(days: number = 7) {
-    return this.http.get<Array<DayTodo>>(this._SecureApi + `/GetTodoTasks?days=${days}`, { headers: this.getCustomHeaders() });
+    return this.http.get<Array<DayTodo>>(this._SecureApi + `/v3/GetTodosForNextXDays?days=${days}`, { headers: this.getCustomHeaders() });
   }
 
   public getTodoByDateRange(dateRange: { start: string, end: string }) {

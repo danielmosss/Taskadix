@@ -75,7 +75,7 @@ export class TodosComponent implements OnInit {
 
   getTodoTasks() {
     if (this.dateRange) this._dataservice.getTodoByDateRange(this.dateRange).subscribe(data => { this.handleGetTodos(data); })
-    else this._dataservice.getUpcommingTodos(7).subscribe(data => { this.handleGetTodos(data); })
+    else this._dataservice.getTodoTasks().subscribe(data => { this.handleGetTodos(data); })
   }
 
   async handleGetTodos(data: DayTodo[]) {
