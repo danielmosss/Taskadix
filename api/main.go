@@ -59,6 +59,7 @@ func main() {
 	securedRoutes.HandleFunc("/v2/GetTenLastLocationsUser", New.GetTenLastLocationsUser).Methods("GET")
 
 	securedRoutes.HandleFunc("/v3/GetAppointments", New.GetAppointmentsV3).Methods("GET")
+	securedRoutes.HandleFunc("/v3/GetTodosForNextXDays", New.GetTodosForNextXDays).Methods("GET")
 
 	var ngrokAddres = os.Getenv("ngrokRequest")
 	corsObj := handlers2.CORS(
