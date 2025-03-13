@@ -1,11 +1,26 @@
 <div class="header">
-  <div class="datepicker">
-    <app-weekselector class="header-datepicker" (onDateSelected)="handleDateRangeSelection($event)"
-      *ngIf="isActiveView('/week')"></app-weekselector>
-    <app-monthselector class="header-datepicker" (onDateSelected)="handleMonthSelection($event)"
-      *ngIf="isActiveView('/month')"></app-monthselector>
-    <app-dayselector class="header-datepicker" (onDateSelected)="handleDateSelection($event)"
-      *ngIf="isActiveView('/day')"></app-dayselector>
+  <div class="displayflex">
+    <div class="datepicker">
+      <app-weekselector class="header-datepicker" (onDateSelected)="handleDateRangeSelection($event)"
+        *ngIf="isActiveView('/week')"></app-weekselector>
+      <app-monthselector class="header-datepicker" (onDateSelected)="handleMonthSelection($event)"
+        *ngIf="isActiveView('/month')"></app-monthselector>
+      <app-dayselector class="header-datepicker" (onDateSelected)="handleDateSelection($event)"
+        *ngIf="isActiveView('/day')"></app-dayselector>
+    </div>
+    <div class="filterCategory">
+      <mat-form-field class="dark-theme">
+        <mat-label>Category</mat-label>
+        <mat-select (selectionChange)="toggleCategory($event)" multiple>
+          <mat-option *ngFor="let category of categories" [value]="category">
+            <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
+            [disabled]="true">
+            </ngx-colors>
+            {{category.term}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
   </div>
   <div class="other">
     <div class="switchDayWeekMonth">
@@ -50,11 +65,6 @@
       </div>
       <div class="text"> ICS Upload </div>
     </div>
-
-    <div class="filterCategory">
-
-    </div>
-
   </div>
 
 </div>

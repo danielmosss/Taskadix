@@ -1,7 +1,7 @@
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Appointment, DisplayAppointment, Todo } from 'src/app/interfaces';
+import { Appointment, Category, DisplayAppointment, Todo } from 'src/app/interfaces';
 import { AppointmentComponent } from 'src/app/popups/appointment/appointment.component';
 import { CardpopupComponent } from 'src/app/popups/cardpopup/cardpopup.component';
 import { CalendarService, CalendarDay } from 'src/calendar.service';
@@ -23,6 +23,7 @@ export class MonthOverviewComponent implements OnInit {
 
   monthView: { weeknumber: number, days: CalendarDay[] }[] = []
   today: Date = new Date();
+  private appointmentsUsedToFilter: Map<number, Appointment> = new Map<number, Appointment>();
   public appointments: Map<number, Appointment> = new Map<number, Appointment>();
 
   constructor(private calendarService: CalendarService, private _dataservice: DataService, private _dialog: MatDialog, private globalfunctions: GlobalfunctionsService) { }
@@ -76,6 +77,7 @@ export class MonthOverviewComponent implements OnInit {
         })
       })
       this.sortAllDays();
+      this.appointmentsUsedToFilter = new Map<number, Appointment>(this.appointments);
     })
   }
 
@@ -117,6 +119,12 @@ export class MonthOverviewComponent implements OnInit {
 
   monthSelected(date: string) {
     this.getMonthView(date);
+  }
+
+  filterCategories(categories: Category[]) {
+    // use this.appointmentsUsedToFilter as base to filter the categories selected need to be shown in the month view
+    // and this.appointments is displaying the appointments in the month view
+    console.log(this.appointmentsUsedToFilter);
   }
 
   async openDetails(displayAppo: DisplayAppointment) {

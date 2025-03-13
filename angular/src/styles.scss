@@ -1,5 +1,6 @@
 @import '~@fortawesome/fontawesome-free/css/all.min.css';
 
+
 :root {
   --black: #17171a;
   --background-color: #2b2d31;
@@ -237,4 +238,10 @@ mat-dialog-container {
   .timepicker-button {
     color: var(--background-color) !important;
   }
+}
+
+.displayflex {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
 }

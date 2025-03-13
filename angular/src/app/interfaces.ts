@@ -27,6 +27,7 @@ export interface Category {
   id: number,
   term: string,
   color: string,
+  selected?: boolean
 }
 
 
