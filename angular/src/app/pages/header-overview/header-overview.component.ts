@@ -1,8 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { MatSelectChange } from '@angular/material/select';
 import { Router } from '@angular/router';
+import { Category } from 'src/app/interfaces';
 import { CreateAppointmentComponent } from 'src/app/popups/create-appointment/create-appointment.component';
 import { UploadicsComponent } from 'src/app/popups/uploadics/uploadics.component';
+import { DataService } from 'src/data.service';
 
 enum Type {
   month = 'month',
@@ -22,11 +25,28 @@ export class HeaderOverviewComponent implements OnInit {
   @Output() weekSelected: EventEmitter<{ start: string, end: string }> = new EventEmitter<{ start: string, end: string }>();
   @Output() dayDateSelected: EventEmitter<string> = new EventEmitter<string>();
   @Output() monthSelected: EventEmitter<string> = new EventEmitter<string>();
+  @Output() selectedCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
 
-  constructor(private _dialog: MatDialog, private _router: Router) { }
+  public categories: Category[] = [];
+
+  constructor(
+    private _dialog: MatDialog,
+    private _router: Router,
+    private _dataservice: DataService
+  ) { }
 
   ngOnInit(): void {
+    this.fetchCategories();
+  }
 
+  fetchCategories(){
+    this._dataservice.getCategories().subscribe((categories: Category[]) => {
+      this.categories = categories;
+    });
+  }
+
+  toggleCategory($event: MatSelectChange){
+    this.selectedCategories.emit($event.value);
   }
 
   openCreateAppointment() {

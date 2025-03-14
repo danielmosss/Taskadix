@@ -4,6 +4,7 @@ import (
 	"api/functions"
 	"api/handlers"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"strconv"
@@ -183,6 +184,7 @@ func GetAppointmentsV3(res http.ResponseWriter, req *http.Request) {
 
 	beginDate := req.URL.Query().Get("start")
 	endDate := req.URL.Query().Get("end")
+	categoryIds := req.URL.Query()["categoryIds"]
 
 	dbConnection, err := functions.GetDatabaseConnection()
 	if err != nil {
@@ -191,28 +193,57 @@ func GetAppointmentsV3(res http.ResponseWriter, req *http.Request) {
 	}
 	defer dbConnection.Close()
 
+	var categoryIdInts []int
+	if len(categoryIds) > 0 {
+		for _, idStr := range categoryIds {
+			id, err := strconv.Atoi(idStr)
+			if err != nil {
+				http.Error(res, "Invalid category ID", http.StatusBadRequest)
+				return
+			}
+			categoryIdInts = append(categoryIdInts, id)
+		}
+	}
+
 	query := `SELECT 
-	a.id,
-	a.userid,
-	a.title,
-	a.description,
-	a.date,
-	a.enddate, 
-	a.isallday,
-	a.starttime,
-	a.endtime,
-	a.location,
-	a.categoryid,
-	ac.term,
-	ac.color,
-	a.ics_import_id
+	    a.id,
+	    a.userid,
+	    a.title,
+	    a.description,
+	    a.date,
+	    a.enddate, 
+	    a.isallday,
+	    a.starttime,
+	    a.endtime,
+	    a.location,
+	    a.categoryid,
+	    ac.term,
+	    ac.color,
+	    a.ics_import_id
 	FROM appointments a
-		 	  INNER JOIN appointment_category ac on a.categoryid = ac.id
-	   		  LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
-			  WHERE a.userid = ?
-			  AND ia.appointmentid IS NULL
-			  AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))`
-	result, err := dbConnection.Query(query, userId, userId, beginDate, endDate, beginDate, endDate)
+	INNER JOIN appointment_category ac on a.categoryid = ac.id
+	LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
+	WHERE a.userid = ?
+	AND ia.appointmentid IS NULL
+	AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))`
+
+	var args []interface{}
+	args = append(args, userId, userId, beginDate, endDate, beginDate, endDate)
+
+	if len(categoryIdInts) > 0 {
+		inClause := `AND a.categoryid IN (`
+		for i, id := range categoryIdInts {
+			inClause += fmt.Sprintf("?")
+			if i < len(categoryIdInts)-1 {
+				inClause += ","
+			}
+			args = append(args, id)
+		}
+		inClause += `)`
+		query += inClause
+	}
+
+	result, err := dbConnection.Query(query, args...)
 	if err != nil {
 		http.Error(res, err.Error(), http.StatusInternalServerError)
 		return
