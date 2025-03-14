@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Appointment, DayTodo, NewAppointment, Todo, UserData,appointmentCategory, backup, newTodoRequirements } from './app/interfaces';
 import { environment } from './environments/environment.local';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -194,7 +194,15 @@ export class DataService {
 
   //V3 API Endpoints
 
-  public GetAppointmentsV3(beginDate: string, endDate: string) {
-    return this.http.get<Appointment[]>(this._SecureApi + `/v3/GetAppointments?start=${beginDate}&end=${endDate}`, { headers: this.getCustomHeaders() });
+  public GetAppointmentsV3(beginDate: string, endDate: string, categoryIds: number[] = []) {
+    let params = new HttpParams()
+      .set('start', beginDate)
+      .set('end', endDate);
+
+    categoryIds.forEach(id => {
+      params = params.append('categoryIds', id.toString());
+    });
+
+    return this.http.get<Appointment[]>(this._SecureApi + `/v3/GetAppointments`, { headers: this.getCustomHeaders(), params });
   }
 }

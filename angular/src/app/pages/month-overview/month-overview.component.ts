@@ -53,8 +53,8 @@ export class MonthOverviewComponent implements OnInit {
     return this.appointments.get(id) || {} as Appointment;
   }
 
-  getMonthAppointments() {
-    this._dataservice.GetAppointmentsV3(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate).subscribe(appointments => {
+  getMonthAppointments(categoryIds: number[] = []){
+    this._dataservice.GetAppointmentsV3(this.monthView[0].days[0].momentDate, this.monthView[this.monthView.length - 1].days[6].momentDate, categoryIds).subscribe(appointments => {
       this.appointments = new Map<number, Appointment>();
       this.monthView.forEach(week => {
         week.days.forEach(day => {
@@ -122,9 +122,7 @@ export class MonthOverviewComponent implements OnInit {
   }
 
   filterCategories(categories: Category[]) {
-    // use this.appointmentsUsedToFilter as base to filter the categories selected need to be shown in the month view
-    // and this.appointments is displaying the appointments in the month view
-    console.log(this.appointmentsUsedToFilter);
+    this.getMonthAppointments(categories.map(category => category.id));
   }
 
   async openDetails(displayAppo: DisplayAppointment) {
