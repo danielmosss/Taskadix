@@ -12,6 +12,14 @@
       <mat-form-field class="dark-theme">
         <mat-label>Category</mat-label>
         <mat-select (selectionChange)="toggleCategory($event)" multiple>
+          <mat-select-trigger>
+            {{selcCategories?.[0]?.term || ''}}
+            <span *ngIf="(selcCategories?.length || 0) > 1" class="additional-selection">
+              (+{{ (selcCategories?.length || 0) - 1 }}
+              {{ selcCategories?.length === 2 ? "other" : "others" }})
+            </span>
+          </mat-select-trigger>
+
           <mat-option *ngFor="let category of categories" [value]="category">
             <ngx-colors ngx-colors-trigger style="float: left" [(ngModel)]="category.color"
             [disabled]="true">

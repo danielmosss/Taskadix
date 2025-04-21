@@ -6,6 +6,11 @@
 
   .datepicker {}
 
+  .additional-selection{
+    font-size: small;
+    color: var(--gray);
+  }
+
   .other {
     display: flex;
     flex-direction: row;
