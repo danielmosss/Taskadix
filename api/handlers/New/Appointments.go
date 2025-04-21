@@ -225,10 +225,11 @@ func GetAppointmentsV3(res http.ResponseWriter, req *http.Request) {
 	LEFT JOIN inrelevantappointments ia on a.id = ia.appointmentid AND ia.userid = ?
 	WHERE a.userid = ?
 	AND ia.appointmentid IS NULL
-	AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))`
+	AND ((date >= ? AND date <= ?) OR (enddate >= ? AND enddate <= ?))
+		OR ((date <= ? AND enddate >= ?))`
 
 	var args []interface{}
-	args = append(args, userId, userId, beginDate, endDate, beginDate, endDate)
+	args = append(args, userId, userId, beginDate, endDate, beginDate, endDate, beginDate, endDate)
 
 	if len(categoryIdInts) > 0 {
 		inClause := `AND a.categoryid IN (`
