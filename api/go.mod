@@ -1,6 +1,6 @@
 module api
 
-go 1.21
+go 1.23.0
 
 require (
 	github.com/arran4/golang-ical v0.2.1 // indirect

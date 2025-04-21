@@ -28,6 +28,7 @@ export class HeaderOverviewComponent implements OnInit {
   @Output() selectedCategories: EventEmitter<Category[]> = new EventEmitter<Category[]>();
 
   public categories: Category[] = [];
+  public selcCategories: Category[] | null = null;
 
   constructor(
     private _dialog: MatDialog,
@@ -46,6 +47,7 @@ export class HeaderOverviewComponent implements OnInit {
   }
 
   toggleCategory($event: MatSelectChange){
+    this.selcCategories = $event.value;
     this.selectedCategories.emit($event.value);
   }
 
